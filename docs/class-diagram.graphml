@@ -114,7 +114,7 @@ user_answer(answer, feedback)</y:MethodLabel>
           <y:Geometry height="116.0" width="202.49267578125" x="214.8984375" y="194.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bolditalic" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" modelName="custom" textColor="#000000" visible="true" width="167.7822265625" x="17.355224609375" y="3.0">ExercisesGraderModel<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bolditalic" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" modelName="custom" textColor="#000000" visible="true" width="175.57080078125" x="13.4609375" y="3.0">ExercisesGradingModel<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -135,7 +135,7 @@ user_answer(answer, feedback)</y:MethodLabel>
           <y:Geometry height="116.0" width="202.49267578125" x="-185.14609374999998" y="194.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bolditalic" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" modelName="custom" textColor="#000000" visible="true" width="172.4921875" x="15.000244140625" y="3.0">ExercisesCreatorModel<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bolditalic" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" modelName="custom" textColor="#000000" visible="true" width="180.16650390625" x="11.1630859375" y="3.0">ExercisesCreatingModel<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -388,7 +388,7 @@ new_exercise(exercise)</y:MethodLabel>
       <data key="d6"/>
       <data key="d8">
         <y:UMLClassNode>
-          <y:Geometry height="79.83246073298426" width="256.53403141361264" x="-2.0130890052356563" y="-283.7696335078534"/>
+          <y:Geometry height="79.83246073298426" width="256.53403141361264" x="-21.835098985602173" y="-283.7696335078534"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" modelName="custom" textColor="#000000" visible="true" width="204.80810546875" x="25.86296297243132" y="3.0">SessionComponentSelector<y:LabelModel>
@@ -400,7 +400,7 @@ new_exercise(exercise)</y:MethodLabel>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="false">
             <y:AttributeLabel/>
-            <y:MethodLabel/>
+            <y:MethodLabel>select_components()</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -454,7 +454,7 @@ new_exercise(exercise)</y:MethodLabel>
           <y:Geometry height="132.37715968586386" width="373.068359375" x="718.7115183246074" y="-263.08272251308904"/>
           <y:Fill color="#33CCCC" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="101.78125" modelName="custom" textColor="#000000" visible="true" width="363.068359375" x="5.0" y="15.29795484293193">SessionManager se zaregistruje u PractisingMOdelu
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="101.78125" modelName="custom" textColor="#000000" visible="true" width="363.068359375" x="5.0" y="15.297954842931915">SessionManager se zaregistruje u PractisingMOdelu
 jako odberatel. PractisingModel pushuje nove cviceni
 az kdyz je o nej jednak pozadano, jednak je k dispozici
 (samozrejme SessionManager si jich muze natahnout
@@ -496,10 +496,11 @@ show_new_exercise(exercise)</y:MethodLabel>
       <data key="d6"/>
       <data key="d8">
         <y:UMLNoteNode>
-          <y:Geometry height="41.35078534031413" width="270.33688645287975" x="690.2483107002618" y="-452.18952879581167"/>
+          <y:Geometry height="65.17539267015707" width="202.49267578125" x="735.9519101767016" y="-452.18952879581167"/>
           <y:Fill color="#33CCCC" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" textColor="#000000" visible="true" width="228.5546875" x="20.891099476439877" y="11.691017670157066">Pripadne rozdelit na view a controller<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" modelName="custom" textColor="#000000" visible="true" width="168.9296875" x="16.781494140625" y="16.618946335078533">MVC: UI = view a controller
+SessionManager = model<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
