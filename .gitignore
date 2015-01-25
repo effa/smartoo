@@ -1,6 +1,13 @@
 # Exception for PDF diagrams
 !docs/*.pdf
 
+# DB
+db.*
+
+# Temporary / local files
+questions.txt
+TODO
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

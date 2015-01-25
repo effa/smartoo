@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--<link rel="stylesheet" href="style.css" />-->
+    <title>{% block title %}Smartoo{% endblock %}</title>
+</head>
+
+<body>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- static files -->
+    <link href="/static/style.css" rel="stylesheet">
+    {% block static-files %}{% endblock %}
+</body>
+</html>

@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'practice',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,3 +82,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+# Global templates
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+# Sessions
+# TODO: pouzit DB cache, serializace SessionManageru, pravidelny uklid DB!
+#SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+# pro zjednoduseni vyvoje pouzijeme pametovou cache, ale pro nasazeni neni
+# vhodne (cache se muze preplnit a pak se neco ztrati)
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+# Caches
+# TODO: use Memcached
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+        #'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+        #'LOCATION': 'unique-snowflake'
+    }
+}
