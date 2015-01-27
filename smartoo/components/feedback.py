@@ -2,15 +2,10 @@
 Module for calculating performance and providing feedback to components
 """
 
+# TODO: potreba rozmyslet, jak/kdy se bude updatovat vykon (performance)
+# komponent
 
-class Feedback(object):
-    """
-    Record of user feedback after an exercise
-    """
-    pass
-
-
-class ComponentsFeedbackAccumulator(object):
+class ComponentsFeedbackProvider(object):
     """
     Class for accumulating and providing feedback to session components
     """

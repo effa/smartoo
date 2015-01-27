@@ -36,7 +36,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'commons',
+    'knowledge',
+    'exercises',
     'practice',
+    'smartoo',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,7 +55,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'smartoo.urls'
 
-WSGI_APPLICATION = 'smartoo.wsgi.application'
+WSGI_APPLICATION = 'development.wsgi.application'
 
 
 # Database
@@ -88,15 +92,14 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # Sessions
-SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
-#SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+#SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # Caches
-# TODO: use Memcached?
-#CACHES = {
-#    'default': {
-#        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-#        #'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
-#        #'LOCATION': 'unique-snowflake'
-#    }
-#}
+# TODO: use Memcached
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+        #'LOCATION': 'unique-snowflake'
+    }
+}
