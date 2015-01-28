@@ -31,7 +31,7 @@ class ComponentsManager(object):
         """
         # zasadni TODO: predat komponentam jejich parametry (v initu)
         # demo: vraci dummy komponenty
-        BASE = '/home/tom/Documents/lab/smartoo/practice/components/'
+        BASE = '/home/tom/Documents/lab/smartoo/..........'
         if component_type == COMPONENT.KNOWLEDGE_BUILDER:
             file_path = BASE + 'knowledge-builders/knowledge_builder_dummy.py'
             knowledge_builder_module = imp.load_source('kb_module', file_path)

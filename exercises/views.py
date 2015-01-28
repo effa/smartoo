@@ -1,3 +1,13 @@
-from django.shortcuts import render
+#from django.shortcuts import render
 
-# Create your views here.
+
+# ----------------------------------------------------------------------------
+#  Interface
+# ----------------------------------------------------------------------------
+
+def create_exercises(request):
+    """
+    Creates exercises (if not already created) and returns "done" message.
+    """
+    print 'create-exercises'
+    pass

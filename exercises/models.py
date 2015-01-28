@@ -1,5 +1,5 @@
 from django.db import models
-from knowledge import KnowledgeBuilder
+from knowledge.models import KnowledgeBuilder
 
 # TODO: component ...
 

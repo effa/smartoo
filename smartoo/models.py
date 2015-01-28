@@ -18,6 +18,13 @@ class Session(models.Model):
     invalid_count = models.SmallIntegerField(default=0)
     # + details (later) ...
 
+    # time (when created), set automatically on creation
+    start = models.DateTimeField(auto_now_add=True)
+
+    # status flag (whether the session was finnished and feedback was used
+    # to update performance)
+    finnished = models.BooleanField(default=False)
+
     def select_components(self):
         # TODO: select components
         pass

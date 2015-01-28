@@ -1,7 +1,7 @@
 #from django.http import JsonResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
-from practice.models import Session, Term
+from smartoo.models import Session
 #import json
 
 
@@ -9,18 +9,24 @@ from practice.models import Session, Term
 #  Views
 # ----------------------------------------------------------------------------
 
+def home(request):
+    # TODO: home template
+    pass
+
+
 def practice_session(request, topic):
     """
     Main view for practice session. Creates new session for given topic,
     selects components and returns base HTML page for the practice session.
     """
     # TODO: vytovreni tematu ... tema = term, musi existovat v DB vsech termu
-    topic = Term(name=topic)
+    #topic = Term(name=topic)
 
     # create session and select components
-    session = Session(topic=topic)
-    session.select_components()
-    session.save()
+    session = Session()
+    #session = Session(topic=topic)
+    #session.select_components()
+    #session.save()
 
     # remember the session id
     request.session['session_id'] = session.id
@@ -30,27 +36,13 @@ def practice_session(request, topic):
     #template = loader.get_template('smartoosession/index.html')
     #context = RequestContext(request, topic)
     #return HttpResponse(template.render(context))
-    return render(request, 'practice/index.html', {
+    return render(request, 'smartoo/index.html', {
         'topic': topic})
 
 
 # ----------------------------------------------------------------------------
-#  Interface (for AJAX calls)
+#  Interface
 # ----------------------------------------------------------------------------
-
-def built_knowledge(request):
-    """
-    Builds knowledge (if not already built) and returns "done" message.
-    """
-    pass
-
-
-def create_exercises(request):
-    """
-    Creates exercises (if not already created) and returns "done" message.
-    """
-    pass
-
 
 def new_exercise(request):
     """

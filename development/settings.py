@@ -36,10 +36,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'commons',
+    'common',
     'knowledge',
     'exercises',
     'practice',
+    'components_control',
     'smartoo',
 )
 

@@ -6,6 +6,7 @@ db.*
 
 # Temporary / local files
 questions.txt
+notes.txt
 TODO
 
 # Byte-compiled / optimized / DLL files

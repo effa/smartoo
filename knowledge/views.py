@@ -1,3 +1,13 @@
-from django.shortcuts import render
+#from django.shortcuts import render
 
-# Create your views here.
+
+# ----------------------------------------------------------------------------
+#  Interface
+# ----------------------------------------------------------------------------
+
+def build_knowledge(request):
+    """
+    Builds knowledge (if not already built) and returns "done" message.
+    """
+    print 'build knowledge..'
+    pass
