@@ -1,22 +1,17 @@
-from django.db import models
+from __future__ import unicode_literals
+#from django.db import models
+from abstract_component.models import Component
 #from rdflib import URIRef
 
 
-class KnowledgeBuilder(models.Model):
-    # TODO: vynutit unique pro code_path
-    code_path = models.TextField()
-    # parameeters: json (more flexible than relational table for parameters)
-    parameters = models.TextField()
-    performance = models.FloatField()
+class KnowledgeBuilder(Component):
+
+    def __unicode__(self):
+        return '<KnowledgeBuilder {name}>'.format(name=self.name)
+
 
 # TODO: podobne modely dalsich komponent (v prislusnych balicich)
-
-# NOTE: mozna by bylo flexibilnejsi i usporneji misto tabulky pro parametry
-# proste ukladat json parametru primo do hlavni tabulky KnowledgeBuilder
-#class KnowledgeBuilderParameter(models.Model):
-#    knowledge_builder = models.ForeignKey(KnowledgeBuilder)
-#    key = models.CharField(max_length=50)
-#    value = models.DecimalField(max_digits=10, decimal_places=10)
+#
 
 
 # ----------------------------------------------------------------------------
@@ -44,6 +39,7 @@ class KnowledgeBuilder(models.Model):
 
 #class KnowledgeGraph(object):
 #    pass
+
 
 # ----------------------------------------------------------------------------
 #  Corpora Related

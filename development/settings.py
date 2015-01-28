@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'common',
+    'abstract_component',
     'knowledge',
     'exercises',
     'practice',
