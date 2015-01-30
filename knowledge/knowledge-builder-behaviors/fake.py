@@ -1,4 +1,5 @@
-from abstract_component import ComponentBehavior
+from knowledge import KnowledgeBuilderBehavior as BaseKnowledgeBuilderBehavior
+
 
 """
 Fake Knowledge Builder
@@ -8,7 +9,8 @@ Pretends to create knowledge graph for given topic.
 For demo/testing purposes only.
 """
 
-class KnowledgeBuilderBehavior(ComponentBehavior):
+
+class KnowledgeBuilderBehavior(BaseKnowledgeBuilderBehavior):
 
     def build_knowledge_graph(self, topic):
         """

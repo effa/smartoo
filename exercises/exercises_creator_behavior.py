@@ -1,13 +1,12 @@
-# TODO: obalit objektem pro persistenci cviceni (a pro paralelni pristup?)
-from practice.components import Component
+from abstract_component import ComponentBehavior
 
 
-class ExercisesGrader(Component):
+class ExercisesCreatorBehavior(ComponentBehavior):
     """
-    Template for all exercises graders.
+    Interface (template) for all exercises creator behaviors.
     """
 
-    def grade_exercise(self, knowledge_graph):
+    def create_exercises(self, knowledge_graph):
         """
         Yields exercises.
 

@@ -3,7 +3,7 @@ from abstract_component import ComponentBehavior
 
 class KnowledgeBuilderBehavior(ComponentBehavior):
     """
-    Interface (template) for all knowledge builder behaviors.
+    Base class for all knowledge builder behaviors.
     """
     def build_knowledge_graph(self, topic):
         """
@@ -15,4 +15,4 @@ class KnowledgeBuilderBehavior(ComponentBehavior):
         Retuns:
             knowledge graph (knowledge.models.KnowledgeGraph)
         """
-        raise NotImplementedError("interface method not implemented")
+        raise NotImplementedError
