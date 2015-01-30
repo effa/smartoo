@@ -11,8 +11,6 @@ class Component(models.Model):
     name = models.CharField(max_length=50)
     # parameters: json dict
     parameters = models.TextField()
-    # performance: real number from the interval (0, 1), 1 means best
-    performance = models.FloatField()
 
     # NOTE: We sotre parameters in json (dictionary), because it's more
     # flexible than relational table of parameters and we don't need fast

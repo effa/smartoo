@@ -14,8 +14,12 @@ class Session(models.Model):
     correct_count = models.SmallIntegerField(default=0)
     wrong_count = models.SmallIntegerField(default=0)
     unanswered_count = models.SmallIntegerField(default=0)
-    mean_time = models.IntegerField()  # in ms
-    invalid_count = models.SmallIntegerField(default=0)
+    #mean_time = models.IntegerField(null=True, default=None)  # in ms
+    #invalid_count = models.SmallIntegerField(default=0)
+
+    # the feedback will be trasform into a single real number (0, 1)
+    quality = models.FloatField(null=True, default=None)
+
     # + details (later) ...
 
     # time (when created), set automatically on creation
