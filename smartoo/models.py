@@ -1,10 +1,11 @@
 from django.db import models
+from common.models import Topic
 from knowledge.models import KnowledgeBuilder
 
 
 class Session(models.Model):
     # topic
-    # ??? topic = models.ForeignKey(Term) ???
+    topic = models.ForeignKey(Topic)
 
     # components
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
