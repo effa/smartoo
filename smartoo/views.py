@@ -1,6 +1,9 @@
 #from django.http import JsonResponse
+from django.http import HttpResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
+from common.models import Topic
+from common.utils.wiki import name_to_uri
 from smartoo.models import Session
 #import json
 
@@ -16,33 +19,37 @@ def home(request):
 
 def practice_session(request, topic):
     """
-    Main view for practice session. Creates new session for given topic,
-    selects components and returns base HTML page for the practice session.
+    Main view for practice session.
+    Returns base HTML page for the practice session.
     """
-    # TODO: vytovreni tematu ... tema = term, musi existovat v DB vsech termu
-    #topic = Term(name=topic)
-
-    # create session and select components
-    session = Session()
-    #session = Session(topic=topic)
-    #session.select_components()
-    #session.save()
-
-    # remember the session id
-    request.session['session_id'] = session.id
-    # print 'key', request.session.session_key
-
-    # render and returns base HTML for practice session
-    #template = loader.get_template('smartoosession/index.html')
-    #context = RequestContext(request, topic)
-    #return HttpResponse(template.render(context))
     return render(request, 'smartoo/index.html', {
-        'topic': topic})
+        'topic': topic.get_name()})
 
 
 # ----------------------------------------------------------------------------
 #  Interface
 # ----------------------------------------------------------------------------
+
+def start_session(request, topic):
+    """
+    Creates new session for given topic, selects components.
+    """
+    # TODO: vytvoreni tematu ... musi existovat v DB vsech temat
+    # TODO: normalizace tematu, osetretni neexistence, ...
+    topic = Topic.objects.get(uri=name_to_uri(topic))
+
+    # create session and select components
+    session = Session(topic=topic)
+    session.select_components()
+    session.save()
+
+    # remember the session id
+    request.session['session_id'] = session.id
+    # print 'key', request.session.session_key
+
+    # Vysledek asi predavat nejak inteligentneji??
+    return HttpResponse("done")
+
 
 def new_exercise(request):
     """

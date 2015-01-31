@@ -1,6 +1,9 @@
 from django.db import models
 from common.models import Topic
+from components_control import ComponentsSelector
 from knowledge.models import KnowledgeBuilder
+from exercises.models import ExercisesCreator, ExercisesGrader
+from practice.models import Practicer
 
 
 class Session(models.Model):
@@ -9,14 +12,17 @@ class Session(models.Model):
 
     # components
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
-    # atd ...
+    exercises_creator = models.ForeignKey(ExercisesCreator)
+    exercises_grader = models.ForeignKey(ExercisesGrader)
+    practicer = models.ForeignKey(Practicer)
 
     # feedback
     correct_count = models.SmallIntegerField(default=0)
     wrong_count = models.SmallIntegerField(default=0)
     unanswered_count = models.SmallIntegerField(default=0)
     #mean_time = models.IntegerField(null=True, default=None)  # in ms
-    #invalid_count = models.SmallIntegerField(default=0)
+    invalid_count = models.SmallIntegerField(default=0)
+    irrelevant_count = models.SmallIntegerField(default=0)
 
     # the feedback will be trasform into a single real number (0, 1)
     quality = models.FloatField(null=True, default=None)
@@ -31,8 +37,12 @@ class Session(models.Model):
     finnished = models.BooleanField(default=False)
 
     def select_components(self):
-        # TODO: select components
-        pass
+        """
+        Selects components for this session.
+        """
+        selector = ComponentsSelector()
+        (self.knowledge_builder, self.exercises_grader, self.exercises_grader,
+            self.practicer) = selector.select_components()
 
     def get_new_exercise(self):
         """

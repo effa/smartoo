@@ -7,6 +7,9 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('practice', '0001_initial'),
+        ('common', '0001_initial'),
+        ('exercises', '0001_initial'),
         ('knowledge', '0001_initial'),
     ]
 
@@ -18,11 +21,16 @@ class Migration(migrations.Migration):
                 ('correct_count', models.SmallIntegerField(default=0)),
                 ('wrong_count', models.SmallIntegerField(default=0)),
                 ('unanswered_count', models.SmallIntegerField(default=0)),
-                ('mean_time', models.IntegerField()),
                 ('invalid_count', models.SmallIntegerField(default=0)),
+                ('irrelevant_count', models.SmallIntegerField(default=0)),
+                ('quality', models.FloatField(default=None, null=True)),
                 ('start', models.DateTimeField(auto_now_add=True)),
                 ('finnished', models.BooleanField(default=False)),
+                ('exercises_creator', models.ForeignKey(to='exercises.ExercisesCreator')),
+                ('exercises_grader', models.ForeignKey(to='exercises.ExercisesGrader')),
                 ('knowledge_builder', models.ForeignKey(to='knowledge.KnowledgeBuilder')),
+                ('practicer', models.ForeignKey(to='practice.Practicer')),
+                ('topic', models.ForeignKey(to='common.Topic')),
             ],
             options={
             },

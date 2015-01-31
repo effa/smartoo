@@ -1,4 +1,5 @@
 from django.db import models
+from common.utils.wiki import uri_to_name
 
 
 class Topic(models.Model):
@@ -12,4 +13,12 @@ class Topic(models.Model):
 
     # index (start line) of the article in the vertical file
     # (vertical file of English Wikipedia with terms inferred)
-    index = models.BigIntegerField()
+    #index = models.BigIntegerField()
+    # NOTE: index neni potreba, vertikal bude ulozen primo v DB jako
+    # dlouhy string
+
+    def get_name(self):
+        """
+        Returns the name of the topic.
+        """
+        return uri_to_name(self.uri)

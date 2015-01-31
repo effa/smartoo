@@ -1,17 +1,17 @@
 from __future__ import unicode_literals
 from abstract_component.models import Component
-from common import Topic
+from common.models import Topic
 from django.db import models
 from rdflib import URIRef, Graph
 
 
 class KnowledgeBuilder(Component):
+    """
+    Model for knowledge builder component.
+    """
 
     def __unicode__(self):
         return '<KnowledgeBuilder {name}>'.format(name=self.name)
-
-
-# TODO: podobne modely dalsich komponent (v prislusnych balicich)
 
 
 # ----------------------------------------------------------------------------
@@ -61,8 +61,9 @@ class Vertical(models.Model):
     """
     Representation of vertical for one article
     """
-    # TODO: ukladat vertikaly do DB (podobne jako grafy), proste to celou vec
+    # NOTE: ukladat vertikaly do DB (podobne jako grafy), proste to celou vec
     # zjednodusi a opet napsat obalkove metody/neperzistentni atributy
-    # (jo a napred zkontrolovat, ze to s tema neperzistentnimi atributy opravdu
+    # (jo a napred zkontrolovat, ze to s temi neperzistentnimi atributy opravdu
     # funguje ... v shellu a taky samozrejme napsat testy ...)
-    pass
+    topic = models.ForeignKey(Topic)
+    lines = models.TextField()

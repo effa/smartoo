@@ -1,17 +1,17 @@
 from abstract_component import ComponentBehavior
 
 
-class ExercisesGraderBehavior(Component):
+class ExercisesGraderBehavior(ComponentBehavior):
     """
-    Template for all exercises grader behaviors.
+    Base class for all exercises grader behaviors.
     """
-
-    def grade_exercise(self, knowledge_graph):
+    def grade_exercise(self, exercise):
         """
-        Yields exercises.
+        Estimates exerice parameters such as correctness and difficulty.
 
         Args:
-            knowledge_graph (???.KnowledgeGraph): knowledge from which to build
-                the exercises
+            exercise (exercises.models.Exercise): exercise to grade
+        Returns:
+            grades (exercises.models.Grades)
         """
         raise NotImplementedError("interface method not implemented")

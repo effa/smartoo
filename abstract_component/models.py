@@ -12,7 +12,7 @@ class Component(models.Model):
     # parameters: json dict
     parameters = models.TextField()
 
-    # NOTE: We sotre parameters in json (dictionary), because it's more
+    # NOTE: We store parameters in json (dictionary), because it's more
     # flexible than relational table of parameters and we don't need fast
     # single parameter lookup.
 

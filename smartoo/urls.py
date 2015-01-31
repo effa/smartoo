@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^$', views.home, name='home'),
     url(r'^practice/(?P<topic>[^/]*)$', views.practice_session),
     # interface
+    url(r'^interface/start-session/(?P<topic>[^/]*)$', views.start_session),
     url(r'^interface/knowledge/', include('knowledge.urls')),
     url(r'^interface/exercises/', include('exercises.urls')),
     url(r'^interface/new-exercise$', views.new_exercise),

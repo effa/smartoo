@@ -1,8 +1,34 @@
+from __future__ import unicode_literals
 from django.db import models
+from abstract_component.models import Component
 from knowledge.models import KnowledgeBuilder
 
-# TODO: component ...
 
+# ---------------------------------------------------------------------------
+#  Components
+# ---------------------------------------------------------------------------
+
+class ExercisesCreator(Component):
+    """
+    Model for exercises creator component.
+    """
+
+    def __unicode__(self):
+        return '<ExercisesCreator {name}>'.format(name=self.name)
+
+
+class ExercisesGrader(Component):
+    """
+    Model for exercises grader component.
+    """
+
+    def __unicode__(self):
+        return '<ExercisesGrader {name}>'.format(name=self.name)
+
+
+# ---------------------------------------------------------------------------
+#  Exercise related models
+# ---------------------------------------------------------------------------
 
 class Exercise(models.Model):
     """
@@ -10,7 +36,7 @@ class Exercise(models.Model):
     """
     question = models.TextField()
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
-    #exercises_creator = models.ForeignKey(ExercisesCreator)
+    exercises_creator = models.ForeignKey(ExercisesCreator)
     # possibly: image, map, type (multichoice/free answer/...), ...
 
 
@@ -22,6 +48,15 @@ class Options(models.Model):
         #   kvuli ohodnoceni otazky
 
 
-class ExerciseGrade(models.Model):
+class ExerciseGrades(models.Model):
     exercise = models.ForeignKey(Exercise)
     #exercise_grader = models.ForeignKey(ExerciseGrader)
+
+    # difficulty: probability that a user doesn't know the correct answer
+    difficulty = models.FloatField()
+
+    # probability that the question is correct syntactically, semantically, ...
+    correctness = models.FloatField()
+
+    # relevance: probability of the question being relevant to the topic
+    relevance = models.FloatField()
