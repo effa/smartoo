@@ -1,7 +1,6 @@
 from django.db import models
-from common.models import Topic
 from components_control import ComponentsSelector
-from knowledge.models import KnowledgeBuilder
+from knowledge.models import Topic, KnowledgeBuilder
 from exercises.models import ExercisesCreator, ExercisesGrader
 from practice.models import Practicer
 

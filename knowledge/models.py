@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from abstract_component.models import Component
-from common.models import Topic
+from common.utils.wiki import uri_to_name
 from django.db import models
 from rdflib import URIRef, Graph
 
@@ -10,8 +10,65 @@ class KnowledgeBuilder(Component):
     Model for knowledge builder component.
     """
 
+    BEHAVIORS_PATH = 'knowledge/knowledge-builder-behaviors/'
+    #BEHAVIOR_CLASS = 'KnowledgeBuilderBehavior'
+
+    @classmethod
+    def get_behaviors_path(cls):
+        return cls.BEHAVIORS_PATH
+
+    def build_knowledge_graph(self, topic):
+        """
+        Creates (and stores) knowledge graph for given topic.
+
+        Args:
+            topic (knowledge.models.Topic): topic for which to build
+                the knowledge graph
+        """
+        raise NotImplementedError
+
     def __unicode__(self):
         return '<KnowledgeBuilder {name}>'.format(name=self.name)
+
+
+# ----------------------------------------------------------------------------
+#  Corpora Related
+# ----------------------------------------------------------------------------
+
+class Vertical(models.Model):
+    """
+    Representation of vertical for one article
+    """
+    # NOTE: ukladat vertikaly do DB (podobne jako grafy), proste to celou vec
+    # zjednodusi a opet napsat obalkove metody/neperzistentni atributy
+    # (jo a napred zkontrolovat, ze to s temi neperzistentnimi atributy opravdu
+    # funguje ... v shellu a taky samozrejme napsat testy ...)
+    content = models.TextField()
+
+
+class Topic(models.Model):
+    """
+    Model for topics, which can be practiced. Corresponds to the articles
+    on the Enlglish Wikipedia.
+    """
+    # URI of the term (resource) to practice
+    # (same as the URL of the corresponding article)
+    uri = models.CharField(max_length=120, unique=True)
+
+    # vertical for the topic will be stored directly in our relational DB
+    vertical = models.ForeignKey(Vertical)
+
+    # index (start line) of the article in the vertical file
+    # (vertical file of English Wikipedia with terms inferred)
+    #index = models.BigIntegerField()
+    # NOTE: index neni potreba, vertikal bude ulozen primo v DB jako
+    # dlouhy string
+
+    def get_name(self):
+        """
+        Returns the name of the topic.
+        """
+        return uri_to_name(self.uri)
 
 
 # ----------------------------------------------------------------------------
@@ -51,19 +108,3 @@ class Resource(URIRef):
     # NOTE: This is not a model, since (for now) there is no reason to have a
     # table of resource.
     pass
-
-
-# ----------------------------------------------------------------------------
-#  Corpora Related
-# ----------------------------------------------------------------------------
-
-class Vertical(models.Model):
-    """
-    Representation of vertical for one article
-    """
-    # NOTE: ukladat vertikaly do DB (podobne jako grafy), proste to celou vec
-    # zjednodusi a opet napsat obalkove metody/neperzistentni atributy
-    # (jo a napred zkontrolovat, ze to s temi neperzistentnimi atributy opravdu
-    # funguje ... v shellu a taky samozrejme napsat testy ...)
-    topic = models.ForeignKey(Topic)
-    lines = models.TextField()

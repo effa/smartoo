@@ -11,4 +11,4 @@ class ComponentBehavior(object):
         self._parameters = parameters
 
     def get_parameter(self, parameter_name):
-        return self._parameters(parameter_name)
+        return self._parameters[parameter_name]

@@ -1,3 +1,4 @@
+from common.utils.text import capitalize_first_letter
 import os
 
 # absolute path to base directory
@@ -14,3 +15,11 @@ def project_path(path):
         absolute path
     """
     return os.path.join(BASE_DIR, path)
+
+
+def to_camel_case(name):
+    """
+    Transforms string from snake_case to CamelCase
+    """
+    parts = name.split('_')
+    return ''.join(capitalize_first_letter(part) for part in parts)

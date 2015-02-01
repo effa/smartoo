@@ -16,6 +16,9 @@ class ComponentsManager(object):
         # komponenty, v __init__() se dasadi parametry (z DB)
         pass
 
+    # TODO: preorganizovat (tato funkcionalita byla presunuta primo do
+    # komponent)
+
     def _get_component_behavior(self, component_type, name):
         """
         Returns instantiated component behavior object.

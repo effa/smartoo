@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from abstract_component import ComponentBehavior
 
 
@@ -10,7 +11,7 @@ class KnowledgeBuilderBehavior(ComponentBehavior):
         Creates knowledge graph for given topic.
 
         Args:
-            topic (knowledge.models.Term): topic for which to build
+            topic (knowledge.models.Topic): topic for which to build
                 the knowledge graph
         Retuns:
             knowledge graph (knowledge.models.KnowledgeGraph)

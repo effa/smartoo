@@ -7,10 +7,9 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('practice', '0001_initial'),
-        ('common', '0001_initial'),
-        ('exercises', '0001_initial'),
         ('knowledge', '0001_initial'),
+        ('practice', '0001_initial'),
+        ('exercises', '0001_initial'),
     ]
 
     operations = [
@@ -30,7 +29,7 @@ class Migration(migrations.Migration):
                 ('exercises_grader', models.ForeignKey(to='exercises.ExercisesGrader')),
                 ('knowledge_builder', models.ForeignKey(to='knowledge.KnowledgeBuilder')),
                 ('practicer', models.ForeignKey(to='practice.Practicer')),
-                ('topic', models.ForeignKey(to='common.Topic')),
+                ('topic', models.ForeignKey(to='knowledge.Topic')),
             ],
             options={
             },
