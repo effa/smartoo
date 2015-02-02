@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'knowledge',
     'exercises',
     'practice',
-    'components_control',
     'smartoo',
 )
 

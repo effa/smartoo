@@ -2,8 +2,8 @@
 from django.http import HttpResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
-from common.models import Topic
 from common.utils.wiki import name_to_uri
+from knowledge.models import Topic
 from smartoo.models import Session
 #import json
 

@@ -1,2 +1,0 @@
-from components_selector import ComponentsSelector
-from components_manager import ComponentsManager

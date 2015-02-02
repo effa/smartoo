@@ -1,8 +1,8 @@
 from django.db import models
-from components_control import ComponentsSelector
 from knowledge.models import Topic, KnowledgeBuilder
 from exercises.models import ExercisesCreator, ExercisesGrader
 from practice.models import Practicer
+from smartoo import ComponentsSelector
 
 
 class SessionManager(models.Manager):
