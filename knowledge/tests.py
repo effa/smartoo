@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
-from knowledge.models import KnowledgeBuilder, Vertical, Topic
+from knowledge.models import KnowledgeBuilder, Vertical, Topic, KnowledgeGraph
+from rdflib import Graph, Literal, Namespace
 
 
 class TopicTestCase(TestCase):
@@ -60,5 +61,28 @@ class KnowledgeBuilderTestCase(TestCase):
         self.assertAlmostEqual(behavior.get_parameter('alpha'), 0.5)
 
 
-#class KnowledgeGraphTextCase(TestCase):
-#    kkk
+class KnowledgeGraphTestCase(TestCase):
+    def test_serialization_deserialization(self):
+        # create vertical, topic and knowledge builder
+        vertical = Vertical.objects.create(
+            content='test line')
+        topic = Topic.objects.create(
+            uri='http://en.wikipedia.org/wiki/Pan_Tau',
+            vertical=vertical)
+        knowledge_builder = KnowledgeBuilder.objects.create(
+            behavior_name='fake', parameters={})
+        # create knowledge graph and serialize it
+        graph = Graph()
+        NS = Namespace('http://example.com/test/')
+        graph.bind('ns', NS)
+        graph.add((NS['Tom'], NS['likes'], Literal('apples')))
+        KnowledgeGraph.objects.create(
+            knowledge_builder=knowledge_builder,
+            topic=topic,
+            graph=graph)
+        # graph retrieval
+        knowledge_graph = KnowledgeGraph.objects.all().first()
+        graph2 = knowledge_graph.graph
+        # check that the graph after serialization-deserialization is still the
+        # same as it was
+        self.assertTrue(graph2.isomorphic(graph))

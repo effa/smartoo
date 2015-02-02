@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
+from django.db import models
 from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
-from django.db import models
-from rdflib import URIRef, Graph
+from knowledge.fields import GraphField
+from rdflib import URIRef  # , Graph
 
 
 class KnowledgeBuilder(Component):
@@ -86,20 +87,10 @@ class KnowledgeGraph(models.Model):
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
     topic = models.ForeignKey(Topic)
 
-    # persistent graph representation (TODO: in which format?)
-    serialized_graph = models.TextField()
-
-    # non-persistent graph representation (rdflib.Graph)
-    graph = Graph()  # Conjunctive Graph, ... ???
+    # graph representation
+    graph = GraphField()
 
     # TODO: define access methods to work with the knowledge graph
-
-    def save(self, *args, **kwargs):
-        """
-        Serialize the graph and save it.
-        """
-        # TODO: serialize the graph before saving
-        super(KnowledgeGraph, self).save(*args, **kwargs)
 
 
 class Resource(URIRef):
