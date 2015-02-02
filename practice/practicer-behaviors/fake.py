@@ -1,18 +1,13 @@
 from practice import PracticerBehavior
 
 
-class PracticerBehavior(PracticerBehavior):
+class Fake(PracticerBehavior):
     """
     Fake practicer behavior
     -----------------------
 
-    For testing purposes.
+    Returns an exercises but completely ignores both genereate exercise and
+    user's history.
     """
-    def start_practice(self):
-        raise NotImplementedError
-
     def next_exercise(self):
-        raise NotImplementedError
-
-    def provide_feedback(self, feedback):
         raise NotImplementedError

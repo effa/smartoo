@@ -13,8 +13,16 @@ class ExercisesCreator(Component):
     Model for exercises creator component.
     """
 
+    BEHAVIORS_PATH = 'exercises/exercises-creator-behaviors'
+
+    @classmethod
+    def get_behaviors_path(cls):
+        return cls.BEHAVIORS_PATH
+
     def __unicode__(self):
-        return '<ExercisesCreator {name}>'.format(name=self.name)
+        return '<ExercisesCreator {name}; parameters={parameters}>'.format(
+            name=self.behavior_name,
+            parameters=self.parameters)
 
 
 class ExercisesGrader(Component):
@@ -22,8 +30,16 @@ class ExercisesGrader(Component):
     Model for exercises grader component.
     """
 
+    BEHAVIORS_PATH = 'exercises/exercises-grader-behaviors'
+
+    @classmethod
+    def get_behaviors_path(cls):
+        return cls.BEHAVIORS_PATH
+
     def __unicode__(self):
-        return '<ExercisesGrader {name}>'.format(name=self.name)
+        return '<ExercisesGrader {name}; parameters={parameters}>'.format(
+            name=self.behavior_name,
+            parameters=self.parameters)
 
 
 # ---------------------------------------------------------------------------

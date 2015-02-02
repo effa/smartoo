@@ -5,6 +5,16 @@ from exercises.models import ExercisesCreator, ExercisesGrader
 from practice.models import Practicer
 
 
+class SessionManager(models.Manager):
+    def create_with_components(self, topic):
+        """
+        Creates new session, selects components and saves it to DB.
+        """
+        session = Session(topic=topic)
+        session.select_components()
+        session.save()
+
+
 class Session(models.Model):
     # topic
     topic = models.ForeignKey(Topic)
@@ -35,13 +45,29 @@ class Session(models.Model):
     # to update performance)
     finnished = models.BooleanField(default=False)
 
+    # manager
+    objects = SessionManager()
+
     def select_components(self):
         """
         Selects components for this session.
         """
+        # TODO: vyhodit vhodnou vyjimku, pokud uz jsou vybrany
         selector = ComponentsSelector()
-        (self.knowledge_builder, self.exercises_grader, self.exercises_grader,
+        (self.knowledge_builder, self.exercises_creator, self.exercises_grader,
             self.practicer) = selector.select_components()
+
+    def build_knowledge(self):
+        """
+        Uses KnowledgeBuilder to build and store knowledge graph.
+        """
+        pass
+
+    def create_graded_exercises(self):
+        """
+        Uses ExercisesCreator and ExercisesGrader to create and store exercises
+        """
+        pass
 
     def get_new_exercise(self):
         """
@@ -64,11 +90,11 @@ class Session(models.Model):
 
         Args:
             feedback: user's feedback, JSON string representing dictionary
-                with following items:
+                with following items
+                TODO: upravit podle smartoo.models.session
                 - answered (bool)
                 - answer correctly (bool)
                 - time to answer in ms (int)
                 - invalid question (bool)
-                - (TODO later: details about invalidity)
         """
         pass

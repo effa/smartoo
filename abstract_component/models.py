@@ -11,9 +11,12 @@ class Component(models.Model):
     Each component is composed of behavior (code) and parameters.
     """
     # name of the behavior (same as the name of the behavior (code) file)
-    behavior = models.CharField(max_length=50)
+    behavior_name = models.CharField(max_length=50)
     # parameters: json dict
     parameters = DictField()
+
+    ## flag for enabling this component (useful for testing and production)
+    #enabled = models.BooleanField(default=True)
 
     # NOTE: We store parameters in json (dictionary), because it's more
     # flexible than relational table of parameters and we don't need fast
@@ -33,14 +36,15 @@ class Component(models.Model):
         # create full path of the behavior file
         behavior_path = project_path('{directory}{name}.py'.format(
             directory=self.get_behaviors_path(),
-            name=self.behavior))
+            name=self.behavior_name))
 
         # load the file with behavior
         # TODO: osetrit neexistenci zdroje
         behavior_module = imp.load_source('component_module', behavior_path)
-        behavior_class_name = to_camel_case(self.behavior)
+        behavior_class_name = to_camel_case(self.behavior_name)
 
         # instantiate the component behavior object
+        # TODO: osetrit neexistentci tridy s pozadovanym nazvem
         behavior_class = getattr(behavior_module, behavior_class_name)
         behavior_object = behavior_class(self.parameters)
         return behavior_object

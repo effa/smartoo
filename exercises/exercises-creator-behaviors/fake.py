@@ -1,12 +1,12 @@
 from exercises import ExercisesCreatorBehavior
 
 
-class ExercisesCreatorBehavior(ExercisesCreatorBehavior):
+class Fake(ExercisesCreatorBehavior):
     """
     Fake Exercises Creator Behavior
     --------------------------------
 
-    Pretends to creates exercises. For testing purposes only.
+    Returns some exercises, ignorores knowledge graph.
     """
 
     def create_exercises(self, knowledge_graph):

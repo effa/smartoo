@@ -1,12 +1,12 @@
 from exercises import ExercisesGraderBehavior
 
 
-class ExercisesGraderBehavior(ExercisesGraderBehavior):
+class Fake(ExercisesGraderBehavior):
     """
     Fake Exercises Grader Behavior
     ------------------------------
 
-    Pretends to grade exercises.
+    Just gives some grades without looking at the exercises.
     """
 
     def grade_exercise(self, exercise):

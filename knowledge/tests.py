@@ -32,10 +32,10 @@ class KnowledgeBuilderTestCase(TestCase):
     def test_create_two_builders_with_same_name(self):
         try:
             KnowledgeBuilder.objects.create(
-                behavior='fake',
+                behavior_name='fake',
                 parameters={"alpha": 0.5})
             KnowledgeBuilder.objects.create(
-                behavior='fake',
+                behavior_name='fake',
                 parameters={"alpha": 1.0})
         except:
             self.fail('Creating two components with the same behavior should'
@@ -44,16 +44,16 @@ class KnowledgeBuilderTestCase(TestCase):
     def test_retrieval(self):
         # store knowledge builder to DB
         knowledge_builder = KnowledgeBuilder.objects.create(
-            behavior='fake',
+            behavior_name='fake',
             parameters={"alpha": 0.5})
         key = knowledge_builder.pk
         # and check if everything is OK after retrieval
         knowledge_builder = KnowledgeBuilder.objects.get(pk=key)
-        self.assertEqual(knowledge_builder.behavior, 'fake')
+        self.assertEqual(knowledge_builder.behavior_name, 'fake')
         self.assertEqual(knowledge_builder.parameters, {"alpha": 0.5})
 
     def test_behavior_instance(self):
-        knowledge_builder = KnowledgeBuilder(behavior='fake',
+        knowledge_builder = KnowledgeBuilder(behavior_name='fake',
             parameters={"alpha": 0.5})
         behavior = knowledge_builder.get_behavior()
         self.assertEqual(behavior.build_knowledge_graph(None), None)
