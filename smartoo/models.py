@@ -1,6 +1,6 @@
 from django.db import models
 from knowledge.models import Topic, KnowledgeBuilder
-from exercises.models import ExercisesCreator, ExercisesGrader
+from exercises.models import ExercisesCreator, ExercisesGrader, Exercise
 from practice.models import Practicer
 from smartoo import ComponentsSelector
 
@@ -90,11 +90,29 @@ class Session(models.Model):
 
         Args:
             feedback: user's feedback, JSON string representing dictionary
-                with following items
-                TODO: upravit podle smartoo.models.session
-                - answered (bool)
-                - answer correctly (bool)
-                - time to answer in ms (int)
-                - invalid question (bool)
+                with following items:
+                - "answered" (bool)
+                - "correct" (bool)
+                - "invalid" (bool)
+                - "irrelevant" (bool)
+                (later add more details such as time to answer in ms)
+                (as in exercises.models.ExerciseFeedback)
         """
         pass
+
+
+class ExerciseFeedback(models.Model):
+    """
+    Model for storing feedback for one exercise instance (incl. results).
+    """
+    # identification: session + exercise
+    session = models.ForeignKey(Session)
+    exercise = models.ForeignKey(Exercise)
+
+    # feedback
+    answered = models.BooleanField(default=True)
+    correct = models.BooleanField(default=False)
+    invalid = models.BooleanField(default=False)
+    irrelevant = models.BooleanField(default=False)
+    #time (start/end) of the exercise or maybe just time_to_answer?
+    #time_to_anser = models.IntegerField(null=True, default=None)  # in ms

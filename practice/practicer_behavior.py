@@ -5,20 +5,16 @@ class PracticerBehavior(ComponentBehavior):
     """
     Base class for all practicer behaviors.
     """
-    #def start_practice(self):
-    #    """
-    #    Start new practice session.
-    #    """
-    #    raise NotImplementedError
 
-    def next_exercise(self):
+    def next_exercise(self, exercises, accumulated_feedback):
         """
         Returns new exercise.
+
+        Args:
+            exercises: collection of exercises which one will be chosen from
+            accumulated_feedback: feedback from previous exercises to help us
+                decide which exercise is best for the user
+        Returns:
+            new exercise
         """
         raise NotImplementedError
-
-    #def provide_feedback(self, feedback):
-    #    """
-    #    Provide feedback after an exercise.
-    #    """
-    #    raise NotImplementedError

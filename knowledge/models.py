@@ -13,7 +13,6 @@ class KnowledgeBuilder(Component):
     """
 
     BEHAVIORS_PATH = 'knowledge/knowledge-builder-behaviors/'
-    #BEHAVIOR_CLASS = 'KnowledgeBuilderBehavior'
 
     @classmethod
     def get_behaviors_path(cls):
