@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from abstract_component.models import Component
-from knowledge.models import KnowledgeBuilder
+from common.fields import DictField
+from knowledge.models import KnowledgeGraph
 
 
 # ---------------------------------------------------------------------------
@@ -13,11 +14,28 @@ class ExercisesCreator(Component):
     Model for exercises creator component.
     """
 
-    BEHAVIORS_PATH = 'exercises/exercises-creator-behaviors'
+    BEHAVIORS_PATH = 'exercises/exercises-creator-behaviors/'
 
     @classmethod
     def get_behaviors_path(cls):
         return cls.BEHAVIORS_PATH
+
+    def create_exercises(self, knowledge_graph, yielding=True):
+        """
+        Creates, stores and yeilds exercises.
+
+        Args:
+            knowledge_graph (knowledge.models.KnowledgeGraph)
+        Yields:
+            exercises (exercises.models.Exercise)
+        """
+        behavior = self.get_behavior()
+        for exercise in behavior.create_exercises(knowledge_graph):
+            exercise.exercises_creator = self
+            exercise.knowledge_graph = knowledge_graph
+            exercise.save()
+            if yielding:
+                yield exercise
 
     def __unicode__(self):
         return '<ExercisesCreator {name}; parameters={parameters}>'.format(
@@ -48,20 +66,30 @@ class ExercisesGrader(Component):
 
 class Exercise(models.Model):
     """
-    Base class for an exercise
+    Model for all exercises.
     """
-    question = models.TextField()
-    knowledge_builder = models.ForeignKey(KnowledgeBuilder)
+    # metadata (about origin)
+    knowledge_graph = models.ForeignKey(KnowledgeGraph)
     exercises_creator = models.ForeignKey(ExercisesCreator)
-    # possibly: image, map, type (multichoice/free answer/...), ...
 
+    # exercise data and behavior
+    # NOTE: For now, all questions are uniform (multiplechoice), but later, we
+    # will want to have many types of exercises. Than we will need another
+    # model for ExercisesType to store information about exercise structure
+    # (schema), HTML partial template and JS for grabbing user answer from this
+    # HTML partial. In this model we will just add a line to specify a foreign
+    # key for ExerciseType.
+    # For now, the data is a simple dictionary containing the following
+    # fields: "question", "choices" and "correct-answer".
+    data = DictField(default=dict)
 
-class Options(models.Model):
-        exercise = models.ForeignKey(Exercise)
-        correct = models.BooleanField(default=True)
-        string = models.CharField(max_length=500)  # possibly declined etc.
-        # + reference na term do Knowledge (potreba semantickych informaci
-        #   kvuli ohodnoceni otazky
+    # NOTE: To make things simplier, I will leave the exercise itself
+    # completely semantitc-free and provide semantic metadata separatedly, so
+    # that the graders have some data to use for grading.
+    # TODO: specify the semanitc metadata
+
+    def __unicode__(self):
+        return '<Exercise {data}>'.format(data=self.data)
 
 
 class ExerciseGrades(models.Model):

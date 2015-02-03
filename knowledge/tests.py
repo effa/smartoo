@@ -27,6 +27,35 @@ class TopicTestCase(TestCase):
         self.assertEqual(vertical.content, 'test line')
 
 
+class KnowledgeGraphTestCase(TestCase):
+    def setUp(self):
+        # create vertical, topic and knowledge builder
+        self.vertical = Vertical.objects.create(
+            content='test line')
+        self.topic = Topic.objects.create(
+            uri='http://en.wikipedia.org/wiki/Pan_Tau',
+            vertical=self.vertical)
+        self.knowledge_builder = KnowledgeBuilder.objects.create(
+            behavior_name='fake', parameters={})
+
+    def test_serialization_deserialization(self):
+        # create knowledge graph and serialize it
+        graph = Graph()
+        NS = Namespace('http://example.com/test/')
+        graph.bind('ns', NS)
+        graph.add((NS['Tom'], NS['likes'], Literal('apples')))
+        KnowledgeGraph.objects.create(
+            knowledge_builder=self.knowledge_builder,
+            topic=self.topic,
+            graph=graph)
+        # graph retrieval
+        knowledge_graph = KnowledgeGraph.objects.all().first()
+        graph2 = knowledge_graph.graph
+        # check that the graph after serialization-deserialization is still the
+        # same as it was
+        self.assertTrue(graph2.isomorphic(graph))
+
+
 class KnowledgeBuilderTestCase(TestCase):
     def setUp(self):
         # create a vertical and a topic
@@ -77,32 +106,3 @@ class KnowledgeBuilderTestCase(TestCase):
         # retrieve the graph
         #knowledge_graph = KnowledgeGraph.objects.all().first()
         #print knowledge_graph
-
-
-class KnowledgeGraphTestCase(TestCase):
-    def setUp(self):
-        # create vertical, topic and knowledge builder
-        self.vertical = Vertical.objects.create(
-            content='test line')
-        self.topic = Topic.objects.create(
-            uri='http://en.wikipedia.org/wiki/Pan_Tau',
-            vertical=self.vertical)
-        self.knowledge_builder = KnowledgeBuilder.objects.create(
-            behavior_name='fake', parameters={})
-
-    def test_serialization_deserialization(self):
-        # create knowledge graph and serialize it
-        graph = Graph()
-        NS = Namespace('http://example.com/test/')
-        graph.bind('ns', NS)
-        graph.add((NS['Tom'], NS['likes'], Literal('apples')))
-        KnowledgeGraph.objects.create(
-            knowledge_builder=self.knowledge_builder,
-            topic=self.topic,
-            graph=graph)
-        # graph retrieval
-        knowledge_graph = KnowledgeGraph.objects.all().first()
-        graph2 = knowledge_graph.graph
-        # check that the graph after serialization-deserialization is still the
-        # same as it was
-        self.assertTrue(graph2.isomorphic(graph))

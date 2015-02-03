@@ -1,4 +1,5 @@
 from exercises import ExercisesCreatorBehavior
+from exercises.models import Exercise
 
 
 class Fake(ExercisesCreatorBehavior):
@@ -10,6 +11,23 @@ class Fake(ExercisesCreatorBehavior):
     """
 
     def create_exercises(self, knowledge_graph):
-        # the following is just a construction for an empty generator
-        return
-        yield
+        prepared_exercises = [
+            Exercise(data={
+                'question': 'When was Henry VIII of England born?',
+                'options': ['1291', '1391', '1491', '1591'],
+                'correct-answer': '1491'
+            }),
+            Exercise(data={
+                'question': 'When was the successor of Henry VIII of England?',
+                'options': ['Edward VI of England', 'Henry VII of England',
+                    'Elizabeht of York', 'Thomas Cromwell'],
+                'correct-answer': 'Edward VI of England'
+            }),
+            Exercise(data={
+                'question': 'How many spouses did Henry VII of England have?',
+                'options': ['0', '2', '4', '6'],
+                'correct-answer': '6'
+            }),
+        ]
+        for exercise in prepared_exercises:
+            yield exercise
