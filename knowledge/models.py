@@ -3,7 +3,8 @@ from django.db import models
 from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
 from knowledge.fields import GraphField
-from rdflib import URIRef  # , Graph
+from knowledge.namespaces import NAMESPACES_DICT
+from rdflib import Graph
 
 
 class KnowledgeBuilder(Component):
@@ -25,8 +26,14 @@ class KnowledgeBuilder(Component):
         Args:
             topic (knowledge.models.Topic): topic for which to build
                 the knowledge graph
+        Raises:
+            IntegrityError: if this knowledge builder is not already in DB
+                (its ID is needed to store the graph)
         """
-        raise NotImplementedError
+        behavior = self.get_behavior()
+        knowledge_graph = behavior.build_knowledge_graph(topic)
+        knowledge_graph.knowledge_builder = self
+        knowledge_graph.save()
 
     def __unicode__(self):
         return '<KnowledgeBuilder {name}; parameters={parameters}>'.format(
@@ -73,6 +80,9 @@ class Topic(models.Model):
         """
         return uri_to_name(self.uri)
 
+    def __unicode__(self):
+        return '<Topic uri="{uri}">'.format(uri=self.uri)
+
 
 # ----------------------------------------------------------------------------
 #  Knowledge Representation
@@ -82,22 +92,41 @@ class Topic(models.Model):
 # completely disjoint and stored in relational DB as a serialized string.
 # In the futrue we will use some tripplestore, such as Virtuoso.
 
+def get_initialized_graph():
+    """
+    Returns an empty graph with initialized namespace bindings
+    """
+    graph = Graph()
+    # bind prefixes to common namespaces
+    for prefix, namespace in NAMESPACES_DICT.items():
+        graph.bind(prefix, namespace)
+    return graph
+
+
 class KnowledgeGraph(models.Model):
     # knowledge graph is determined by KnowledgeBuilder+Topic)
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
     topic = models.ForeignKey(Topic)
 
     # graph representation
-    graph = GraphField()
+    graph = GraphField(default=get_initialized_graph)
 
     # TODO: define access methods to work with the knowledge graph
 
+    def add(self, triple):
+        self.graph.add(triple)
 
-class Resource(URIRef):
-    """
-    For now, this is just an alias for URIRef...
-    (But probably I'll write some additional convenience methods later...)
-    """
-    # NOTE: This is not a model, since (for now) there is no reason to have a
-    # table of resource.
-    pass
+    def __unicode__(self):
+        return 'builder: {builder}\ntopic: {topic}\ngraph:\n{graph}'.format(
+            builder=self.knowledge_builder,
+            topic=self.topic,
+            graph=self.graph.serialize(format='turtle'))
+
+#class Resource(URIRef):
+#    """
+#    For now, this is just an alias for URIRef...
+#    (But probably I'll write some additional convenience methods later...)
+#    """
+#    # NOTE: This is not a model, since (for now) there is no reason to have a
+#    # table of resource.
+#    pass

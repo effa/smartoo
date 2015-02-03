@@ -5,7 +5,6 @@ from rdflib import Graph, Literal, Namespace
 
 
 class TopicTestCase(TestCase):
-
     def setUp(self):
         vertical = Vertical.objects.create(content='test line')
         Topic.objects.create(
@@ -29,6 +28,13 @@ class TopicTestCase(TestCase):
 
 
 class KnowledgeBuilderTestCase(TestCase):
+    def setUp(self):
+        # create a vertical and a topic
+        self.vertical = Vertical.objects.create(
+            content='test line')
+        self.topic = Topic.objects.create(
+            uri='http://en.wikipedia.org/wiki/Pan_Tau',
+            vertical=self.vertical)
 
     def test_create_two_builders_with_same_name(self):
         try:
@@ -57,28 +63,42 @@ class KnowledgeBuilderTestCase(TestCase):
         knowledge_builder = KnowledgeBuilder(behavior_name='fake',
             parameters={"alpha": 0.5})
         behavior = knowledge_builder.get_behavior()
-        self.assertEqual(behavior.build_knowledge_graph(None), None)
+        knowledge_graph = behavior.build_knowledge_graph(self.topic)
+        self.assertIsInstance(knowledge_graph, KnowledgeGraph)
         self.assertAlmostEqual(behavior.get_parameter('alpha'), 0.5)
+
+    def test_build_knowledge_graph(self):
+        knowledge_builder = KnowledgeBuilder(behavior_name='fake',
+            parameters={"alpha": 0.5})
+        # knowledge builder needs to be saved to the DB first (its ID is needed
+        # to store the graph)
+        knowledge_builder.save()
+        knowledge_builder.build_knowledge_graph(self.topic)
+        # retrieve the graph
+        #knowledge_graph = KnowledgeGraph.objects.all().first()
+        #print knowledge_graph
 
 
 class KnowledgeGraphTestCase(TestCase):
-    def test_serialization_deserialization(self):
+    def setUp(self):
         # create vertical, topic and knowledge builder
-        vertical = Vertical.objects.create(
+        self.vertical = Vertical.objects.create(
             content='test line')
-        topic = Topic.objects.create(
+        self.topic = Topic.objects.create(
             uri='http://en.wikipedia.org/wiki/Pan_Tau',
-            vertical=vertical)
-        knowledge_builder = KnowledgeBuilder.objects.create(
+            vertical=self.vertical)
+        self.knowledge_builder = KnowledgeBuilder.objects.create(
             behavior_name='fake', parameters={})
+
+    def test_serialization_deserialization(self):
         # create knowledge graph and serialize it
         graph = Graph()
         NS = Namespace('http://example.com/test/')
         graph.bind('ns', NS)
         graph.add((NS['Tom'], NS['likes'], Literal('apples')))
         KnowledgeGraph.objects.create(
-            knowledge_builder=knowledge_builder,
-            topic=topic,
+            knowledge_builder=self.knowledge_builder,
+            topic=self.topic,
             graph=graph)
         # graph retrieval
         knowledge_graph = KnowledgeGraph.objects.all().first()
