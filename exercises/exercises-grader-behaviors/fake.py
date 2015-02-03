@@ -1,4 +1,5 @@
 from exercises import ExercisesGraderBehavior
+from exercises.models import ExerciseGrades
 
 
 class Fake(ExercisesGraderBehavior):
@@ -10,4 +11,7 @@ class Fake(ExercisesGraderBehavior):
     """
 
     def grade_exercise(self, exercise):
-        pass
+        return ExerciseGrades(
+            difficulty=0.5,
+            correctness=0.5,
+            relevance=0.5)

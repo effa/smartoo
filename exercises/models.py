@@ -48,11 +48,46 @@ class ExercisesGrader(Component):
     Model for exercises grader component.
     """
 
-    BEHAVIORS_PATH = 'exercises/exercises-grader-behaviors'
+    BEHAVIORS_PATH = 'exercises/exercises-grader-behaviors/'
 
     @classmethod
     def get_behaviors_path(cls):
         return cls.BEHAVIORS_PATH
+
+    def create_graded_exercises(self, knowledge_graph, exercises_creator):
+        """
+        Creates exercises using provided :exercises_creator: and grades them
+        immediatelly as they are yielded. Exercises and grades are stored in
+        DB, nothing is returned.
+
+        Args:
+            knowledge_graph (knowledge.models.KnowledgeGraph): knowledge graph
+                from which to build the exercises
+            exercises_creator (exercises.models.ExercisesCreator): component to
+                use for exercises yielding
+
+        Raises:
+            IntegrityError: if knowledge_graph or exercise_creator is not
+                already stored in DB (we need their primary keys)
+        """
+        for exercise in exercises_creator.create_exercises(knowledge_graph):
+            # compute grades and store them in DB
+            self.grade_exercise(exercise)
+
+    def grade_exercise(self, exercise):
+        """
+        Computes grade and stores them (doesn't return anything).
+
+        Args:
+            exercise (exercises.model.Exercise): exercise to grade, has to be
+                already stored in DB
+        Raises:
+            IntegrityError: if the exercise is not already stored in DB
+        """
+        behavior = self.get_behavior()
+        grades = behavior.grade_exercise(exercise)
+        grades.exercise = exercise
+        grades.save()
 
     def __unicode__(self):
         return '<ExercisesGrader {name}; parameters={parameters}>'.format(
@@ -104,3 +139,7 @@ class ExerciseGrades(models.Model):
 
     # relevance: probability of the question being relevant to the topic
     relevance = models.FloatField()
+
+    def __unicode__(self):
+        return '<Grades difficulty=%s, correctness=%s, relevance=%s>' %\
+            (self.difficulty, self.correctness, self.relevance)
