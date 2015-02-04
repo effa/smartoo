@@ -1,7 +1,7 @@
 from django.test import TestCase
 from knowledge.models import Vertical, Topic, KnowledgeBuilder, KnowledgeGraph
 from exercises.models import Exercise, ExercisesCreator
-from exercises.models import ExerciseGrades, ExercisesGrader
+from exercises.models import GradedExercise, ExercisesGrader
 
 
 class ExercisesCreatorTestCase(TestCase):
@@ -36,7 +36,7 @@ class ExercisesCreatorTestCase(TestCase):
         self.assertEqual(len(Exercise.objects.all()), exercises_count)
 
 
-class ExercisesGraderrTestCase(TestCase):
+class ExercisesGraderTestCase(TestCase):
     def setUp(self):
         # create a vertical, topic, knowledge builder and knowledge graph
         self.vertical = Vertical.objects.create(
@@ -61,9 +61,9 @@ class ExercisesGraderrTestCase(TestCase):
             self.knowledge_graph, self.exercises_creator)
         # check that all the exercises and grades were stored
         self.assertGreater(len(Exercise.objects.all()), 0)
-        self.assertGreater(len(ExerciseGrades.objects.all()), 0)
+        self.assertGreater(len(GradedExercise.objects.all()), 0)
         self.assertEqual(len(Exercise.objects.all()),
-            len(ExerciseGrades.objects.all()))
+            len(GradedExercise.objects.all()))
         # check that grades were saved and can be retrieved
-        grades = ExerciseGrades.objects.all().first()
+        grades = GradedExercise.objects.all().first()
         self.assertIsInstance(grades.difficulty, float)

@@ -1,2 +1,2 @@
 from components_selector import ComponentsSelector
-from components_feedback_provider import ComponentsFeedbackProvider
+from components_feedbacker import ComponentsFeedbacker

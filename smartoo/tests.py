@@ -1,7 +1,7 @@
 from django.test import TestCase
 from knowledge.models import Vertical, Topic, KnowledgeGraph, KnowledgeBuilder
 from exercises.models import Exercise, ExercisesCreator
-from exercises.models import ExerciseGrades, ExercisesGrader
+from exercises.models import GradedExercise, ExercisesGrader
 from practice.models import Practicer
 from smartoo.models import Session
 
@@ -51,7 +51,7 @@ class SessiontTestCase(TestCase):
         session.build_knowledge()
         session.create_graded_exercises()
         exercises = Exercise.objects.all()
-        grades = ExerciseGrades.objects.all()
+        grades = GradedExercise.objects.all()
         # check that exercises and grades were stored
         self.assertGreater(len(exercises), 0,
             "No exercises were stored.")
@@ -61,4 +61,38 @@ class SessiontTestCase(TestCase):
             "The number of stored grades and exercises is different.")
         # TODO: nejake dalsi asserty??
 
-    # TODO: test pro vyber cviceni
+    def test_get_graded_exercises(self):
+        session = Session.objects.create_with_components(self.topic)
+        session.build_knowledge()
+        session.create_graded_exercises()
+        exercises = session.get_graded_exercises()
+        self.assertGreater(len(exercises), 0)
+        self.assertIsInstance(exercises[0], GradedExercise)
+
+    def test_get_new_exercise(self):
+        session = Session.objects.create_with_components(self.topic)
+        session.build_knowledge()
+        session.create_graded_exercises()
+        exercise = session.next_exercise()
+        self.assertIsInstance(exercise, GradedExercise)
+
+    def test_provide_feedback(self):
+        session = Session.objects.create_with_components(self.topic)
+        session.build_knowledge()
+        session.create_graded_exercises()
+        exercise = session.next_exercise()
+        feedback = {
+            'exercise-pk': exercise.pk,
+            'answered': True,
+            'correct': True,
+            'invalid': False,
+            'irrelevant': False}
+        session.provide_feedback(feedback)
+        # now check the counts of used vs. unused exercises
+        all_exercises = len(session.get_graded_exercises())
+        used = len(session.get_feedbacked_exercises())
+        unused = len(session.get_unused_exercises())
+        self.assertEqual(used, 1)
+        self.assertEqual(unused, all_exercises - 1)
+
+    # TODO: more tests

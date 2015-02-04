@@ -14,21 +14,22 @@ class Practicer(Component):
     def get_behaviors_path(cls):
         return cls.BEHAVIORS_PATH
 
-    def next_exercise(self, exercises, accumulated_feedback):
+    def next_exercise(self, graded_exercises, accumulated_feedback):
         """
         Returns new exercise.
 
         Args:
-            exercises: collection of exercises which one will be chosen from
+            graded_exercises: collection of exercises and their grades
             accumulated_feedback: feedback from previous exercises to help us
                 decide which exercise is best for the user
         Returns:
             new exercise || None if there is no exercise left
         """
-        if not exercises:
+        if not graded_exercises:
             return None
         behavior = self.get_behavior()
-        exercise = behavior.next_exercise(exercises, accumulated_feedback)
+        exercise = behavior.next_exercise(graded_exercises,
+            accumulated_feedback)
         return exercise
 
     def __unicode__(self):

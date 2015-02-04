@@ -86,6 +86,7 @@ class ExercisesGrader(Component):
         behavior = self.get_behavior()
         grades = behavior.grade_exercise(exercise)
         grades.exercise = exercise
+        grades.exercises_grader = self
         grades.save()
 
     def __unicode__(self):
@@ -120,15 +121,16 @@ class Exercise(models.Model):
     # NOTE: To make things simplier, I will leave the exercise itself
     # completely semantitc-free and provide semantic metadata separatedly, so
     # that the graders have some data to use for grading.
-    # TODO: specify the semanitc metadata
+    # TODO: specify the semantic metadata
 
     def __unicode__(self):
         return '<Exercise {data}>'.format(data=self.data)
 
 
-class ExerciseGrades(models.Model):
+class GradedExercise(models.Model):
+    # identification: which exercise + which grader
     exercise = models.ForeignKey(Exercise)
-    #exercise_grader = models.ForeignKey(ExerciseGrader)
+    exercises_grader = models.ForeignKey(ExercisesGrader)
 
     # difficulty: probability that a user doesn't know the correct answer
     difficulty = models.FloatField()
@@ -140,5 +142,6 @@ class ExerciseGrades(models.Model):
     relevance = models.FloatField()
 
     def __unicode__(self):
-        return '<Grades difficulty=%s, correctness=%s, relevance=%s>' %\
-            (self.difficulty, self.correctness, self.relevance)
+        return ('<GradedExercise exercise=%s difficulty=%s, correctness=%s,'
+            + ' relevance=%s>') % (self.exercise, self.difficulty,
+                    self.correctness, self.relevance)
