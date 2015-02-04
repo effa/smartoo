@@ -18,7 +18,7 @@ class KnowledgeBuilder(Component):
     def get_behaviors_path(cls):
         return cls.BEHAVIORS_PATH
 
-    def build_knowledge_graph(self, topic):
+    def build_knowledge(self, topic):
         """
         Creates (and stores) knowledge graph for given topic.
 
@@ -29,6 +29,11 @@ class KnowledgeBuilder(Component):
             IntegrityError: if this knowledge builder is not already in DB
                 (its ID is needed to store the graph)
         """
+        # At first check if the knowledge graph hasn't already been created
+        # (for this builder-topic combo)
+        if KnowledgeGraph.objects.filter(topic=topic,
+                knowledge_builder=self).exists():
+            return  # already created, nothing to do
         behavior = self.get_behavior()
         knowledge_graph = behavior.build_knowledge_graph(topic)
         knowledge_graph.knowledge_builder = self
@@ -109,6 +114,9 @@ class KnowledgeGraph(models.Model):
 
     # graph representation
     graph = GraphField(default=get_initialized_graph)
+
+    # TODO: definovat unikatnost dvojice KB-topic a zajistit, aby se graf pro
+    # takovou dvojici nevytvarel znova
 
     # TODO: define access methods to work with the knowledge graph
 

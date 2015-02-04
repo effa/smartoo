@@ -1,5 +1,5 @@
 from django.db import models
-from knowledge.models import Topic, KnowledgeBuilder
+from knowledge.models import Topic, KnowledgeGraph, KnowledgeBuilder
 from exercises.models import ExercisesCreator, ExercisesGrader, Exercise
 from practice.models import Practicer
 from smartoo import ComponentsSelector
@@ -9,10 +9,16 @@ class SessionManager(models.Manager):
     def create_with_components(self, topic):
         """
         Creates new session, selects components and saves it to DB.
+
+        Args:
+            topic (knowledge.models.Topic): topic for this session
+        Retruns:
+            created session (smartoo.models.Sesion)
         """
         session = Session(topic=topic)
         session.select_components()
         session.save()
+        return session
 
 
 class Session(models.Model):
@@ -59,15 +65,22 @@ class Session(models.Model):
 
     def build_knowledge(self):
         """
-        Uses KnowledgeBuilder to build and store knowledge graph.
+        Uses KnowledgeBuilder to build and store knowledge graph for current
+        topic.
         """
-        pass
+        self.knowledge_builder.build_knowledge(self.topic)
 
     def create_graded_exercises(self):
         """
         Uses ExercisesCreator and ExercisesGrader to create and store exercises
         """
-        pass
+        # retrieve knowledge graph for the session topic and used knowledge
+        # builder
+        knowledge_graph = KnowledgeGraph.objects.get(
+            topic=self.topic, knowledge_builder=self.knowledge_builder)
+        self.exercises_grader.create_graded_exercises(
+            knowledge_graph=knowledge_graph,
+            exercises_creator=self.exercises_creator)
 
     def get_new_exercise(self):
         """

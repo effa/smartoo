@@ -64,6 +64,6 @@ class ExercisesGraderrTestCase(TestCase):
         self.assertGreater(len(ExerciseGrades.objects.all()), 0)
         self.assertEqual(len(Exercise.objects.all()),
             len(ExerciseGrades.objects.all()))
-        # chack that grades were saved and can be retrieved
+        # check that grades were saved and can be retrieved
         grades = ExerciseGrades.objects.all().first()
         self.assertIsInstance(grades.difficulty, float)

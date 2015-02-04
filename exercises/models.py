@@ -65,7 +65,6 @@ class ExercisesGrader(Component):
                 from which to build the exercises
             exercises_creator (exercises.models.ExercisesCreator): component to
                 use for exercises yielding
-
         Raises:
             IntegrityError: if knowledge_graph or exercise_creator is not
                 already stored in DB (we need their primary keys)

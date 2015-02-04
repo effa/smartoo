@@ -96,13 +96,15 @@ class KnowledgeBuilderTestCase(TestCase):
         self.assertIsInstance(knowledge_graph, KnowledgeGraph)
         self.assertAlmostEqual(behavior.get_parameter('alpha'), 0.5)
 
-    def test_build_knowledge_graph(self):
+    def test_build_knowledge(self):
         knowledge_builder = KnowledgeBuilder(behavior_name='fake',
             parameters={"alpha": 0.5})
         # knowledge builder needs to be saved to the DB first (its ID is needed
         # to store the graph)
         knowledge_builder.save()
-        knowledge_builder.build_knowledge_graph(self.topic)
+        knowledge_builder.build_knowledge(self.topic)
         # retrieve the graph
-        #knowledge_graph = KnowledgeGraph.objects.all().first()
+        knowledge_graph = KnowledgeGraph.objects.all().first()
+        self.assertIsNotNone(knowledge_graph)
+        self.assertIsInstance(knowledge_graph, KnowledgeGraph)
         #print knowledge_graph
