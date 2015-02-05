@@ -3,7 +3,53 @@ from knowledge.models import Vertical, Topic, KnowledgeGraph, KnowledgeBuilder
 from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
 from practice.models import Practicer
-from smartoo.models import Session
+from smartoo.models import Session, AccumulativeFeedback, FeedbackedExercise
+
+
+class AccumulativeFeedbackTestCase(TestCase):
+    def setUp(self):
+        pass
+
+    def test_default(self):
+        feedback = AccumulativeFeedback.objects.create_empty_feedback()
+        self.assertIsInstance(feedback, AccumulativeFeedback)
+        self.assertEqual(feedback.correct_count, 0)
+        self.assertEqual(feedback.wrong_count, 0)
+        self.assertEqual(feedback.unanswered_count, 0)
+        self.assertEqual(feedback.invalid_count, 0)
+        self.assertEqual(feedback.irrelevant_count, 0)
+        # retrieve the feedback from DB to test it was saved
+        feedback = AccumulativeFeedback.objects.get(pk=feedback.pk)
+        # and repeat the same tests again for this retrieved feedback
+        self.assertIsInstance(feedback, AccumulativeFeedback)
+        self.assertEqual(feedback.correct_count, 0)
+        self.assertEqual(feedback.wrong_count, 0)
+        self.assertEqual(feedback.unanswered_count, 0)
+        self.assertEqual(feedback.invalid_count, 0)
+        self.assertEqual(feedback.irrelevant_count, 0)
+
+    def test_add(self):
+        feedback = AccumulativeFeedback.objects.create_empty_feedback()
+        feedback.add(FeedbackedExercise(
+            answered=True,
+            correct=False,
+            invalid=False,
+            irrelevant=True))
+        self.assertEqual(feedback.correct_count, 0)
+        self.assertEqual(feedback.wrong_count, 1)
+        self.assertEqual(feedback.unanswered_count, 0)
+        self.assertEqual(feedback.invalid_count, 0)
+        self.assertEqual(feedback.irrelevant_count, 1)
+        feedback.add(FeedbackedExercise(
+            answered=False,
+            correct=False,
+            invalid=True,
+            irrelevant=False))
+        self.assertEqual(feedback.correct_count, 0)
+        self.assertEqual(feedback.wrong_count, 1)
+        self.assertEqual(feedback.unanswered_count, 1)
+        self.assertEqual(feedback.invalid_count, 1)
+        self.assertEqual(feedback.irrelevant_count, 1)
 
 
 class SessiontTestCase(TestCase):
@@ -77,22 +123,29 @@ class SessiontTestCase(TestCase):
         self.assertIsInstance(exercise, GradedExercise)
 
     def test_provide_feedback(self):
+        """
+        Test that after n calls of provide_feedback, there will be n used
+        exericises and (all - n) unused exercises.
+        """
         session = Session.objects.create_with_components(self.topic)
         session.build_knowledge()
         session.create_graded_exercises()
-        exercise = session.next_exercise()
-        feedback = {
-            'exercise-pk': exercise.pk,
-            'answered': True,
-            'correct': True,
-            'invalid': False,
-            'irrelevant': False}
-        session.provide_feedback(feedback)
-        # now check the counts of used vs. unused exercises
+        # n-times new_exercises -> feedback
         all_exercises = len(session.get_graded_exercises())
-        used = len(session.get_feedbacked_exercises())
-        unused = len(session.get_unused_exercises())
-        self.assertEqual(used, 1)
-        self.assertEqual(unused, all_exercises - 1)
-
-    # TODO: more tests
+        for i in range(all_exercises):
+            # check the counts of used vs. unused exercises
+            used = len(session.get_feedbacked_exercises())
+            unused = len(session.get_unused_exercises())
+            self.assertEqual(used, i)
+            self.assertEqual(unused, all_exercises - i)
+            # get and provide feedback for next exercise
+            exercise = session.next_exercise()
+            feedback = {
+                'exercise-pk': exercise.pk,
+                'answered': True,
+                'correct': True,
+                'invalid': False,
+                'irrelevant': False}
+            session.provide_feedback(feedback)
+        # all exercises used, the next one should be None
+        self.assertIsNone(session.next_exercise())

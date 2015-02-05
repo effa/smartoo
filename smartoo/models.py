@@ -57,6 +57,8 @@ class AccumulativeFeedback(models.Model):
         self.invalid_count += int(feedback.invalid)
         self.irrelevant_count += int(feedback.irrelevant)
         # TODO: quality calculation ?
+        # store the updated accumulative feedback to DB
+        self.save()
 
 
 class SessionManager(models.Manager):
@@ -190,7 +192,7 @@ class Session(models.Model):
 
     def provide_feedback(self, feedback_dictionary):
         """
-        Store feedback for an exercise and accumulate it.
+        Stores feedback for an exercise and accumulates it.
 
         Args:
             feedback_dictionary: user's feedback as a dictionary
