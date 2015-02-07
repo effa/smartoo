@@ -24,41 +24,41 @@ TERM_TAG = re.compile(r"""
 #  Token class
 # -----------------------------------------------------------------------------
 
-class Token(object):
-    """
-    Token representation
-    """
+#class Token(object):
+#    """
+#    Token representation
+#    """
 
-    def __init__(self, line):
-        """
-        :line: [unicode] one line (one token) of vertical file
-        """
-        parts = line.split('\t')
-        self._word = parts[0]
-        # treetagger: 2nd column is tag, 3rd is lemma
-        self._tag = parts[1] if len(parts) >= 2 else None
-        self._lemma = parts[2] if len(parts) >= 3 else None
+#    def __init__(self, line):
+#        """
+#        :line: [unicode] one line (one token) of vertical file
+#        """
+#        parts = line.split('\t')
+#        self._word = parts[0]
+#        # treetagger: 2nd column is tag, 3rd is lemma
+#        self._tag = parts[1] if len(parts) >= 2 else None
+#        self._lemma = parts[2] if len(parts) >= 3 else None
 
-    def get_word(self):
-        return self._word
+#    def get_word(self):
+#        return self._word
 
-    def get_tag(self):
-        return self._tag
+#    def get_tag(self):
+#        return self._tag
 
-    def get_lemma(self):
-        return self._lemma
+#    def get_lemma(self):
+#        return self._lemma
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
+#    def __str__(self):
+#        return unicode(self).encode('utf-8')
 
-    def __unicode__(self):
-        """
-        Returns unicode representation of the token (as one line)
-        """
-        return '{word}\t{tag}\t{lemma}'.format(
-            word=self.get_word(),
-            tag=self.get_tag(),
-            lemma=self.get_lemma())
+#    def __unicode__(self):
+#        """
+#        Returns unicode representation of the token (as one line)
+#        """
+#        return '{word}\t{tag}\t{lemma}'.format(
+#            word=self.get_word(),
+#            tag=self.get_tag(),
+#            lemma=self.get_lemma())
 
 
 # -----------------------------------------------------------------------------
@@ -69,6 +69,10 @@ class Token(object):
 class Article(object):
     """
     Class for representation and extraction of data from one article.
+
+    An article is represented as a list of sentences.
+    Each sentence as a list of tokens.
+    Each token is a tuple (word, pos-tag).
     """
 
     def __init__(self, uri, vertical):
@@ -87,9 +91,9 @@ class Article(object):
         vertical = unicode(vertical)
         lines = vertical.split('\n')
 
-        # building representation of vertical (store lines, tranform tokens to
-        # Token objects)
-        self._lines = []
+        # TODO: struktury (terms, math, ...) ??
+        self._sentences = []
+        new_sentence = []
         for line in lines:
             line = line.strip()
             # skip empty lines
@@ -97,11 +101,17 @@ class Article(object):
                 continue
             elif is_xml_tag(line):
                 # if it's sgml tag, leave it as a string,
-                self._lines.append(line)
+                #self._lines.append(line)
+                if line == '<s>':
+                    new_sentence = []
+                elif line == '</s>':
+                    self._sentences.append(new_sentence)
             else:
                 # use Token class to represent tokens
-                token = Token(line)
-                self._lines.append(token)
+                #token = Token(line)
+                #self._lines.append(token)
+                token = line.split('\t')
+                new_sentence.append(token)
 
         # TODO: provide functionallity ... podle toho, co se zjisti, ze je
         # potreba
@@ -112,17 +122,17 @@ class Article(object):
     def __unicode__(self):
         return '<Article name="{name}">'.format(name=self.get_name())
 
-    def get(self, index):
-        """Returns line (Token or sgml tag in unicode) on given index
-        """
-        return self._lines[index]
+    #def get(self, index):
+    #    """Returns line (Token or sgml tag in unicode) on given index
+    #    """
+    #    return self._lines[index]
 
-    def get_vertical(self, new_line=False):
-        # NOTE: some lines are Tokens and some are strings
-        vertical = '\n'.join(map(unicode, self._lines))
-        if new_line:
-            vertical += '\n'
-        return vertical
+    #def get_vertical(self, new_line=False):
+    #    # NOTE: some lines are Tokens and some are strings
+    #    vertical = '\n'.join(map(unicode, self._lines))
+    #    if new_line:
+    #        vertical += '\n'
+    #    return vertical
 
     def get_uri(self):
         return self._uri
@@ -133,4 +143,8 @@ class Article(object):
         """
         return uri_to_name(self.get_uri())
 
-    # TODO: inspirace z wikicorpora (vertical.py)
+    def get_sentences(self):
+        """
+        Returns list of sentences in the article.
+        """
+        return self._sentences
