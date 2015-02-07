@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
+from knowledge import Article
 from knowledge.models import KnowledgeBuilder, Vertical, Topic, KnowledgeGraph
 from rdflib import Graph, Literal, Namespace
 
@@ -92,7 +93,7 @@ class KnowledgeBuilderTestCase(TestCase):
         knowledge_builder = KnowledgeBuilder(behavior_name='fake',
             parameters={"alpha": 0.5})
         behavior = knowledge_builder.get_behavior()
-        knowledge_graph = behavior.build_knowledge_graph(self.topic)
+        knowledge_graph = behavior.build_knowledge_graph(None)
         self.assertIsInstance(knowledge_graph, KnowledgeGraph)
         self.assertAlmostEqual(behavior.get_parameter('alpha'), 0.5)
 
@@ -108,3 +109,39 @@ class KnowledgeBuilderTestCase(TestCase):
         self.assertIsNotNone(knowledge_graph)
         self.assertIsInstance(knowledge_graph, KnowledgeGraph)
         #print knowledge_graph
+
+
+# TODO: article tests
+
+
+# ----------------------------------------------------------------------------
+#  Behaviors Tests
+#  ---------------
+#  These should be independent of the DB layer. (But we will still use
+#  Knowledge Builder class a little bit since it has some functionality we need
+#  (instantiation of behavior instance))
+# ----------------------------------------------------------------------------
+
+class BehaviorsTestCase(TestCase):
+    def setUp(self):
+        self.BEHAVIORS = [
+            ('simple', {'alpha': 0.5})
+        ]
+        self.article = Article(
+            topic_uri='http://en.wikipedia.org/wiki/Henry_VIII_of_England',
+            vertical='todo')
+
+    def test_behavior(self):
+        for behavior_name, parameters in self.BEHAVIORS:
+            knowledge_builder = KnowledgeBuilder(
+                behavior_name=behavior_name,
+                parameters=parameters)
+            behavior = knowledge_builder.get_behavior()
+            knowledge_graph = behavior.build_knowledge_graph(self.article)
+            self.assertIsInstance(knowledge_graph, KnowledgeGraph)
+            # see the outputted knowledge graph
+            print '*' * 70
+            print 'Behavior name:', behavior_name, '| parameters:', parameters
+            print '*' * 70
+            print knowledge_graph
+            print '*' * 70

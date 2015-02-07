@@ -6,13 +6,13 @@ class KnowledgeBuilderBehavior(ComponentBehavior):
     """
     Base class for all knowledge builder behaviors.
     """
-    def build_knowledge_graph(self, topic):
+    def build_knowledge_graph(self, article):
         """
         Creates knowledge graph for given topic.
 
         Args:
-            topic (knowledge.models.Topic): topic for which to build
-                the knowledge graph
+            article (knowledge.Article): article for whitch to build
+                a knowledge graph
         Retuns:
             knowledge graph (knowledge.models.KnowledgeGraph)
         """

@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
+from knowledge import Article
 from knowledge.fields import GraphField
 from knowledge.namespaces import NAMESPACES_DICT
 from rdflib import Graph
@@ -35,8 +36,10 @@ class KnowledgeBuilder(Component):
                 knowledge_builder=self).exists():
             return  # already created, nothing to do
         behavior = self.get_behavior()
-        knowledge_graph = behavior.build_knowledge_graph(topic)
+        article = topic.get_article()
+        knowledge_graph = behavior.build_knowledge_graph(article)
         knowledge_graph.knowledge_builder = self
+        knowledge_graph.topic = topic
         knowledge_graph.save()
 
     def __unicode__(self):
@@ -84,6 +87,15 @@ class Topic(models.Model):
         """
         return uri_to_name(self.uri)
 
+    def get_article(self):
+        """
+        Returns article for given topic
+
+        Returns:
+            article instance (knowledge.Article)
+        """
+        return Article(topic_uri=self.uri, vertical=self.vertical.content)
+
     def __unicode__(self):
         return '<Topic uri="{uri}">'.format(uri=self.uri)
 
@@ -125,8 +137,9 @@ class KnowledgeGraph(models.Model):
 
     def __unicode__(self):
         return 'builder: {builder}\ntopic: {topic}\ngraph:\n{graph}'.format(
-            builder=self.knowledge_builder,
-            topic=self.topic,
+            builder=self.knowledge_builder if self.knowledge_builder_id is
+            not None else '---',
+            topic=self.topic if self.topic_id is not None else '---',
             graph=self.graph.serialize(format='turtle'))
 
 #class Resource(URIRef):
