@@ -1,8 +1,9 @@
 # Exception for PDF diagrams
 !docs/*.pdf
 
-# DB
+# data
 db.*
+data/
 
 # Temporary / local files
 questions.txt
