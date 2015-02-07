@@ -8,7 +8,7 @@ class ExercisesCreatorTestCase(TestCase):
     def setUp(self):
         # create a vertical, topic, knowledge builder and knowledge graph
         self.vertical = Vertical.objects.create(
-            content='test line')
+            content='test')
         self.topic = Topic.objects.create(
             uri='http://en.wikipedia.org/wiki/Pan_Tau',
             vertical=self.vertical)
@@ -40,7 +40,7 @@ class ExercisesGraderTestCase(TestCase):
     def setUp(self):
         # create a vertical, topic, knowledge builder and knowledge graph
         self.vertical = Vertical.objects.create(
-            content='test line')
+            content='test')
         self.topic = Topic.objects.create(
             uri='http://en.wikipedia.org/wiki/Pan_Tau',
             vertical=self.vertical)

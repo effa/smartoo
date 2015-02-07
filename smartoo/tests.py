@@ -55,7 +55,7 @@ class AccumulativeFeedbackTestCase(TestCase):
 class SessiontTestCase(TestCase):
     def setUp(self):
         # create test vertical and topic
-        vertical = Vertical.objects.create(content='test line')
+        vertical = Vertical.objects.create(content='test')
         self.topic = Topic.objects.create(
             uri='http://en.wikipedia.org/wiki/Pan_Tau',
             vertical=vertical)

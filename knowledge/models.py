@@ -94,7 +94,7 @@ class Topic(models.Model):
         Returns:
             article instance (knowledge.Article)
         """
-        return Article(topic_uri=self.uri, vertical=self.vertical.content)
+        return Article(uri=self.uri, vertical=self.vertical.content)
 
     def __unicode__(self):
         return '<Topic uri="{uri}">'.format(uri=self.uri)

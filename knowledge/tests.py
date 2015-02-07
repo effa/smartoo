@@ -1,3 +1,5 @@
+# encoding=utf-8
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from knowledge import Article
@@ -7,7 +9,7 @@ from rdflib import Graph, Literal, Namespace
 
 class TopicTestCase(TestCase):
     def setUp(self):
-        vertical = Vertical.objects.create(content='test line')
+        vertical = Vertical.objects.create(content='test')
         Topic.objects.create(
             uri='http://en.wikipedia.org/wiki/Pan_Tau',
             vertical=vertical)
@@ -25,14 +27,14 @@ class TopicTestCase(TestCase):
     def test_retrieving_vertical_for_topic(self):
         topic = Topic.objects.get(uri='http://en.wikipedia.org/wiki/Pan_Tau')
         vertical = topic.vertical
-        self.assertEqual(vertical.content, 'test line')
+        self.assertEqual(vertical.content, 'test')
 
 
 class KnowledgeGraphTestCase(TestCase):
     def setUp(self):
         # create vertical, topic and knowledge builder
         self.vertical = Vertical.objects.create(
-            content='test line')
+            content='test')
         self.topic = Topic.objects.create(
             uri='http://en.wikipedia.org/wiki/Pan_Tau',
             vertical=self.vertical)
@@ -61,7 +63,7 @@ class KnowledgeBuilderTestCase(TestCase):
     def setUp(self):
         # create a vertical and a topic
         self.vertical = Vertical.objects.create(
-            content='test line')
+            content='test')
         self.topic = Topic.objects.create(
             uri='http://en.wikipedia.org/wiki/Pan_Tau',
             vertical=self.vertical)
@@ -111,7 +113,66 @@ class KnowledgeBuilderTestCase(TestCase):
         #print knowledge_graph
 
 
-# TODO: article tests
+# ----------------------------------------------------------------------------
+#  Article Tests
+# ----------------------------------------------------------------------------
+
+class ArticleTestCase(TestCase):
+    def setUp(self):
+        self.vertical = '''
+<doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln"\
+     title="Abraham Lincoln">
+<p heading="1">
+<term wuri="Abraham_Lincoln">
+Abraham	NP	Abraham-n
+Lincoln	NP	Lincoln-n
+</term>
+</p>
+<p>
+<s>
+<term wuri="Abraham_Lincoln" uncertainty="1">
+Abraham	NP	Abraham-n
+Lincoln	NP	Lincoln-n
+</term>
+was	VBD	be-v
+the	DT	the-x
+<term wuri="List_of_Presidents_of_the_United_States">
+16	CD	16-x
+<g/>
+th	NN	th-n
+president	NN	president-n
+of	IN	of-i
+the	DT	the-x
+United	NP	United-n
+States	NPS	States-n
+</term>
+<g/>
+.	SENT	.-x
+</s>
+<s>
+Lincoln	NP	Lincoln-n
+led	VVD	lead-v
+the	DT	the-x
+United	NP	United-n
+States	NPS	States-n
+through	IN	through-i
+its	PP$	its-d
+<term wuri="American_Civil_War">
+Civil	NP	Civil-n
+War	NP	War-n
+</term>
+<g/>
+.	SENT	.-x
+</s>
+'''.strip()
+
+        self.article = Article(
+            uri='http://en.wikipedia.org/wiki/Abraham_Lincoln',
+            vertical=self.vertical)
+        self.maxDiff = None
+
+    def test_get_vertical(self):
+        self.assertMultiLineEqual(self.article.get_vertical(), self.vertical)
 
 
 # ----------------------------------------------------------------------------
@@ -120,6 +181,7 @@ class KnowledgeBuilderTestCase(TestCase):
 #  These should be independent of the DB layer. (But we will still use
 #  Knowledge Builder class a little bit since it has some functionality we need
 #  (instantiation of behavior instance))
+#  TODO: tohle nejsou klasicke unit testy, chtelo by to nejak oddelit
 # ----------------------------------------------------------------------------
 
 class BehaviorsTestCase(TestCase):
@@ -128,7 +190,7 @@ class BehaviorsTestCase(TestCase):
             ('simple', {'alpha': 0.5})
         ]
         self.article = Article(
-            topic_uri='http://en.wikipedia.org/wiki/Henry_VIII_of_England',
+            uri='http://en.wikipedia.org/wiki/Henry_VIII_of_England',
             vertical='todo')
 
     def test_behavior(self):
