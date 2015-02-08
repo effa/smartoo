@@ -171,8 +171,9 @@ War	NP	War-n
             vertical=self.vertical)
         self.maxDiff = None
 
-    #def test_get_vertical(self):
-    #    self.assertMultiLineEqual(self.article.get_vertical(), self.vertical)
+    def test_get_vertical(self):
+        pass
+        #self.assertMultiLineEqual(self.article.get_vertical(), self.vertical)
 
 
 # ----------------------------------------------------------------------------

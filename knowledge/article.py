@@ -70,9 +70,36 @@ class Article(object):
     """
     Class for representation and extraction of data from one article.
 
-    An article is represented as a list of sentences.
-    Each sentence as a list of tokens.
-    Each token is a tuple (word, pos-tag).
+    An article is represented as a list of sentences,
+    each sentence is represented as a tree (nltk.Tree),
+    where internal nodes are chunks (e.g. named entities)
+    and leaves are tokens, stored as a tuple (word, pos-tag).
+
+    Example:
+
+    [
+    Tree('S', [
+        Tree({'type': 'PERSON',
+            'uri': URIRef('http://dbpedia.org/resource/Abraham_Lincoln')},
+            [('Abraham', 'NNP'), ('Lincoln', 'NNP')]),
+        ('(', 'NNP'),
+        Tree({'type': 'DATE',
+              'literal': Literal('1809-02-12',datatype=XSD.date)},
+            [('February', 'NNP'), ('12', 'CD'), (',', ','), ('1809', 'CD')]),
+        ('-', ':'),
+        Tree({'type': 'DATE',
+              'literal': Literal('1865-04-15',datatype=XSD.date)},
+            [('April', 'NNP'), ('15', 'CD'), (',', ','), ('1865', 'CD')]),
+        (')', ':'),
+        ('was', 'VBD'),
+        Tree('TERM', [('the', 'DT'), ('16th', 'JJ'), ('President', 'NNP'),
+                    ('of', 'IN'), ('the', 'DT'),
+                    Tree('GPE', [('United', 'NNP'), ('States', 'NNPS')])]),
+        ('.', '.')
+    ]),
+    # ... another sentences ...
+    ]
+])
     """
 
     def __init__(self, uri, vertical):
@@ -94,6 +121,7 @@ class Article(object):
         # TODO: struktury (terms, math, ...) ??
         self._sentences = []
         new_sentence = []
+        discard_sentence = False
         for line in lines:
             line = line.strip()
             # skip empty lines
@@ -101,11 +129,28 @@ class Article(object):
                 continue
             elif is_xml_tag(line):
                 # if it's sgml tag, leave it as a string,
-                #self._lines.append(line)
-                if line == '<s>':
+                term_match = TERM_TAG.match(line)
+                if term_match:
+                    # TODO
+                    pass
+                elif line == '</term>':
+                    # TODO
+                    pass
+                elif line == '<s>':
                     new_sentence = []
+                    discard_sentence = False
+                elif line == '<g/>':
+                    # ignore glue, we don't need it
+                    pass
                 elif line == '</s>':
-                    self._sentences.append(new_sentence)
+                    print 'sentence'
+                    print new_sentence
+                    if not discard_sentence:
+                        self._sentences.append(new_sentence)
+                else:
+                    # structure which is not handled (like <math>)
+                    # -> discard the sentence
+                    discard_sentence = True
             else:
                 # use Token class to represent tokens
                 #token = Token(line)
