@@ -14,18 +14,18 @@ class Fake(ExercisesCreatorBehavior):
         prepared_exercises = [
             Exercise(data={
                 'question': 'When was Henry VIII of England born?',
-                'options': ['1291', '1391', '1491', '1591'],
+                'choices': ['1291', '1391', '1491', '1591'],
                 'correct-answer': '1491'
             }),
             Exercise(data={
-                'question': 'When was the successor of Henry VIII of England?',
-                'options': ['Edward VI of England', 'Henry VII of England',
+                'question': 'Who was the successor of Henry VIII of England?',
+                'choices': ['Edward VI of England', 'Henry VII of England',
                     'Elizabeht of York', 'Thomas Cromwell'],
                 'correct-answer': 'Edward VI of England'
             }),
             Exercise(data={
                 'question': 'How many spouses did Henry VII of England have?',
-                'options': ['0', '2', '4', '6'],
+                'choices': ['0', '2', '4', '6'],
                 'correct-answer': '6'
             }),
         ]

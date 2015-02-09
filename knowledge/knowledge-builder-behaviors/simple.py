@@ -1,7 +1,7 @@
 from common.utils.nlp import contextfree_sentences, join_words
 from knowledge import KnowledgeBuilderBehavior
 from knowledge.models import KnowledgeGraph
-from knowledge.namespaces import SMARTOO, RDF, RDFS, ONTOLOGY
+from knowledge.namespaces import SMARTOO, RDF, RDFS
 from rdflib import Literal, BNode
 
 
@@ -19,7 +19,6 @@ class Simple(KnowledgeBuilderBehavior):
     def build_knowledge_graph(self, article):
         knowledge_graph = KnowledgeGraph()
 
-        print '-*-*-*-'
         for sentence in contextfree_sentences(article):
             # TODO: find a term, split in pre and post part
             # TODO: tohle by chtelo delat spis pomoci reqexu/gramatiky
@@ -58,21 +57,21 @@ class Simple(KnowledgeBuilderBehavior):
             # parts
             knowledge_graph.add((
                 quasifact,
-                SMARTOO['part/term'],
+                SMARTOO['term'],
                 term_uri))
             knowledge_graph.add((
                 quasifact,
-                SMARTOO['part/before-term'],
+                SMARTOO['part-before-term'],
                 Literal(join_words(before_term))))
             knowledge_graph.add((
                 quasifact,
-                SMARTOO['part/after-term'],
+                SMARTOO['part-after-term'],
                 Literal(join_words(after_term))))
             # info about the term
             knowledge_graph.add((
                 term_uri,
                 RDF['type'],
-                ONTOLOGY['term']))
+                SMARTOO['term']))
             knowledge_graph.add((
                 term_uri,
                 RDFS['label'],

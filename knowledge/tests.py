@@ -250,8 +250,8 @@ War	NP	War-n
             knowledge_graph = behavior.build_knowledge_graph(self.article)
             self.assertIsInstance(knowledge_graph, KnowledgeGraph)
             # see the outputted knowledge graph
-            print '*' * 70
-            print 'Behavior name:', behavior_name, '| parameters:', parameters
-            print '*' * 70
-            print knowledge_graph
-            print '*' * 70
+            #print '*' * 70
+            #print 'Behavior name:', behavior_name, '| parameters:', parameters
+            #print '*' * 70
+            #print knowledge_graph
+            #print '*' * 70

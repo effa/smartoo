@@ -5,6 +5,7 @@ from common.utils.wiki import uri_to_name
 from knowledge import Article
 from knowledge.fields import GraphField
 from knowledge.namespaces import NAMESPACES_DICT
+from knowledge.utils.sparql import ALL_TERMS_QUERY
 from rdflib import Graph
 
 
@@ -133,7 +134,30 @@ class KnowledgeGraph(models.Model):
     # TODO: define access methods to work with the knowledge graph
 
     def add(self, triple):
+        """
+        Adds new triple to knowledge graph.
+        """
         self.graph.add(triple)
+
+    # TODO: cachovani dotazu (pozor na add())
+    def query(self, query, initBindings={}):
+        """
+        Performs SPARQL query over the knowledge graph.
+
+        Args:
+            query: prepared query
+            bindings: dictionary of bindings for prepared query
+        Returns:
+            result set
+        """
+        return self.graph.query(query, initBindings=initBindings)
+
+    def get_all_terms(self, types_dict=False):
+        # TODO: umoznit vracet slovnik mapovani pojmu na typy
+        terms = set()
+        for result in self.query(ALL_TERMS_QUERY):
+            terms.add(result[0])
+        return terms
 
     def __unicode__(self):
         return 'builder: {builder}\ntopic: {topic}\ngraph:\n{graph}'.format(

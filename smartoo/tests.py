@@ -105,7 +105,6 @@ class SessiontTestCase(TestCase):
             "No grades were stored.")
         self.assertEqual(len(exercises), len(grades),
             "The number of stored grades and exercises is different.")
-        # TODO: nejake dalsi asserty??
 
     def test_get_graded_exercises(self):
         session = Session.objects.create_with_components(self.topic)
