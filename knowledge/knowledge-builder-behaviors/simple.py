@@ -1,7 +1,7 @@
-from common.utils.nlp import contextfree_sentences
+from common.utils.nlp import contextfree_sentences, join_words
 from knowledge import KnowledgeBuilderBehavior
 from knowledge.models import KnowledgeGraph
-from knowledge.namespaces import SMARTOO, RDFS
+from knowledge.namespaces import SMARTOO, RDF, RDFS, ONTOLOGY
 from rdflib import Literal, BNode
 
 
@@ -18,35 +18,64 @@ class Simple(KnowledgeBuilderBehavior):
 
     def build_knowledge_graph(self, article):
         knowledge_graph = KnowledgeGraph()
-        #for sentence in contextfree_sentences(article):
-        #    # TODO: find a term, split in pre and post part
-        #    terms_positions = sentence.get_terms_positions()
-        #    if terms_positions:
-        #        # only create one fact from one sentence
-        #        # (take the last term)
-        #        term_start, term_end = terms_positions[-1]
-        #        term = sentence[term_start:term_end]
-        #        preterm = sentence[:term_start]
-        #        postterm = sentence[term_end:]
-        #        quasifact = BNode()
-        #        knowledge_graph.add((
-        #            quasifact,
-        #            RDFS['type'],  # or RDF?
-        #            Literal('term-in-sentence')))
-        #        knowledge_graph.add((
-        #            quasifact,
-        #            SMARTOO['part/term'],
-        #            term))
-        #        knowledge_graph.add((
-        #            quasifact,
-        #            SMARTOO['part/term'],
-        #            term))
-        #        knowledge_graph.add((
-        #            quasifact,
-        #            SMARTOO['part/preterm'],
-        #            Literal(unicode(preterm))))
-        #        knowledge_graph.add((
-        #            quasifact,
-        #            SMARTOO['part/postterm'],
-        #            Literal(unicode(postterm))))
+
+        print '-*-*-*-'
+        for sentence in contextfree_sentences(article):
+            # TODO: find a term, split in pre and post part
+            # TODO: tohle by chtelo delat spis pomoci reqexu/gramatiky
+            before_term = []
+            after_term = []
+            term_found = False
+            #print sentence
+            #print '='
+            for chunk in sentence:
+                if not term_found:
+                    if chunk.label() == 'TERM':
+                        term_uri = chunk.uri
+                        term_text = join_words(chunk.leaves())
+                        term_found = True
+                        continue
+                        # TODO: pomocna metoda na vytvoreni uri z pojmenovane
+                        # entity (ve forme ParentedTree)
+                    before_term.extend(chunk.leaves())
+                else:
+                    after_term.extend([token[0] for token in chunk.leaves()])
+            #print before_term
+            #print join_words(before_term)
+            #print term_uri
+            #print after_term
+            #print join_words(after_term)
+
+            if not term_found:
+                continue
+
+            # add quaisifact about a term in a sentence to the graph
+            quasifact = BNode()
+            knowledge_graph.add((
+                quasifact,
+                RDF['type'],
+                Literal('term-in-sentence')))
+            # parts
+            knowledge_graph.add((
+                quasifact,
+                SMARTOO['part/term'],
+                term_uri))
+            knowledge_graph.add((
+                quasifact,
+                SMARTOO['part/before-term'],
+                Literal(join_words(before_term))))
+            knowledge_graph.add((
+                quasifact,
+                SMARTOO['part/after-term'],
+                Literal(join_words(after_term))))
+            # info about the term
+            knowledge_graph.add((
+                term_uri,
+                RDF['type'],
+                ONTOLOGY['term']))
+            knowledge_graph.add((
+                term_uri,
+                RDFS['label'],
+                Literal(term_text)))
+
         return knowledge_graph

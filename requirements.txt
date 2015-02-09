@@ -3,6 +3,7 @@ SPARQLWrapper==1.6.4
 argparse==1.2.1
 html5lib==0.999
 isodate==0.5.1
+nltk==3.0.1
 pyparsing==2.0.3
 rdflib==4.1.2
 six==1.9.0

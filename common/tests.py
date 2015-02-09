@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.test import TestCase
+from common.utils.nlp import join_words
 from common.utils.wiki import uri_to_name, name_to_uri
 
 
@@ -35,3 +36,15 @@ class WikiUtilsTestCase(TestCase):
                 ('Pan Tau', 'cs', 'http://cs.wikipedia.org/wiki/Pan_Tau'),
                 ('Pan Tau', 'sk', 'http://sk.wikipedia.org/wiki/Pan_Tau')]:
             self.assertEqual(name_to_uri(name, lang), expected_uri)
+
+
+class NlpUtilsTestCase(TestCase):
+
+    def test_join_words(self):
+        for words, sentence in [
+            (['Hello', ',', 'World', '!'], 'Hello, World!'),
+            (['Sentence', '.', 'Sentence', '.'], 'Sentence. Sentence.'),
+            (['Out', '(', 'in', ')', 'out'], 'Out (in) out'),
+            (['18', 'things', 'vs', '.', '17', 'th'], '18 things vs. 17th'),
+        ]:
+            self.assertEqual(join_words(words), sentence)

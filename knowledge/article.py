@@ -1,7 +1,11 @@
 from __future__ import unicode_literals
+
+from nltk import ParentedTree
+import re
+
 from common.utils.xml import is_xml_tag
 from common.utils.wiki import uri_to_name
-import re
+from knowledge.namespaces import RESOURCE
 
 # NOTE: ? Presunout do models baliku ?
 
@@ -15,6 +19,7 @@ TERM_TAG = re.compile(r"""
         <term
         \s+
         wuri="(?P<wuri>.*?)"
+        .*
         >
         $
         """, re.VERBOSE)
@@ -118,48 +123,63 @@ class Article(object):
         vertical = unicode(vertical)
         lines = vertical.split('\n')
 
-        # TODO: struktury (terms, math, ...) ??
         self._sentences = []
-        new_sentence = []
-        discard_sentence = False
+        discarding = True
         for line in lines:
             line = line.strip()
+
             # skip empty lines
             if not line:
                 continue
-            elif is_xml_tag(line):
-                # if it's sgml tag, leave it as a string,
+
+            # if discarding, skip everything except for <s>
+            if discarding and line != '<s>':
+                continue
+
+            if is_xml_tag(line):
+                if line == '<s>':
+                    new_sentence = ParentedTree('S', [])
+                    discarding = False
+                    current_node = new_sentence
+                    continue
+
                 term_match = TERM_TAG.match(line)
                 if term_match:
-                    # TODO
-                    pass
+                    # NOTE: it's easier to work with string labels than with
+                    # dictionaries as a node (unfortunatelly)
+                    wuri = term_match.group('wuri')
+                    #current_node = Tree('TERM:%s' % wuri, [])
+                    current_node = ParentedTree('TERM', [])
+                    # save the uri information to the node
+                    current_node.uri = RESOURCE[wuri]
+                    #current_node = Tree({
+                    #    # TODO: use DBpedia to get more precise RDFS type
+                    #    'type': 'term',
+                    #    'uri': RESOURCE[term_match.group('wuri')]
+                    #}, [])
                 elif line == '</term>':
-                    # TODO
-                    pass
-                elif line == '<s>':
-                    new_sentence = []
-                    discard_sentence = False
+                    new_sentence.append(current_node)
+                    # change refference of current node back to the sentence
+                    current_node = new_sentence
                 elif line == '<g/>':
                     # ignore glue, we don't need it
                     pass
                 elif line == '</s>':
-                    print 'sentence'
-                    print new_sentence
-                    if not discard_sentence:
+                    #print 'sentence'
+                    #print new_sentence
+                    if not discarding:
                         self._sentences.append(new_sentence)
                 else:
                     # structure which is not handled (like <math>)
                     # -> discard the sentence
-                    discard_sentence = True
+                    discarding = True
             else:
-                # use Token class to represent tokens
+                # use tuples to represent tokens
                 #token = Token(line)
                 #self._lines.append(token)
-                token = line.split('\t')
-                new_sentence.append(token)
-
-        # TODO: provide functionallity ... podle toho, co se zjisti, ze je
-        # potreba
+                token = tuple(line.split('\t'))
+                pos_tag = token[1]
+                current_node.append(ParentedTree(pos_tag, [token]))
 
     def __str__(self):
         return unicode(self).encode('utf-8')

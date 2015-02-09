@@ -190,9 +190,56 @@ class BehaviorsTestCase(TestCase):
         self.BEHAVIORS = [
             ('simple', {'alpha': 0.5})
         ]
+        self.vertical = '''
+<doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln"\
+     title="Abraham Lincoln">
+<p heading="1">
+<term wuri="Abraham_Lincoln">
+Abraham	NP	Abraham-n
+Lincoln	NP	Lincoln-n
+</term>
+</p>
+<p>
+<s>
+<term wuri="Abraham_Lincoln" uncertainty="1">
+Abraham	NP	Abraham-n
+Lincoln	NP	Lincoln-n
+</term>
+was	VBD	be-v
+the	DT	the-x
+<term wuri="List_of_Presidents_of_the_United_States">
+16	CD	16-x
+<g/>
+th	NN	th-n
+president	NN	president-n
+of	IN	of-i
+the	DT	the-x
+United	NP	United-n
+States	NPS	States-n
+</term>
+<g/>
+.	SENT	.-x
+</s>
+<s>
+Lincoln	NP	Lincoln-n
+led	VVD	lead-v
+the	DT	the-x
+United	NP	United-n
+States	NPS	States-n
+through	IN	through-i
+its	PP$	its-d
+<term wuri="American_Civil_War">
+Civil	NP	Civil-n
+War	NP	War-n
+</term>
+<g/>
+.	SENT	.-x
+</s>
+'''.strip()
+
         self.article = Article(
-            uri='http://en.wikipedia.org/wiki/Henry_VIII_of_England',
-            vertical='todo')
+            uri='http://en.wikipedia.org/wiki/Abraham_Lincoln',
+            vertical=self.vertical)
 
     def test_behavior(self):
         for behavior_name, parameters in self.BEHAVIORS:

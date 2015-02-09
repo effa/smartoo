@@ -1,5 +1,5 @@
 from rdflib import Namespace
-from rdflib.namespace import FOAF, RDFS, DC, XSD
+from rdflib.namespace import FOAF, RDFS, DC, XSD, RDF
 
 """
 Module for RDF namespaces.
@@ -15,6 +15,7 @@ NAMESPACES_DICT = {
     'dbpedia-owl': ONTOLOGY,
     'smartoo': SMARTOO,
     'foaf': FOAF,
+    'rdf': RDF,
     'rdfs': RDFS,
     'dc': DC,
     'xsd': XSD
