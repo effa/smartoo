@@ -37,6 +37,8 @@ def label(uri, graph, fallback_guess=True):
     Returns:
         label [unicode]
     """
+    # TODO: misto SPARQL dotazu by stacilo pouzit graph.value(), reps. dokonce
+    # existuje Graph.label() nebo Graph.preferredLabel()
     result = graph.query(LABEL_QUERY, initBindings={'uri': uri})
     try:
         return unicode(next(iter(result))[0])

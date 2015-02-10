@@ -10,14 +10,14 @@ from django.test import TestCase
 
 from unittest import skipIf
 
-from knowledge.models import Vertical, Topic, KnowledgeBuilder
+from knowledge.models import Vertical, KnowledgeBuilder
 from exercises.models import ExercisesCreator
 from exercises.models import ExercisesGrader
 from practice.models import Practicer
 from smartoo.models import Session
 
 # skip flag: whether to execute these special tests or not
-SKIP = False
+SKIP = True
 
 # test vertical
 VERTICAL = '''
@@ -71,11 +71,11 @@ War	NP	War-n
 class ComponentsTestCase(TestCase):
     def setUp(self):
         # create vertical, topic and session
-        self.vertical = Vertical.objects.create(content=VERTICAL)
-        self.topic = Topic.objects.create(
-            uri='http://en.wikipedia.org/wiki/Abraham_Lincoln',
-            vertical=self.vertical)
-        self.session = Session(topic=self.topic)
+        self.topic_uri = 'http://en.wikipedia.org/wiki/Abraham_Lincoln'
+        Vertical.objects.create(
+            topic_uri=self.topic_uri,
+            content=VERTICAL)
+        self.session = Session(topic_uri=self.topic_uri)
         # ------------------------------------------------------------------
         # components to test
         # ------------------------------------------------------------------

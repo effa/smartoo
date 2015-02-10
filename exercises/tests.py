@@ -1,22 +1,18 @@
 from django.test import TestCase
-from knowledge.models import Vertical, Topic, KnowledgeBuilder, KnowledgeGraph
+from knowledge.models import KnowledgeBuilder, KnowledgeGraph
 from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
 
 
 class ExercisesCreatorTestCase(TestCase):
     def setUp(self):
-        # create a vertical, topic, knowledge builder and knowledge graph
-        self.vertical = Vertical.objects.create(
-            content='test')
-        self.topic = Topic.objects.create(
-            uri='http://en.wikipedia.org/wiki/Pan_Tau',
-            vertical=self.vertical)
+        # create a topic_uri, knowledge builder and knowledge graph
+        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
         self.knowledge_builder = KnowledgeBuilder.objects.create(
             behavior_name='fake',
             parameters={"alpha": 0.5})
         self.knowledge_graph = KnowledgeGraph.objects.create(
-            topic=self.topic,
+            topic_uri=self.topic_uri,
             knowledge_builder=self.knowledge_builder)
 
     def test_create_exercises(self):
@@ -38,17 +34,13 @@ class ExercisesCreatorTestCase(TestCase):
 
 class ExercisesGraderTestCase(TestCase):
     def setUp(self):
-        # create a vertical, topic, knowledge builder and knowledge graph
-        self.vertical = Vertical.objects.create(
-            content='test')
-        self.topic = Topic.objects.create(
-            uri='http://en.wikipedia.org/wiki/Pan_Tau',
-            vertical=self.vertical)
+        # create a topic_uri, knowledge builder and knowledge graph
+        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
         self.knowledge_builder = KnowledgeBuilder.objects.create(
             behavior_name='fake',
             parameters={"alpha": 0.5})
         self.knowledge_graph = KnowledgeGraph.objects.create(
-            topic=self.topic,
+            topic_uri=self.topic_uri,
             knowledge_builder=self.knowledge_builder)
         self.exercises_creator = ExercisesCreator.objects.create(
             behavior_name='fake', parameters={})

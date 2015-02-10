@@ -1,5 +1,5 @@
 from django.db import models
-from knowledge.models import Topic, KnowledgeGraph, KnowledgeBuilder
+from knowledge.models import KnowledgeGraph, KnowledgeBuilder
 from exercises.models import ExercisesCreator, GradedExercise, ExercisesGrader
 from practice.models import Practicer
 from smartoo import ComponentsSelector
@@ -82,16 +82,16 @@ class AccumulativeFeedback(models.Model):
 
 
 class SessionManager(models.Manager):
-    def create_with_components(self, topic):
+    def create_with_components(self, topic_uri):
         """
         Creates new session, selects components and saves it to DB.
 
         Args:
-            topic (knowledge.models.Topic): topic for this session
+            topic_uri: identifies topic for this session
         Retruns:
             created session (smartoo.models.Sesion)
         """
-        session = Session(topic=topic)
+        session = Session(topic_uri=topic_uri)
         session.select_components()
         session.save()
         return session
@@ -102,7 +102,7 @@ class Session(models.Model):
     Model for one practice session.
     """
     # topic
-    topic = models.ForeignKey(Topic)
+    topic_uri = models.CharField(max_length=120)
 
     # components
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
@@ -147,7 +147,7 @@ class Session(models.Model):
         Uses KnowledgeBuilder to build and store knowledge graph for current
         topic.
         """
-        self.knowledge_builder.build_knowledge(self.topic)
+        self.knowledge_builder.build_knowledge(self.topic_uri)
 
     def get_knowledge_graph(self):
         """
@@ -159,7 +159,7 @@ class Session(models.Model):
             knowledge graph
         """
         knowledge_graph = KnowledgeGraph.objects.get(
-            topic=self.topic,
+            topic_uri=self.topic_uri,
             knowledge_builder=self.knowledge_builder)
         return knowledge_graph
 

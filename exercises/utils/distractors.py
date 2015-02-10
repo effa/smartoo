@@ -9,6 +9,9 @@ from knowledge.utils.sparql import label
 
 
 def generate_similar_terms(term, knowledge_graph, number=3):
+    """
+    Returns list of terms which are semantically close to the given term.
+    """
     all_terms = knowledge_graph.get_all_terms()
     all_terms.discard(term)
     if len(all_terms) <= number:

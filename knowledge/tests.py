@@ -3,41 +3,46 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from knowledge import Article
-from knowledge.models import KnowledgeBuilder, Vertical, Topic, KnowledgeGraph
+from knowledge.models import KnowledgeBuilder, Vertical
+from knowledge.models import KnowledgeGraph, GlobalKnowledge
+from knowledge.namespaces import RESOURCE
+#from knowledge.utils.sparql import prepared_query
 from rdflib import Graph, Literal, Namespace
+from unittest import skipIf
+
+# flag: whether or not skip test which connects to online public endpoint
+SKIP_ONLINE = True
 
 
-class TopicTestCase(TestCase):
+class VerticalTestCase(TestCase):
     def setUp(self):
-        vertical = Vertical.objects.create(content='test')
-        Topic.objects.create(
-            uri='http://en.wikipedia.org/wiki/Pan_Tau',
-            vertical=vertical)
+        Vertical.objects.create(
+            topic_uri='http://en.wikipedia.org/wiki/Pan_Tau',
+            content='test')
 
-    def test_topic_retrieval(self):
-        topic = Topic.objects.get(uri='http://en.wikipedia.org/wiki/Pan_Tau')
-        self.assertIsNotNone(topic)
-        self.assertEqual(topic.uri, 'http://en.wikipedia.org/wiki/Pan_Tau')
-        self.assertEqual(topic.get_name(), 'Pan Tau')
+    def test_vertical_retrieval(self):
+        vertical = Vertical.objects.get(
+            topic_uri='http://en.wikipedia.org/wiki/Pan_Tau')
+        self.assertIsNotNone(vertical)
+        self.assertEqual(vertical.topic_uri,
+            'http://en.wikipedia.org/wiki/Pan_Tau')
+        self.assertEqual(vertical.get_name(), 'Pan Tau')
 
-    def test_nonexisting_topic_retrieval(self):
+    def test_nonexisting_vrtical_retrieval(self):
         with self.assertRaises(ObjectDoesNotExist):
-            Topic.objects.get(uri='http://en.wikipedia.org/wiki/Russell')
+            Vertical.objects.get(
+                topic_uri='http://en.wikipedia.org/wiki/Russell')
 
-    def test_retrieving_vertical_for_topic(self):
-        topic = Topic.objects.get(uri='http://en.wikipedia.org/wiki/Pan_Tau')
-        vertical = topic.vertical
+    def test_content_retrieval(self):
+        vertical = Vertical.objects.get(
+            topic_uri='http://en.wikipedia.org/wiki/Pan_Tau')
         self.assertEqual(vertical.content, 'test')
 
 
 class KnowledgeGraphTestCase(TestCase):
     def setUp(self):
-        # create vertical, topic and knowledge builder
-        self.vertical = Vertical.objects.create(
-            content='test')
-        self.topic = Topic.objects.create(
-            uri='http://en.wikipedia.org/wiki/Pan_Tau',
-            vertical=self.vertical)
+        # create topic_uri and knowledge builder
+        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
         self.knowledge_builder = KnowledgeBuilder.objects.create(
             behavior_name='fake', parameters={})
 
@@ -49,7 +54,7 @@ class KnowledgeGraphTestCase(TestCase):
         graph.add((NS['Tom'], NS['likes'], Literal('apples')))
         KnowledgeGraph.objects.create(
             knowledge_builder=self.knowledge_builder,
-            topic=self.topic,
+            topic_uri=self.topic_uri,
             graph=graph)
         # graph retrieval
         knowledge_graph = KnowledgeGraph.objects.all().first()
@@ -61,12 +66,10 @@ class KnowledgeGraphTestCase(TestCase):
 
 class KnowledgeBuilderTestCase(TestCase):
     def setUp(self):
-        # create a vertical and a topic
-        self.vertical = Vertical.objects.create(
+        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
+        Vertical.objects.create(
+            topic_uri=self.topic_uri,
             content='test')
-        self.topic = Topic.objects.create(
-            uri='http://en.wikipedia.org/wiki/Pan_Tau',
-            vertical=self.vertical)
 
     def test_create_two_builders_with_same_name(self):
         try:
@@ -105,7 +108,7 @@ class KnowledgeBuilderTestCase(TestCase):
         # knowledge builder needs to be saved to the DB first (its ID is needed
         # to store the graph)
         knowledge_builder.save()
-        knowledge_builder.build_knowledge(self.topic)
+        knowledge_builder.build_knowledge(self.topic_uri)
         # retrieve the graph
         knowledge_graph = KnowledgeGraph.objects.all().first()
         self.assertIsNotNone(knowledge_graph)
@@ -199,3 +202,44 @@ class BehaviorsTestCase(TestCase):
             behavior = knowledge_builder.get_behavior()
             knowledge_graph = behavior.build_knowledge_graph(self.article)
             self.assertIsInstance(knowledge_graph, KnowledgeGraph)
+
+
+# ----------------------------------------------------------------------------
+#  Global Knowledge Tests
+# ----------------------------------------------------------------------------
+
+class GlobalKnowledgeTestCase(TestCase):
+    def setUp(self):
+        self.global_knowledge = GlobalKnowledge()
+
+    def test_get_global_knowledge_builder(self):
+        self.assertIsNotNone(self.global_knowledge.knowledge_builder)
+        self.assertIsInstance(self.global_knowledge.knowledge_builder,
+            KnowledgeBuilder)
+        global_knowledge2 = GlobalKnowledge()
+        self.assertIsNotNone(global_knowledge2.knowledge_builder)
+        self.assertIsInstance(global_knowledge2.knowledge_builder,
+            KnowledgeBuilder)
+        self.assertEqual(self.global_knowledge.knowledge_builder,
+            global_knowledge2.knowledge_builder)
+
+    @skipIf(SKIP_ONLINE, 'connection to DBpedia public endpoint')
+    def test_get_graph(self):
+        term = RESOURCE['Henry_VIII_of_England']
+        knowledge_graph = self.global_knowledge.get_graph(term)
+        self.assertIsNotNone(knowledge_graph)
+        self.assertIsInstance(knowledge_graph, KnowledgeGraph)
+
+    #NOTE: query nebude GlobalKnowledge vubec implementovat
+    #def test_query(self):
+    #    query = prepared_query('''
+    #        SELECT ?label
+    #        WHERE {
+    #            dbpedia:Henry_VIII_of_England: rdfs:label ?label
+    #        }
+    #        ''')
+    #    result = self.global_knowledge.query(query)
+    #    self.assertIsNotNone(result)
+    #    self.assertEqual(len(result), 1)
+    #    #print result.__dict__
+    #    self.assertEqual(next(iter(result)), 'Henry VIII')

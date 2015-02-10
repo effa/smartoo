@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
@@ -20,27 +21,28 @@ class KnowledgeBuilder(Component):
     def get_behaviors_path(cls):
         return cls.BEHAVIORS_PATH
 
-    def build_knowledge(self, topic):
+    def build_knowledge(self, topic_uri):
         """
         Creates (and stores) knowledge graph for given topic.
 
         Args:
-            topic (knowledge.models.Topic): topic for which to build
-                the knowledge graph
+            topic_uri: topic for which to build the knowledge graph
         Raises:
             IntegrityError: if this knowledge builder is not already in DB
                 (its ID is needed to store the graph)
         """
         # At first check if the knowledge graph hasn't already been created
         # (for this builder-topic combo)
-        if KnowledgeGraph.objects.filter(topic=topic,
+        if KnowledgeGraph.objects.filter(topic_uri=topic_uri,
                 knowledge_builder=self).exists():
             return  # already created, nothing to do
         behavior = self.get_behavior()
-        article = topic.get_article()
+        # TODO: osetrit neexistenci vertikalu
+        vertical = Vertical.objects.get(topic_uri=topic_uri)
+        article = vertical.get_article()
         knowledge_graph = behavior.build_knowledge_graph(article)
         knowledge_graph.knowledge_builder = self
-        knowledge_graph.topic = topic
+        knowledge_graph.topic_uri = topic_uri
         knowledge_graph.save()
 
     def __unicode__(self):
@@ -55,38 +57,20 @@ class KnowledgeBuilder(Component):
 
 class Vertical(models.Model):
     """
-    Representation of vertical for one article
+    Model for verticals of articles on the English Wikipedia.
+    Corresponds to topics which can be practiced.
     """
-    # NOTE: ukladat vertikaly do DB (podobne jako grafy), proste to celou vec
-    # zjednodusi a opet napsat obalkove metody/neperzistentni atributy
-    # (jo a napred zkontrolovat, ze to s temi neperzistentnimi atributy opravdu
-    # funguje ... v shellu a taky samozrejme napsat testy ...)
-    content = models.TextField()
-
-
-class Topic(models.Model):
-    """
-    Model for topics, which can be practiced. Corresponds to the articles
-    on the Enlglish Wikipedia.
-    """
-    # URI of the term (resource) to practice
-    # (same as the URL of the corresponding article)
-    uri = models.CharField(max_length=120, unique=True)
+    # URI of the topic (same as the URL of the corresponding article)
+    topic_uri = models.CharField(max_length=120, unique=True)
 
     # vertical for the topic will be stored directly in our relational DB
-    vertical = models.ForeignKey(Vertical)
-
-    # index (start line) of the article in the vertical file
-    # (vertical file of English Wikipedia with terms inferred)
-    #index = models.BigIntegerField()
-    # NOTE: index neni potreba, vertikal bude ulozen primo v DB jako
-    # dlouhy string
+    content = models.TextField()
 
     def get_name(self):
         """
         Returns the name of the topic.
         """
-        return uri_to_name(self.uri)
+        return uri_to_name(self.topic_uri)
 
     def get_article(self):
         """
@@ -95,10 +79,10 @@ class Topic(models.Model):
         Returns:
             article instance (knowledge.Article)
         """
-        return Article(uri=self.uri, vertical=self.vertical.content)
+        return Article(uri=self.topic_uri, vertical=self.content)
 
     def __unicode__(self):
-        return '<Topic uri="{uri}">'.format(uri=self.uri)
+        return '<Vertical uri="{uri}">'.format(uri=self.topic_uri)
 
 
 # ----------------------------------------------------------------------------
@@ -121,9 +105,9 @@ def get_initialized_graph():
 
 
 class KnowledgeGraph(models.Model):
-    # knowledge graph is determined by KnowledgeBuilder+Topic)
+    # knowledge graph is determined by KnowledgeBuilder + topic URI
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
-    topic = models.ForeignKey(Topic)
+    topic_uri = models.CharField(max_length=120)
 
     # graph representation
     graph = GraphField(default=get_initialized_graph)
@@ -163,14 +147,58 @@ class KnowledgeGraph(models.Model):
         return 'builder: {builder}\ntopic: {topic}\ngraph:\n{graph}'.format(
             builder=self.knowledge_builder if self.knowledge_builder_id is
             not None else '---',
-            topic=self.topic if self.topic_id is not None else '---',
+            topic=self.topic_uri if self.topic_uri is not None else '---',
             graph=self.graph.serialize(format='turtle'))
 
-#class Resource(URIRef):
-#    """
-#    For now, this is just an alias for URIRef...
-#    (But probably I'll write some additional convenience methods later...)
-#    """
-#    # NOTE: This is not a model, since (for now) there is no reason to have a
-#    # table of resource.
-#    pass
+
+# ----------------------------------------------------------------------------
+#   Global Knowledge
+# ----------------------------------------------------------------------------
+
+class GlobalKnowledge(object):
+    BEHAVIOR_NAME = 'global-knowledge'
+
+    def __init__(self):
+        # we don't need knowledge builder to build anything, but we need it as
+        # an identifier for knowledge graphs which belongs to global knowledge
+        self.knowledge_builder = self._get_global_knowledge_builder()
+
+    def _get_global_knowledge_builder(self):
+        """
+        Returns the global knowledge builder. If not already exists, then
+        create and store it.
+        """
+        try:
+            return KnowledgeBuilder.objects.get(behavior_name=self.BEHAVIOR_NAME)
+        except ObjectDoesNotExist:
+            # create global knowledge builder
+            return KnowledgeBuilder.objects.create(
+                behavior_name=self.BEHAVIOR_NAME,
+                parameters={})
+
+    def get_graph(self, term):
+        """
+        Returns graph for the given term. If not already stored in DB, uses
+        public endpoint to get it.
+        """
+        try:
+            knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term,
+                knowledge_builder=self.knowledge_builder)
+            return knowledge_graph
+        except ObjectDoesNotExist:
+            # use public endpoint to retrieve the graph
+            graph = Graph()
+            # NOTE: there are literals in all languages -> filtering needed
+            graph.parse(term)
+            # TODO: filter it (only english literals; discard all unreliable
+            # triples (dbprop etc)
+            knowledge_graph = KnowledgeGraph.objects.create(
+                knowledge_builder=self.knowledge_builder,
+                topic_uri=term,
+                graph=graph)
+            return knowledge_graph
+
+    # NOTE: vzhledem k zvolene zjednodusene reprezentaci globalnich znalosti,
+    # nelze v obecnosti implementovat metodu query(sparql), ale pro nase ucely
+    # to asi nevadi, nam staci vzdy informace o konkretnim subjetku (napr. jeho
+    # typ, datum narozeni atp.)
