@@ -5,18 +5,18 @@ from practice.models import Practicer
 from smartoo import ComponentsSelector
 
 
-class AccumulativeFeedbackManager(models.Manager):
-    def create_empty_feedback(self):
-        """
-        Creates empty accumulative feedback and stores it to DB.
+#class AccumulativeFeedbackManager(models.Manager):
+#    def create_empty_feedback(self):
+#        """
+#        Creates empty accumulative feedback and stores it to DB.
 
-        Returns:
-            empty accumulative feedback (smartoo.models.AccumulativeFeedback)
-        """
-        feedback = AccumulativeFeedback()
-        # TODO: solve quality parameter
-        feedback.save()
-        return feedback
+#        Returns:
+#            empty accumulative feedback (smartoo.models.AccumulativeFeedback)
+#        """
+#        pass
+#        #feedback = AccumulativeFeedback()
+#        #feedback.save()
+#        #return feedback
 
 
 class AccumulativeFeedback(models.Model):
@@ -33,12 +33,14 @@ class AccumulativeFeedback(models.Model):
     # Prumer, OK (mozna jako realne cislo - kliknuti na osu)
 
     # the feedback will be trasform into a single real number (0, 1)
-    quality = models.FloatField(null=True, default=None)
+    # TODO: get_quality: pokud jeste nebylo nastaveno, tak se spocita a ulozi
+    # (po zacatek by stacilo to pokazde pocitat znova)
+    #quality = models.FloatField(null=True, default=None)
 
     # + details (later) ...
 
     # manager:
-    objects = AccumulativeFeedbackManager()
+    #objects = AccumulativeFeedbackManager()
 
     def add(self, feedback):
         """
@@ -59,6 +61,24 @@ class AccumulativeFeedback(models.Model):
         # TODO: quality calculation ?
         # store the updated accumulative feedback to DB
         self.save()
+
+
+# NOTE: Due to migrations serializations issues (and Python 2), this method for
+# creating empty feedback has to be in the main body of the module. It can't be
+# method (neither in manager nor in the model as as static class).
+# Using default=AccumuliveFeedback.objects.save also doesn't work.
+# NOTE: Strange SessionManager works without these problems....
+#def create_empty_feedback():
+#    """
+#    Creates empty accumulative feedback and stores it to DB.
+
+#    Returns:
+#        empty accumulative feedback
+#    """
+#    #return AccumulativeFeedback.objects.create()
+#    feedback = AccumulativeFeedback()
+#    #feedback.save()
+#    return feedback
 
 
 class SessionManager(models.Manager):
@@ -91,8 +111,10 @@ class Session(models.Model):
     practicer = models.ForeignKey(Practicer)
 
     # feedback
-    feedback = models.OneToOneField(AccumulativeFeedback,
-        default=AccumulativeFeedback.objects.create_empty_feedback)
+    # NOTE: default=AccumulativeFeedback.objects.create doesn't work because of
+    # some migrations serialization issues.
+    # Workarround: I will save feedback on saving session
+    feedback = models.OneToOneField(AccumulativeFeedback)
 
     # time (when created), set automatically on creation
     start = models.DateTimeField(auto_now_add=True)
@@ -103,6 +125,13 @@ class Session(models.Model):
 
     # manager
     objects = SessionManager()
+
+    # override save method
+    def save(self, *args, **kwargs):
+        # create feedback if it wasn't already
+        if self.feedback_id is None:
+            self.feedback = AccumulativeFeedback.objects.create()
+        super(Session, self).save(*args, **kwargs)
 
     def select_components(self):
         """
@@ -205,6 +234,12 @@ class Session(models.Model):
                 (? "answer" ?)
                 (later add more details such as time to answer in ms)
                 (see exercises.models.FeedbackedExercise)
+
+        Note: Before calling this method, session instance should be already
+        saved (because feedback is created on saving the session)...
+        originally I did this because of migration serialization issues,
+        but it's actully good not to have feedback which doesn't belong to
+        any stored session.
         """
         # get the exercise from DB
         graded_exercise = GradedExercise.objects.get(

@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import common.fields
 
 
 class Migration(migrations.Migration):
@@ -14,8 +15,8 @@ class Migration(migrations.Migration):
             name='Practicer',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
-                ('parameters', models.TextField()),
+                ('behavior_name', models.CharField(max_length=50)),
+                ('parameters', common.fields.DictField()),
             ],
             options={
                 'abstract': False,

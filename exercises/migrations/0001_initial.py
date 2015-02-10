@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import common.fields
 
 
 class Migration(migrations.Migration):
@@ -15,20 +16,7 @@ class Migration(migrations.Migration):
             name='Exercise',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('question', models.TextField()),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='ExerciseGrades',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('difficulty', models.FloatField()),
-                ('correctness', models.FloatField()),
-                ('relevance', models.FloatField()),
-                ('exercise', models.ForeignKey(to='exercises.Exercise')),
+                ('data', common.fields.DictField(default=dict)),
             ],
             options={
             },
@@ -38,8 +26,8 @@ class Migration(migrations.Migration):
             name='ExercisesCreator',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
-                ('parameters', models.TextField()),
+                ('behavior_name', models.CharField(max_length=50)),
+                ('parameters', common.fields.DictField()),
             ],
             options={
                 'abstract': False,
@@ -50,8 +38,8 @@ class Migration(migrations.Migration):
             name='ExercisesGrader',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
-                ('parameters', models.TextField()),
+                ('behavior_name', models.CharField(max_length=50)),
+                ('parameters', common.fields.DictField()),
             ],
             options={
                 'abstract': False,
@@ -59,12 +47,14 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='Options',
+            name='GradedExercise',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('correct', models.BooleanField(default=True)),
-                ('string', models.CharField(max_length=500)),
+                ('difficulty', models.FloatField()),
+                ('correctness', models.FloatField()),
+                ('relevance', models.FloatField()),
                 ('exercise', models.ForeignKey(to='exercises.Exercise')),
+                ('exercises_grader', models.ForeignKey(to='exercises.ExercisesGrader')),
             ],
             options={
             },
@@ -78,8 +68,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='exercise',
-            name='knowledge_builder',
-            field=models.ForeignKey(to='knowledge.KnowledgeBuilder'),
+            name='knowledge_graph',
+            field=models.ForeignKey(to='knowledge.KnowledgeGraph'),
             preserve_default=True,
         ),
     ]

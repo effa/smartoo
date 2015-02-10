@@ -11,7 +11,8 @@ class AccumulativeFeedbackTestCase(TestCase):
         pass
 
     def test_default(self):
-        feedback = AccumulativeFeedback.objects.create_empty_feedback()
+        #feedback = AccumulativeFeedback.objects.create_empty_feedback()
+        feedback = AccumulativeFeedback.objects.create()
         self.assertIsInstance(feedback, AccumulativeFeedback)
         self.assertEqual(feedback.correct_count, 0)
         self.assertEqual(feedback.wrong_count, 0)
@@ -29,7 +30,8 @@ class AccumulativeFeedbackTestCase(TestCase):
         self.assertEqual(feedback.irrelevant_count, 0)
 
     def test_add(self):
-        feedback = AccumulativeFeedback.objects.create_empty_feedback()
+        #feedback = AccumulativeFeedback.objects.create_empty_feedback()
+        feedback = AccumulativeFeedback.objects.create()
         feedback.add(FeedbackedExercise(
             answered=True,
             correct=False,
