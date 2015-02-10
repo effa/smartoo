@@ -169,20 +169,16 @@ War	NP	War-n
         self.article = Article(
             uri='http://en.wikipedia.org/wiki/Abraham_Lincoln',
             vertical=self.vertical)
-        self.maxDiff = None
+        #self.maxDiff = None
 
     def test_get_vertical(self):
-        pass
-        #self.assertMultiLineEqual(self.article.get_vertical(), self.vertical)
+        self.assertEqual(self.article.get_name(), 'Abraham Lincoln')
+        self.assertEqual(self.article.get_uri(), 'http://en.wikipedia.org/wiki/Abraham_Lincoln')
+        self.assertEqual(len(self.article.get_sentences()), 2)
 
 
 # ----------------------------------------------------------------------------
 #  Behaviors Tests
-#  ---------------
-#  These should be independent of the DB layer. (But we will still use
-#  Knowledge Builder class a little bit since it has some functionality we need
-#  (instantiation of behavior instance))
-#  TODO: tohle nejsou klasicke unit testy, chtelo by to nejak oddelit
 # ----------------------------------------------------------------------------
 
 class BehaviorsTestCase(TestCase):
@@ -190,53 +186,7 @@ class BehaviorsTestCase(TestCase):
         self.BEHAVIORS = [
             ('simple', {'alpha': 0.5})
         ]
-        self.vertical = '''
-<doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln"\
-     title="Abraham Lincoln">
-<p heading="1">
-<term wuri="Abraham_Lincoln">
-Abraham	NP	Abraham-n
-Lincoln	NP	Lincoln-n
-</term>
-</p>
-<p>
-<s>
-<term wuri="Abraham_Lincoln" uncertainty="1">
-Abraham	NP	Abraham-n
-Lincoln	NP	Lincoln-n
-</term>
-was	VBD	be-v
-the	DT	the-x
-<term wuri="List_of_Presidents_of_the_United_States">
-16	CD	16-x
-<g/>
-th	NN	th-n
-president	NN	president-n
-of	IN	of-i
-the	DT	the-x
-United	NP	United-n
-States	NPS	States-n
-</term>
-<g/>
-.	SENT	.-x
-</s>
-<s>
-Lincoln	NP	Lincoln-n
-led	VVD	lead-v
-the	DT	the-x
-United	NP	United-n
-States	NPS	States-n
-through	IN	through-i
-its	PP$	its-d
-<term wuri="American_Civil_War">
-Civil	NP	Civil-n
-War	NP	War-n
-</term>
-<g/>
-.	SENT	.-x
-</s>
-'''.strip()
-
+        self.vertical = 'test'
         self.article = Article(
             uri='http://en.wikipedia.org/wiki/Abraham_Lincoln',
             vertical=self.vertical)
@@ -249,9 +199,3 @@ War	NP	War-n
             behavior = knowledge_builder.get_behavior()
             knowledge_graph = behavior.build_knowledge_graph(self.article)
             self.assertIsInstance(knowledge_graph, KnowledgeGraph)
-            # see the outputted knowledge graph
-            #print '*' * 70
-            #print 'Behavior name:', behavior_name, '| parameters:', parameters
-            #print '*' * 70
-            #print knowledge_graph
-            #print '*' * 70
