@@ -1,3 +1,4 @@
+# encoding=utf-8
 from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
@@ -5,9 +6,9 @@ from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
 from knowledge import Article
 from knowledge.fields import GraphField
-from knowledge.namespaces import NAMESPACES_DICT
+from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY
 from knowledge.utils.sparql import ALL_TERMS_QUERY
-from rdflib import Graph
+from rdflib import Graph, URIRef
 
 
 class KnowledgeBuilder(Component):
@@ -45,6 +46,9 @@ class KnowledgeBuilder(Component):
         knowledge_graph.topic_uri = topic_uri
         knowledge_graph.save()
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
     def __unicode__(self):
         return '<KnowledgeBuilder {name}; parameters={parameters}>'.format(
             name=self.behavior_name,
@@ -80,6 +84,9 @@ class Vertical(models.Model):
             article instance (knowledge.Article)
         """
         return Article(uri=self.topic_uri, vertical=self.content)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
     def __unicode__(self):
         return '<Vertical uri="{uri}">'.format(uri=self.topic_uri)
@@ -143,12 +150,15 @@ class KnowledgeGraph(models.Model):
             terms.add(result[0])
         return terms
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
     def __unicode__(self):
         return 'builder: {builder}\ntopic: {topic}\ngraph:\n{graph}'.format(
             builder=self.knowledge_builder if self.knowledge_builder_id is
             not None else '---',
             topic=self.topic_uri if self.topic_uri is not None else '---',
-            graph=self.graph.serialize(format='turtle'))
+            graph=self.graph.serialize(format='turtle').decode('utf-8'))
 
 
 # ----------------------------------------------------------------------------
@@ -181,6 +191,7 @@ class GlobalKnowledge(object):
         Returns graph for the given term. If not already stored in DB, uses
         public endpoint to get it.
         """
+        assert isinstance(term, URIRef)
         try:
             knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term,
                 knowledge_builder=self.knowledge_builder)
@@ -188,14 +199,34 @@ class GlobalKnowledge(object):
         except ObjectDoesNotExist:
             # use public endpoint to retrieve the graph
             graph = Graph()
-            # NOTE: there are literals in all languages -> filtering needed
             graph.parse(term)
-            # TODO: filter it (only english literals; discard all unreliable
-            # triples (dbprop etc)
+
+            # namespaces binding
+            filtered_graph = Graph()
+            for prefix, namespace in NAMESPACES_DICT.items():
+                filtered_graph.bind(prefix, namespace)
+
+            # graph filtering
+            predicate_namespaces = tuple(unicode(ns) for ns in (FOAF, RDF,
+                RDFS, ONTOLOGY))
+            for (s, p, o) in graph.triples((term, None, None)):
+                # only preserve predicates in "reliable" namespaces
+                # and fitler wikiPageRevisionID, wikiPageExternalLike etc.
+                if p.startswith(predicate_namespaces) and\
+                        not p.startswith(ONTOLOGY['wiki']):
+                    # only preserve objects which are not literals in
+                    # non-english languages
+                    if isinstance(o, URIRef) or not o.language\
+                            or o.language == 'en':
+                        # if the triple passed all these filteres, add it to
+                        # the graph
+                        filtered_graph.add((s, p, o))
+
+            # store created (and filtered) graph in DB
             knowledge_graph = KnowledgeGraph.objects.create(
                 knowledge_builder=self.knowledge_builder,
                 topic_uri=term,
-                graph=graph)
+                graph=filtered_graph)
             return knowledge_graph
 
     # NOTE: vzhledem k zvolene zjednodusene reprezentaci globalnich znalosti,

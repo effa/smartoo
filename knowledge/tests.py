@@ -1,5 +1,6 @@
 # encoding=utf-8
 
+from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from knowledge import Article
@@ -229,6 +230,12 @@ class GlobalKnowledgeTestCase(TestCase):
         knowledge_graph = self.global_knowledge.get_graph(term)
         self.assertIsNotNone(knowledge_graph)
         self.assertIsInstance(knowledge_graph, KnowledgeGraph)
+        self.assertGreater(len(knowledge_graph.graph), 0)
+        #print knowledge_graph
+        #print 'number of triples:', len(knowledge_graph.graph)
+        # now check if it works when it's already in DB
+        knowledge_graph2 = self.global_knowledge.get_graph(term)
+        self.assertEqual(knowledge_graph, knowledge_graph2)
 
     #NOTE: query nebude GlobalKnowledge vubec implementovat
     #def test_query(self):
