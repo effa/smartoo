@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <object pk="1" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">global-knowledge</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Henry_VIII_of_England</field>
+    <field type="TextField" name="graph">
+@prefix dbpedia: &lt;http://dbpedia.org/resource/&gt; .
+@prefix dbpedia-owl: &lt;http://dbpedia.org/ontology/&gt; .
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix smartoo: &lt;http://fi.muni.cz/smartoo/&gt; .
+@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+dbpedia:Henry_VIII_of_England a &lt;http://dbpedia.org/class/yago/Aristocrat109807754&gt;,
+        &lt;http://dbpedia.org/class/yago/Artist109812338&gt;,
+        &lt;http://dbpedia.org/class/yago/CausalAgent100007347&gt;,
+        &lt;http://dbpedia.org/class/yago/Communicator109610660&gt;,
+        &lt;http://dbpedia.org/class/yago/Composer109947232&gt;,
+        &lt;http://dbpedia.org/class/yago/Convert109962414&gt;,
+        &lt;http://dbpedia.org/class/yago/ConvertsToAnglicanismFromRomanCatholicism&gt;,
+        &lt;http://dbpedia.org/class/yago/Creator109614315&gt;,
+        &lt;http://dbpedia.org/class/yago/Duke110038620&gt;,
+        &lt;http://dbpedia.org/class/yago/DukesOfCornwall&gt;,
+        &lt;http://dbpedia.org/class/yago/DukesOfYork&gt;,
+        &lt;http://dbpedia.org/class/yago/EnglishComposers&gt;,
+        &lt;http://dbpedia.org/class/yago/EnglishMonarchs&gt;,
+        &lt;http://dbpedia.org/class/yago/EnglishPeopleOfWelshDescent&gt;,
+        &lt;http://dbpedia.org/class/yago/HeadOfState110164747&gt;,
+        &lt;http://dbpedia.org/class/yago/Knight110238375&gt;,
+        &lt;http://dbpedia.org/class/yago/KnightsOfTheGarter&gt;,
+        &lt;http://dbpedia.org/class/yago/KnightsOfTheGoldenFleece&gt;,
+        &lt;http://dbpedia.org/class/yago/Leader109623038&gt;,
+        &lt;http://dbpedia.org/class/yago/LivingThing100004258&gt;,
+        &lt;http://dbpedia.org/class/yago/MaleAristocrat110285135&gt;,
+        &lt;http://dbpedia.org/class/yago/MilitaryLeader110316862&gt;,
+        &lt;http://dbpedia.org/class/yago/MilitaryLeadersOfTheItalianWars&gt;,
+        &lt;http://dbpedia.org/class/yago/Musician110339966&gt;,
+        &lt;http://dbpedia.org/class/yago/Negotiator110351874&gt;,
+        &lt;http://dbpedia.org/class/yago/Noble110271677&gt;,
+        &lt;http://dbpedia.org/class/yago/Object100002684&gt;,
+        &lt;http://dbpedia.org/class/yago/Organism100004475&gt;,
+        &lt;http://dbpedia.org/class/yago/Peer110412910&gt;,
+        &lt;http://dbpedia.org/class/yago/PeopleExcommunicatedByTheRomanCatholicChurch&gt;,
+        &lt;http://dbpedia.org/class/yago/PeopleFromGreenwich&gt;,
+        &lt;http://dbpedia.org/class/yago/Person100007846&gt;,
+        &lt;http://dbpedia.org/class/yago/PhysicalEntity100001930&gt;,
+        &lt;http://dbpedia.org/class/yago/Prince110472799&gt;,
+        &lt;http://dbpedia.org/class/yago/PrincesOfWales&gt;,
+        &lt;http://dbpedia.org/class/yago/RenaissanceComposers&gt;,
+        &lt;http://dbpedia.org/class/yago/Representative110522035&gt;,
+        &lt;http://dbpedia.org/class/yago/Ruler110541229&gt;,
+        &lt;http://dbpedia.org/class/yago/Sovereign110628644&gt;,
+        &lt;http://dbpedia.org/class/yago/Whole100003553&gt;,
+        &lt;http://dbpedia.org/class/yago/YagoLegalActor&gt;,
+        &lt;http://dbpedia.org/class/yago/YagoLegalActorGeo&gt;,
+        dbpedia-owl:Agent,
+        dbpedia-owl:BritishRoyalty,
+        dbpedia-owl:Person,
+        dbpedia-owl:Royalty,
+        &lt;http://schema.org/Person&gt;,
+        &lt;http://umbel.org/umbel/rc/PersonWithOccupation&gt;,
+        &lt;http://umbel.org/umbel/rc/RoyalFamily&gt;,
+        &lt;http://wikidata.dbpedia.org/resource/Q215627&gt;,
+        &lt;http://wikidata.dbpedia.org/resource/Q5&gt;,
+        &lt;http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent&gt;,
+        &lt;http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson&gt;,
+        &lt;http://www.w3.org/2002/07/owl#Thing&gt;,
+        foaf:Person ;
+    rdfs:label "Henry VIII of England"@en ;
+    dbpedia-owl:abstract "Henry VIII (28 June 1491 – 28 January 1547) was King of England from 21 April 1509 until his death. He was Lord, and later assumed the Kingship, of Ireland, and continued the nominal claim by English monarchs to the Kingdom of France. Henry was the second monarch of the Tudor dynasty, succeeding his father, Henry VII.Besides his six marriages, Henry VIII is known for his role in the separation of the Church of England from the Pope and the Roman Catholic Church. Henry's struggles with Rome led to the separation of the Church of England from papal authority, the Dissolution of the Monasteries, and his own establishment as the Supreme Head of the Church of England. Yet he remained a believer in core Catholic theological teachings, even after his excommunication from the Roman Catholic Church. Henry oversaw the legal union of England and Wales with the Laws in Wales Acts 1535 and 1542.In 1513, Henry allied with the Holy Roman Emperor, Maximillian I, and invaded France with a large, well-equipped army, but achieved little at a considerable financial cost. Maximillian, for his part, used the English invasion to his own end, and this prejudiced England's ability to defeat the French. This foray would prove the start of an obsession for Henry, who invaded again in 1544. This time, Henry's forces captured the important city of Boulogne, but again the Holy Roman Emperor, Charles V, supported Henry only as long as he needed to and England, strained by the enormous cost of the war, ransomed the city back for peace.His contemporaries considered Henry in his prime to be an attractive, educated and accomplished king, and he has been described as \"one of the most charismatic rulers to sit on the English throne\". Besides ruling with considerable power, he also engaged himself as an author and composer. His desire to provide England with a male heir – which stemmed partly from personal vanity and partly because he believed a daughter would be unable to consolidate the Tudor dynasty and the fragile peace that existed following the Wars of the Roses – led to the two things for which Henry is most remembered: his six marriages and the English Reformation. Henry became morbidly obese and his health suffered, contributing to his death in 1547. He is frequently characterised in his later life as a lustful, egotistical, harsh, and insecure king. He was succeeded by his son Edward VI."@en ;
+    dbpedia-owl:activeYearsEndYear "1509+02:00"^^xsd:gYear ;
+    dbpedia-owl:activeYearsStartYear "1509+02:00"^^xsd:gYear ;
+    dbpedia-owl:alias "Henry Tudor" ;
+    dbpedia-owl:birthDate "1491-06-28"^^xsd:date ;
+    dbpedia-owl:birthPlace dbpedia:Greenwich,
+        dbpedia:Palace_of_Placentia ;
+    dbpedia-owl:birthYear "1491+02:00"^^xsd:gYear ;
+    dbpedia-owl:deathDate "1547-01-28"^^xsd:date ;
+    dbpedia-owl:deathPlace dbpedia:Palace_of_Whitehall ;
+    dbpedia-owl:deathYear "1547+02:00"^^xsd:gYear ;
+    dbpedia-owl:lccnId "n/79/113093" ;
+    dbpedia-owl:parent dbpedia:Elizabeth_of_York,
+        dbpedia:Henry_VII_of_England ;
+    dbpedia-owl:predecessor dbpedia:Henry_VII_of_England ;
+    dbpedia-owl:restingPlace &lt;http://dbpedia.org/resource/St_George's_Chapel,_Windsor_Castle&gt; ;
+    dbpedia-owl:successor dbpedia:Edward_VI_of_England ;
+    dbpedia-owl:thumbnail &lt;http://commons.wikimedia.org/wiki/Special:FilePath/Workshop_of_Hans_Holbein_the_Younger_-_Portrait_of_Henry_VIII_-_Google_Art_Project.jpg?width=300&gt; ;
+    rdfs:comment "Henry VIII (28 June 1491 – 28 January 1547) was King of England from 21 April 1509 until his death. He was Lord, and later assumed the Kingship, of Ireland, and continued the nominal claim by English monarchs to the Kingdom of France. Henry was the second monarch of the Tudor dynasty, succeeding his father, Henry VII.Besides his six marriages, Henry VIII is known for his role in the separation of the Church of England from the Pope and the Roman Catholic Church."@en ;
+    foaf:depiction &lt;http://commons.wikimedia.org/wiki/Special:FilePath/Workshop_of_Hans_Holbein_the_Younger_-_Portrait_of_Henry_VIII_-_Google_Art_Project.jpg&gt; ;
+    foaf:isPrimaryTopicOf &lt;http://en.wikipedia.org/wiki/Henry_VIII_of_England&gt; ;
+    foaf:name "Henry VIII"@en,
+        "Henry VIII of England"@en .
+
+    </field>
+  </object>
+</django-objects>

@@ -186,20 +186,31 @@ class GlobalKnowledge(object):
                 behavior_name=self.BEHAVIOR_NAME,
                 parameters={})
 
-    def get_graph(self, term):
+    def get_graph(self, term, online=True):
         """
         Returns graph for the given term. If not already stored in DB, uses
-        public endpoint to get it.
+        public endpoint to get it (if :online: is True) and stores it.
+
+        Args:
+            term: URI of the topic term [URIRef]
+            online: if graph is not in DB, should it get on the web? [bool]
+        Returns:
+            knowledge graph
         """
         assert isinstance(term, URIRef)
         try:
             knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term,
                 knowledge_builder=self.knowledge_builder)
             return knowledge_graph
+
         except ObjectDoesNotExist:
+            if not online:
+                return None
+
             # use public endpoint to retrieve the graph
             graph = Graph()
             graph.parse(term)
+            # TODO: osetrit neexistenci grafu na danem zdroji
 
             # namespaces binding
             filtered_graph = Graph()
@@ -227,6 +238,7 @@ class GlobalKnowledge(object):
                 knowledge_builder=self.knowledge_builder,
                 topic_uri=term,
                 graph=filtered_graph)
+
             return knowledge_graph
 
     # NOTE: vzhledem k zvolene zjednodusene reprezentaci globalnich znalosti,

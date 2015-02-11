@@ -14,6 +14,8 @@ from unittest import skipIf
 # flag: whether or not skip test which connects to online public endpoint
 SKIP_ONLINE = True
 
+#TODO: rozdelit do vice souboru (podbalik pro testy)
+
 
 class VerticalTestCase(TestCase):
     def setUp(self):
@@ -209,7 +211,10 @@ class BehaviorsTestCase(TestCase):
 #  Global Knowledge Tests
 # ----------------------------------------------------------------------------
 
-class GlobalKnowledgeTestCase(TestCase):
+class GlobalKnowledgeEmptyDBTestCase(TestCase):
+    """
+    Tests GlobalKnowledge class when the DB is empty.
+    """
     def setUp(self):
         self.global_knowledge = GlobalKnowledge()
 
@@ -237,16 +242,27 @@ class GlobalKnowledgeTestCase(TestCase):
         knowledge_graph2 = self.global_knowledge.get_graph(term)
         self.assertEqual(knowledge_graph, knowledge_graph2)
 
-    #NOTE: query nebude GlobalKnowledge vubec implementovat
-    #def test_query(self):
-    #    query = prepared_query('''
-    #        SELECT ?label
-    #        WHERE {
-    #            dbpedia:Henry_VIII_of_England: rdfs:label ?label
-    #        }
-    #        ''')
-    #    result = self.global_knowledge.query(query)
-    #    self.assertIsNotNone(result)
-    #    self.assertEqual(len(result), 1)
-    #    #print result.__dict__
+
+class GlobalKnowledgeTestCase(TestCase):
+    """
+    Tests GlobalKnowledge class when the DB is populated.
+    """
+    fixtures = ['global-knowledge.xml']
+
+    def setUp(self):
+        self.global_knowledge = GlobalKnowledge()
+
+    def test_get_global_knowledge_builder(self):
+        self.assertIsNotNone(self.global_knowledge.knowledge_builder)
+        self.assertIsInstance(self.global_knowledge.knowledge_builder, KnowledgeBuilder)
+
+    def test_get_graph(self):
+        term = RESOURCE['Henry_VIII_of_England']
+        knowledge_graph = self.global_knowledge.get_graph(term, online=False)
+        self.assertIsNotNone(knowledge_graph)
+        self.assertIsInstance(knowledge_graph, KnowledgeGraph)
+        self.assertGreater(len(knowledge_graph.graph), 0)
+        #print knowledge_graph
+        #print 'number of triples:', len(knowledge_graph.graph)
+
     #    self.assertEqual(next(iter(result)), 'Henry VIII')
