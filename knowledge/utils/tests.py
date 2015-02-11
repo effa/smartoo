@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from knowledge.models import KnowledgeGraph
 from knowledge.namespaces import RDFS, RESOURCE, XSD, DC, ONTOLOGY
-from knowledge.utils.sparql import label
+#from knowledge.utils.sparql import label
 from rdflib import Literal
 
 
@@ -28,7 +28,4 @@ class SparqlTestCase(TestCase):
             ONTOLOGY['birthDate'],
             Literal('1491-06-28', datatype=XSD.date)))
 
-    def test_label(self):
-        self.assertEqual(label(self.henry8, self.knowledge_graph), 'Henry VIII')
-        self.assertEqual(label(self.henry5, self.knowledge_graph), 'Henry V of England')
-        self.assertIsNone(label(self.henry5, self.knowledge_graph, fallback_guess=False))
+    # TODO

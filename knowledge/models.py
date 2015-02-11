@@ -143,6 +143,30 @@ class KnowledgeGraph(models.Model):
         """
         return self.graph.query(query, initBindings=initBindings)
 
+    def label(self, uri, fallback_guess=True):
+        """
+        Returns label for given uri reference stated in the graph.
+
+        Args:
+            uri: URI reference to the object for which to find label
+            fallback_guess: guess the label (using URI) if label wasn't found
+        Returns:
+            label [unicode]
+        """
+        # TODO: misto SPARQL dotazu by stacilo pouzit graph.value(), reps. dokonce
+        # existuje Graph.label() nebo Graph.preferredLabel()
+        #result = graph.query(LABEL_QUERY, initBindings={'uri': uri})
+        #try:
+        #    return unicode(next(iter(result))[0])
+        #except StopIteration:
+        result = self.graph.label(uri)
+        if result:
+            return unicode(result)
+        elif fallback_guess:
+            return uri_to_name(uri)
+        else:
+            return None
+
     def get_all_terms(self, types_dict=False):
         # TODO: umoznit vracet slovnik mapovani pojmu na typy
         terms = set()
@@ -240,6 +264,19 @@ class GlobalKnowledge(object):
                 graph=filtered_graph)
 
             return knowledge_graph
+
+    def label(self, uri, fallback_guess=True):
+        """
+        Returns label for given uri reference.
+
+        Args:
+            uri: URI reference to the object for which to find label
+            fallback_guess: guess the label (using URI) if label wasn't found
+        Returns:
+            label [unicode]
+        """
+        graph = self.get_graph(uri)
+        return graph.label(uri)
 
     # NOTE: vzhledem k zvolene zjednodusene reprezentaci globalnich znalosti,
     # nelze v obecnosti implementovat metodu query(sparql), ale pro nase ucely

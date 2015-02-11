@@ -3,7 +3,6 @@ Module for generating distractors
 """
 
 from random import shuffle
-from knowledge.utils.sparql import label
 
 # TODO: inspirace viz procvicinik-v1
 
@@ -28,7 +27,7 @@ def create_choice_list(correct, distractors, knowledge_graph):
     and shuffle/order them.
     """
     choices = distractors + [correct]
-    choices = [label(choice, knowledge_graph) for choice in choices]
+    choices = [knowledge_graph.label(choice) for choice in choices]
     shuffle(choices)
     # TODO: special treatment for numbers
     return choices

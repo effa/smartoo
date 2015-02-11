@@ -6,7 +6,7 @@ from django.test import TestCase
 from knowledge import Article
 from knowledge.models import KnowledgeBuilder, Vertical
 from knowledge.models import KnowledgeGraph, GlobalKnowledge
-from knowledge.namespaces import RESOURCE
+from knowledge.namespaces import RESOURCE, RDFS
 #from knowledge.utils.sparql import prepared_query
 from rdflib import Graph, Literal, Namespace
 from unittest import skipIf
@@ -65,6 +65,15 @@ class KnowledgeGraphTestCase(TestCase):
         # check that the graph after serialization-deserialization is still the
         # same as it was
         self.assertTrue(graph2.isomorphic(graph))
+
+    def test_label(self):
+        knowledge_graph = KnowledgeGraph()
+        tomE = RESOURCE['Tom_E']
+        tomF = RESOURCE['Tom_F']
+        knowledge_graph.add((tomE, RDFS['label'], Literal('Tom')))
+        self.assertEqual(knowledge_graph.label(tomE), 'Tom')
+        self.assertEqual(knowledge_graph.label(tomF), 'Tom F')
+        self.assertIsNone(knowledge_graph.label(tomF, fallback_guess=False))
 
 
 class KnowledgeBuilderTestCase(TestCase):
@@ -264,5 +273,10 @@ class GlobalKnowledgeTestCase(TestCase):
         self.assertGreater(len(knowledge_graph.graph), 0)
         #print knowledge_graph
         #print 'number of triples:', len(knowledge_graph.graph)
+
+    def test_label(self):
+        henry = RESOURCE['Henry_VIII_of_England']
+        label = self.global_knowledge.label(henry, fallback_guess=False)
+        self.assertEqual(label, 'Henry VIII of England')
 
     #    self.assertEqual(next(iter(result)), 'Henry VIII')
