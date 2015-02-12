@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <object pk="2" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="2" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">2</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Henry_VIII_of_England</field>
+    <field type="TextField" name="graph">
+@prefix dbpedia: &lt;http://dbpedia.org/resource/&gt; .
+@prefix dbpedia-owl: &lt;http://dbpedia.org/ontology/&gt; .
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix smartoo: &lt;http://fi.muni.cz/smartoo/&gt; .
+@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+dbpedia:Henry_VIII_of_England a &lt;http://dbpedia.org/class/yago/Aristocrat109807754&gt;,
+        &lt;http://dbpedia.org/class/yago/Artist109812338&gt;,
+        &lt;http://dbpedia.org/class/yago/CausalAgent100007347&gt;,
+        &lt;http://dbpedia.org/class/yago/Communicator109610660&gt;,
+        &lt;http://dbpedia.org/class/yago/Composer109947232&gt;,
+        &lt;http://dbpedia.org/class/yago/Convert109962414&gt;,
+        &lt;http://dbpedia.org/class/yago/ConvertsToAnglicanismFromRomanCatholicism&gt;,
+        &lt;http://dbpedia.org/class/yago/Creator109614315&gt;,
+        &lt;http://dbpedia.org/class/yago/Duke110038620&gt;,
+        &lt;http://dbpedia.org/class/yago/DukesOfCornwall&gt;,
+        &lt;http://dbpedia.org/class/yago/DukesOfYork&gt;,
+        &lt;http://dbpedia.org/class/yago/EnglishComposers&gt;,
+        &lt;http://dbpedia.org/class/yago/EnglishMonarchs&gt;,
+        &lt;http://dbpedia.org/class/yago/EnglishPeopleOfWelshDescent&gt;,
+        &lt;http://dbpedia.org/class/yago/HeadOfState110164747&gt;,
+        &lt;http://dbpedia.org/class/yago/Knight110238375&gt;,
+        &lt;http://dbpedia.org/class/yago/KnightsOfTheGarter&gt;,
+        &lt;http://dbpedia.org/class/yago/KnightsOfTheGoldenFleece&gt;,
+        &lt;http://dbpedia.org/class/yago/Leader109623038&gt;,
+        &lt;http://dbpedia.org/class/yago/LivingThing100004258&gt;,
+        &lt;http://dbpedia.org/class/yago/MaleAristocrat110285135&gt;,
+        &lt;http://dbpedia.org/class/yago/MilitaryLeader110316862&gt;,
+        &lt;http://dbpedia.org/class/yago/MilitaryLeadersOfTheItalianWars&gt;,
+        &lt;http://dbpedia.org/class/yago/Musician110339966&gt;,
+        &lt;http://dbpedia.org/class/yago/Negotiator110351874&gt;,
+        &lt;http://dbpedia.org/class/yago/Noble110271677&gt;,
+        &lt;http://dbpedia.org/class/yago/Object100002684&gt;,
+        &lt;http://dbpedia.org/class/yago/Organism100004475&gt;,
+        &lt;http://dbpedia.org/class/yago/Peer110412910&gt;,
+        &lt;http://dbpedia.org/class/yago/PeopleExcommunicatedByTheRomanCatholicChurch&gt;,
+        &lt;http://dbpedia.org/class/yago/PeopleFromGreenwich&gt;,
+        &lt;http://dbpedia.org/class/yago/Person100007846&gt;,
+        &lt;http://dbpedia.org/class/yago/PhysicalEntity100001930&gt;,
+        &lt;http://dbpedia.org/class/yago/Prince110472799&gt;,
+        &lt;http://dbpedia.org/class/yago/PrincesOfWales&gt;,
+        &lt;http://dbpedia.org/class/yago/RenaissanceComposers&gt;,
+        &lt;http://dbpedia.org/class/yago/Representative110522035&gt;,
+        &lt;http://dbpedia.org/class/yago/Ruler110541229&gt;,
+        &lt;http://dbpedia.org/class/yago/Sovereign110628644&gt;,
+        &lt;http://dbpedia.org/class/yago/Whole100003553&gt;,
+        &lt;http://dbpedia.org/class/yago/YagoLegalActor&gt;,
+        &lt;http://dbpedia.org/class/yago/YagoLegalActorGeo&gt;,
+        dbpedia-owl:Agent,
+        dbpedia-owl:BritishRoyalty,
+        dbpedia-owl:Person,
+        dbpedia-owl:Royalty,
+        &lt;http://schema.org/Person&gt;,
+        &lt;http://umbel.org/umbel/rc/PersonWithOccupation&gt;,
+        &lt;http://umbel.org/umbel/rc/RoyalFamily&gt;,
+        &lt;http://wikidata.dbpedia.org/resource/Q215627&gt;,
+        &lt;http://wikidata.dbpedia.org/resource/Q5&gt;,
+        &lt;http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent&gt;,
+        &lt;http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson&gt;,
+        &lt;http://www.w3.org/2002/07/owl#Thing&gt;,
+        foaf:Person ;
+    rdfs:label "Henry VIII of England"@en ;
+    dbpedia-owl:birthDate "1491-06-28"^^xsd:date ;
+    dbpedia-owl:birthYear "1491+02:00"^^xsd:gYear ;
+    dbpedia-owl:deathDate "1547-01-28"^^xsd:date ;
+    dbpedia-owl:deathYear "1547+02:00"^^xsd:gYear ;
+    dbpedia-owl:parent dbpedia:Elizabeth_of_York,
+        dbpedia:Henry_VII_of_England ;
+    dbpedia-owl:predecessor dbpedia:Henry_VII_of_England ;
+    dbpedia-owl:successor dbpedia:Edward_VI_of_England .
+
+    </field>
+  </object>
+</django-objects>

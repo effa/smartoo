@@ -57,8 +57,12 @@ ALL_TERMS_QUERY = prepared_query("""
 """)
 
 
+# neni potreba: staci pouzit Graph.objecs()
 #TYPES_QUERY = prepared_query("""
-#    TODO
+#    SELECT ?type
+#    WHERE {
+#        ?term a ?type .
+#    }
 #""")
 
 # TODO: def discover_types(uri:URIRef)

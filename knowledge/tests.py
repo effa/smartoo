@@ -6,7 +6,7 @@ from django.test import TestCase
 from knowledge import Article
 from knowledge.models import KnowledgeBuilder, Vertical
 from knowledge.models import KnowledgeGraph, GlobalKnowledge
-from knowledge.namespaces import RESOURCE, RDFS
+from knowledge.namespaces import RESOURCE, RDFS, ONTOLOGY
 #from knowledge.utils.sparql import prepared_query
 from rdflib import Graph, Literal, Namespace
 from unittest import skipIf
@@ -43,10 +43,11 @@ class VerticalTestCase(TestCase):
 
 
 class KnowledgeGraphTestCase(TestCase):
+    fixtures = ['knowledge-graph-henry8.xml']
+
     def setUp(self):
-        # create topic_uri and knowledge builder
-        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
-        self.knowledge_builder = KnowledgeBuilder.objects.create(
+        # get fake knowledge builder (already in DB: see fixture)
+        self.knowledge_builder = KnowledgeBuilder.objects.get(
             behavior_name='fake', parameters={})
 
     def test_serialization_deserialization(self):
@@ -54,13 +55,15 @@ class KnowledgeGraphTestCase(TestCase):
         graph = Graph()
         NS = Namespace('http://example.com/test/')
         graph.bind('ns', NS)
-        graph.add((NS['Tom'], NS['likes'], Literal('apples')))
+        topic_uri = NS['Tom']
+        graph.add((topic_uri, NS['likes'], Literal('apples')))
         KnowledgeGraph.objects.create(
             knowledge_builder=self.knowledge_builder,
-            topic_uri=self.topic_uri,
+            topic_uri=topic_uri,
             graph=graph)
         # graph retrieval
-        knowledge_graph = KnowledgeGraph.objects.all().first()
+        knowledge_graph = KnowledgeGraph.objects.get(
+            topic_uri=topic_uri)
         graph2 = knowledge_graph.graph
         # check that the graph after serialization-deserialization is still the
         # same as it was
@@ -74,6 +77,31 @@ class KnowledgeGraphTestCase(TestCase):
         self.assertEqual(knowledge_graph.label(tomE), 'Tom')
         self.assertEqual(knowledge_graph.label(tomF), 'Tom F')
         self.assertIsNone(knowledge_graph.label(tomF, fallback_guess=False))
+
+    def test_types_of_term(self):
+        term = RESOURCE['Henry_VIII_of_England']
+        knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term)
+        self.assertIsInstance(knowledge_graph.types_of_term, dict)
+        self.assertIn(term, knowledge_graph.types_of_term)
+
+    def test_terms_of_type(self):
+        term = RESOURCE['Henry_VIII_of_England']
+        knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term)
+        self.assertIsInstance(knowledge_graph.terms_of_type, dict)
+        self.assertIn(ONTOLOGY['Person'], knowledge_graph.terms_of_type)
+        self.assertIn(term,
+            knowledge_graph.terms_of_type[ONTOLOGY['Person']])
+
+    def test_types(self):
+        term = RESOURCE['Henry_VIII_of_England']
+        knowledge_graph = KnowledgeGraph.objects.get(
+            topic_uri=term)
+        types = knowledge_graph.types(term)
+        self.assertIsInstance(types, set)
+        self.assertIn(ONTOLOGY['Agent'], types)
+        self.assertIn(ONTOLOGY['Person'], types)
+        self.assertIn(ONTOLOGY['Royalty'], types)
+        self.assertIn(ONTOLOGY['BritishRoyalty'], types)
 
 
 class KnowledgeBuilderTestCase(TestCase):
@@ -134,6 +162,7 @@ class KnowledgeBuilderTestCase(TestCase):
 
 class ArticleTestCase(TestCase):
     def setUp(self):
+        # TODO: use DB fixtures instead of this:
         self.vertical = '''
 <doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln"\
      title="Abraham Lincoln">

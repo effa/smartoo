@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.utils.functional import cached_property
 from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
 from knowledge import Article
@@ -9,6 +10,7 @@ from knowledge.fields import GraphField
 from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY
 from knowledge.utils.sparql import ALL_TERMS_QUERY
 from rdflib import Graph, URIRef
+from collections import defaultdict
 
 
 class KnowledgeBuilder(Component):
@@ -167,6 +169,41 @@ class KnowledgeGraph(models.Model):
         else:
             return None
 
+    def types(self, term):
+        """
+        Returns set of types for given term.
+
+        Args:
+            term: URI reference to the object for which to find types
+        Returns:
+            set of types (each type is URIRef)
+        """
+        assert isinstance(term, URIRef)
+        # NOTE: we will use cached dictionary of types
+        #result = set(self.graph.objects(subject=term, predicate=RDF['type']))
+        result = self.types_of_term[term]
+        return result
+
+    @cached_property
+    def types_of_term(self):
+        """
+        Mapping from terms to a set of their types (each type is URIRef).
+        """
+        types_dict = defaultdict(set)
+        for term, type_uri in self.graph.subject_objects(predicate=RDF['type']):
+            types_dict[term].add(type_uri)
+        return types_dict
+
+    @cached_property
+    def terms_of_type(self):
+        """
+        Mapping form types to all terms of that type (in the graph).
+        """
+        terms_dict = defaultdict(set)
+        for term, type_uri in self.graph.subject_objects(predicate=RDF['type']):
+            terms_dict[type_uri].add(term)
+        return terms_dict
+
     def get_all_terms(self, types_dict=False):
         # TODO: umoznit vracet slovnik mapovani pojmu na typy
         terms = set()
@@ -275,6 +312,7 @@ class GlobalKnowledge(object):
         Returns:
             label [unicode]
         """
+        # TODO: osetrit neexistenci grafu
         graph = self.get_graph(uri)
         return graph.label(uri)
 
