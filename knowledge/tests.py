@@ -6,7 +6,7 @@ from django.test import TestCase
 from knowledge import Article
 from knowledge.models import KnowledgeBuilder, Vertical
 from knowledge.models import KnowledgeGraph, GlobalKnowledge
-from knowledge.namespaces import RESOURCE, RDFS, ONTOLOGY
+from knowledge.namespaces import RESOURCE, RDF, RDFS, ONTOLOGY, SMARTOO
 #from knowledge.utils.sparql import prepared_query
 from rdflib import Graph, Literal, Namespace
 from unittest import skipIf
@@ -102,6 +102,32 @@ class KnowledgeGraphTestCase(TestCase):
         self.assertIn(ONTOLOGY['Person'], types)
         self.assertIn(ONTOLOGY['Royalty'], types)
         self.assertIn(ONTOLOGY['BritishRoyalty'], types)
+        self.assertNotIn(ONTOLOGY['Activity'], types)
+
+    def test_types_set_manually(self):
+        knowledge_graph = KnowledgeGraph()
+        termA = RESOURCE['A']
+        knowledge_graph.add((termA, RDF['type'], SMARTOO['term']))
+        types = knowledge_graph.types(termA)
+        self.assertIn(SMARTOO['term'], types)
+        self.assertNotIn(ONTOLOGY['Activity'], types)
+
+    def test_terms_similarity(self):
+        knowledge_graph = KnowledgeGraph()
+        termA = RESOURCE['A']
+        termB = RESOURCE['B']
+        # adding types and checking similarity after each step
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0)
+        knowledge_graph.add((termA, RDF['type'], SMARTOO['term']))
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0)
+        knowledge_graph.add((termB, RDF['type'], SMARTOO['term']))
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.5)
+        knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Agent']))
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.5)
+        knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Person']))
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.5)
+        knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Agent']))
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 2.0 / 3)
 
 
 class KnowledgeBuilderTestCase(TestCase):

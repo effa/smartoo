@@ -126,11 +126,20 @@ class KnowledgeGraph(models.Model):
 
     # TODO: define access methods to work with the knowledge graph
 
+    def _update_notification(self):
+        # after an update, we may need to recompute some attributes
+        # (NOTE: ale mozna by stacilo jen pri pridani RDF["type"])
+        if self.terms_of_type:
+            del self.terms_of_type
+        if self.types_of_term:
+            del self.types_of_term
+
     def add(self, triple):
         """
         Adds new triple to knowledge graph.
         """
         self.graph.add(triple)
+        self._update_notification()
 
     # TODO: cachovani dotazu (pozor na add())
     def query(self, query, initBindings={}):
@@ -181,8 +190,25 @@ class KnowledgeGraph(models.Model):
         assert isinstance(term, URIRef)
         # NOTE: we will use cached dictionary of types
         #result = set(self.graph.objects(subject=term, predicate=RDF['type']))
-        result = self.types_of_term[term]
+        # return a shallow copy of the types set
+        result = set(self.types_of_term[term])
         return result
+
+    def similarity(self, term1, term2):
+        """
+        Measures the similarity between two terms in the knowledge graph
+        (using metrics based on common types). If one of the terms is not the
+        graph, returns 0.
+
+        Returns:
+            similarity (real  number between 0 and 1)
+        """
+        term1_types = self.types(term1)
+        term2_types = self.types(term2)
+        common_types = term1_types & term2_types
+        # normalization -> number between 0 and 1)
+        similarity = 1 - (1.0 / (len(common_types) + 1))
+        return similarity
 
     @cached_property
     def types_of_term(self):
