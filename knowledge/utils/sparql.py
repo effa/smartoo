@@ -49,12 +49,12 @@ def prepared_query(query_string):
 #            return None
 
 
-ALL_TERMS_QUERY = prepared_query("""
-    SELECT ?term
-    WHERE {
-        ?term a smartoo:term .
-    }
-""")
+#ALL_TERMS_QUERY = prepared_query("""
+#    SELECT ?term
+#    WHERE {
+#        ?term a smartoo:term .
+#    }
+#""")
 
 
 # neni potreba: staci pouzit Graph.objecs()

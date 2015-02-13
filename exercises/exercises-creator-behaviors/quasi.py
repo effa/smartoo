@@ -1,4 +1,4 @@
-from knowledge.utils.sparql import prepared_query, label
+from knowledge.utils.sparql import prepared_query
 from exercises import ExercisesCreatorBehavior
 from exercises.models import Exercise
 from exercises.utils.distractors import generate_similar_terms
@@ -15,7 +15,7 @@ class Quasi(ExercisesCreatorBehavior):
     """
 
     def create_exercises(self, knowledge_graph):
-        print knowledge_graph
+        #print knowledge_graph
         TERM_IN_SENTENCE_QUERY = prepared_query("""
             SELECT ?before ?term ?after
             WHERE {
@@ -29,14 +29,14 @@ class Quasi(ExercisesCreatorBehavior):
         terms_in_sentence = knowledge_graph.query(TERM_IN_SENTENCE_QUERY)
         print '***'
         for before, term, after in terms_in_sentence:
-            correct_answer = label(term, knowledge_graph)
             distractors = generate_similar_terms(term, knowledge_graph)
             choices = create_choice_list(term, distractors, knowledge_graph)
+            correct_answer_label = knowledge_graph.label(term)
             exercise = Exercise(data={
                 'question': '{before} _______ {after}'.format(
                     before=unicode(before),
                     after=unicode(after)),
                 'choices': choices,
-                'correct-answer': correct_answer
+                'correct-answer': correct_answer_label
             })
             yield exercise

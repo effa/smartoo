@@ -20,7 +20,6 @@ class Simple(KnowledgeBuilderBehavior):
         knowledge_graph = KnowledgeGraph()
 
         for sentence in contextfree_sentences(article):
-            # TODO: find a term, split in pre and post part
             # TODO: tohle by chtelo delat spis pomoci reqexu/gramatiky
             before_term = []
             after_term = []
@@ -31,6 +30,8 @@ class Simple(KnowledgeBuilderBehavior):
                 if not term_found:
                     if chunk.label() == 'TERM':
                         term_uri = chunk.uri
+                        # !!! TODO: problem se sklonovanim, lepe pouzit global
+                        # knowledge pro zijsteni labelu
                         term_text = join_words(chunk.leaves())
                         term_found = True
                         continue
@@ -39,11 +40,6 @@ class Simple(KnowledgeBuilderBehavior):
                     before_term.extend(chunk.leaves())
                 else:
                     after_term.extend([token[0] for token in chunk.leaves()])
-            #print before_term
-            #print join_words(before_term)
-            #print term_uri
-            #print after_term
-            #print join_words(after_term)
 
             if not term_found:
                 continue

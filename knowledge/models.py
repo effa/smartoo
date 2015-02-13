@@ -7,8 +7,7 @@ from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
 from knowledge import Article
 from knowledge.fields import GraphField
-from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY
-from knowledge.utils.sparql import ALL_TERMS_QUERY
+from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO
 from rdflib import Graph, URIRef
 from collections import defaultdict
 
@@ -126,13 +125,16 @@ class KnowledgeGraph(models.Model):
 
     # TODO: define access methods to work with the knowledge graph
 
+    _CACHED_ATTRIBUTES = ['terms_of_type', 'types_of_term', 'all_terms']
+
     def _update_notification(self):
         # after an update, we may need to recompute some attributes
         # (NOTE: ale mozna by stacilo jen pri pridani RDF["type"])
-        if self.terms_of_type:
-            del self.terms_of_type
-        if self.types_of_term:
-            del self.types_of_term
+        # NOTE: using self.__dict__.pop('attribute', None) rather than if
+        # self.attribut: del self.attribute, because the latter requires
+        # computation of attribute if it is not cached.
+        for attribute in self._CACHED_ATTRIBUTES:
+            self.__dict__.pop(attribute, None)
 
     def add(self, triple):
         """
@@ -164,12 +166,6 @@ class KnowledgeGraph(models.Model):
         Returns:
             label [unicode]
         """
-        # TODO: misto SPARQL dotazu by stacilo pouzit graph.value(), reps. dokonce
-        # existuje Graph.label() nebo Graph.preferredLabel()
-        #result = graph.query(LABEL_QUERY, initBindings={'uri': uri})
-        #try:
-        #    return unicode(next(iter(result))[0])
-        #except StopIteration:
         result = self.graph.label(uri)
         if result:
             return unicode(result)
@@ -230,12 +226,18 @@ class KnowledgeGraph(models.Model):
             terms_dict[type_uri].add(term)
         return terms_dict
 
-    def get_all_terms(self, types_dict=False):
-        # TODO: umoznit vracet slovnik mapovani pojmu na typy
-        terms = set()
-        for result in self.query(ALL_TERMS_QUERY):
-            terms.add(result[0])
-        return terms
+    @cached_property
+    def all_terms(self):
+        """
+        Set of all terms in the knowledge graph. As terms are only
+        cosidered the ones which has a type "smartoo:term". (Because not all
+        subjects are terms, e.g. fact nodes not.)
+        """
+        # NOTE: Mozna bude potraba volnejsi definice pojmu (napr. vsechny
+        # dbpedia:Things, foaf:NevimCO ..., pripadne heuristika zalozena na
+        # "subjekt majici label"
+        terms = self.graph.subjects(RDF['type'], SMARTOO['term'])
+        return set(terms)
 
     def __str__(self):
         return unicode(self).encode('utf-8')

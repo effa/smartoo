@@ -11,7 +11,7 @@ def generate_similar_terms(term, knowledge_graph, number=3):
     """
     Returns list of terms which are semantically close to the given term.
     """
-    all_terms = knowledge_graph.get_all_terms()
+    all_terms = set(knowledge_graph.all_terms)
     all_terms.discard(term)
     if len(all_terms) <= number:
         # TODO: vygenerovat smyslene pojmy (vtipne, napr. z formalu)
