@@ -7,7 +7,7 @@ from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
 from knowledge import Article
 from knowledge.fields import GraphField
-from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO
+from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, RESOURCE
 from rdflib import Graph, URIRef
 from collections import defaultdict
 
@@ -41,7 +41,7 @@ class KnowledgeBuilder(Component):
         behavior = self.get_behavior()
         # TODO: osetrit neexistenci vertikalu
         vertical = Vertical.objects.get(topic_uri=topic_uri)
-        article = vertical.get_article()
+        article = Article(vertical)
         knowledge_graph = behavior.build_knowledge_graph(article)
         knowledge_graph.knowledge_builder = self
         knowledge_graph.topic_uri = topic_uri
@@ -65,8 +65,13 @@ class Vertical(models.Model):
     Model for verticals of articles on the English Wikipedia.
     Corresponds to topics which can be practiced.
     """
-    # URI of the topic (same as the URL of the corresponding article)
+    # URI of the topic
+    # NOTE that it can be different from article URL (e.g.
+    # topic_uri=http://dbpedia.org/resource/Abraham_Lincoln
+    # but article_url=http://en.wikipedia.org/wiki/Abraham_Lincoln)
     topic_uri = models.CharField(max_length=120, unique=True)
+
+    # TODO: if article URL is needed as well, than make an attribute for it
 
     # vertical for the topic will be stored directly in our relational DB
     content = models.TextField()
@@ -76,15 +81,6 @@ class Vertical(models.Model):
         Returns the name of the topic.
         """
         return uri_to_name(self.topic_uri)
-
-    def get_article(self):
-        """
-        Returns article for given topic
-
-        Returns:
-            article instance (knowledge.Article)
-        """
-        return Article(uri=self.topic_uri, vertical=self.content)
 
     def __str__(self):
         return unicode(self).encode('utf-8')
@@ -141,6 +137,71 @@ class KnowledgeGraph(models.Model):
         Adds new triple to knowledge graph.
         """
         self.graph.add(triple)
+        # TODO: misto notifikace a nasledneho kompletniho prepocitani vsech
+        # cachovanych atributu by slo i pouze upravit jejich hodnoty podle
+        # pridaneho tripletu (-> mnohem rychlejsi)
+        self._update_notification()
+
+    # TODO: vyfaktorovat implicitni hodnoty parametru do nejakych konstant, aby
+    # se dalo lepe rict DEFAULT + neco dalsiho
+    def add_related_global_knowledge(self, article,
+            predicates=[RDFS['label'], RDF['type'], ONTOLOGY['birthYear'],
+                ONTOLOGY['deathYear'], RDFS['comment']], online=True):
+        """
+        Adds triples from global knowledge which relates to the given article.
+        Specifically, adds all terms from the article and all terms one hop
+        from the global knowledge graph.
+
+        Args:
+            article: for which article to find related global knowledge
+            predicates: triples with which predicates to incorporate
+        """
+        # at first find all related terms
+        terms = article.get_all_terms()
+        topic = article.get_topic_uri()
+        global_knowledge = GlobalKnowledge()
+        # online=False is just to make sure test don't use public endpoint,
+        # all data should be in fixtures
+        primary_graph = global_knowledge.get_graph(topic, online=online)
+        if primary_graph:
+            terms.update(primary_graph.get_all_resources())
+
+        #i = 2
+        for term in terms:
+            # add the term in graph
+            self.add((term, RDF['type'], SMARTOO['term']))
+            secondary_graph = global_knowledge.get_graph(term, online=online)
+            #print '#' * 70
+            #print 'term:', term
+            #print secondary_graph
+
+#            print '#' * 70
+#            print """
+#  <object pk="{i}" model="knowledge.knowledgegraph">
+#    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+#    <field type="CharField" name="topic_uri">{topic}</field>
+#    <field type="TextField" name="graph"><![CDATA[
+#{graph}]]>
+#    </field>
+#  </object>
+#""".format(i=i, topic=term, graph=secondary_graph.graph.serialize(format='turtle').decode('utf-8'))
+#            i += 1
+#            raw_input()
+
+            if not secondary_graph:
+                continue
+
+            for predicate in predicates:
+                for value in secondary_graph.get_objects(term, predicate):
+                    self.add((term, predicate, value))
+
+        #print
+        #print 'article terms:'
+        #print article_terms
+        #print 'resources:'
+        #print resources
+        #print 'pocet', len(resources)
+        # TODO: add context (pro termy a zdroje)
         self._update_notification()
 
     # TODO: cachovani dotazu (pozor na add())
@@ -229,15 +290,35 @@ class KnowledgeGraph(models.Model):
     @cached_property
     def all_terms(self):
         """
-        Set of all terms in the knowledge graph. As terms are only
-        cosidered the ones which has a type "smartoo:term". (Because not all
-        subjects are terms, e.g. fact nodes not.)
+        Set of all terms in the knowledge graph.
+
+        As terms are only cosidered subjects with type "smartoo:term"
         """
-        # NOTE: Mozna bude potraba volnejsi definice pojmu (napr. vsechny
-        # dbpedia:Things, foaf:NevimCO ..., pripadne heuristika zalozena na
-        # "subjekt majici label"
-        terms = self.graph.subjects(RDF['type'], SMARTOO['term'])
-        return set(terms)
+        all_terms = set(self.graph.subjects(RDF['type'], SMARTOO['term']))
+        #smartoo_terms = self.graph.subjects(RDF['type'], SMARTOO['term'])
+        #dbpedia_terms = self.graph.subjects(RDF['type'], ONTOLOGY['Thing'])
+        #all_terms = set(smartoo_terms) | set(dbpedia_terms)
+        return all_terms
+
+    def get_all_resources(self):
+        """
+        Returns all subject or objects in the graph which are in RESOURCE
+        namespace.
+        """
+        resources = set()
+        resource_prefix = unicode(RESOURCE)
+        for (s, p, o) in self.graph:
+            if s.startswith(resource_prefix):
+                resources.add(s)
+            if o.startswith(resource_prefix):
+                resources.add(o)
+        return resources
+
+    def get_subjects(self, predicate=None, object=None):
+        return list(self.graph.subjects(predicate, object))
+
+    def get_objects(self, subject=None, predicate=None):
+        return list(self.graph.objects(subject, predicate))
 
     def __str__(self):
         return unicode(self).encode('utf-8')
@@ -286,7 +367,10 @@ class GlobalKnowledge(object):
         Returns:
             knowledge graph
         """
+        if isinstance(term, unicode):
+            term = URIRef(term)
         assert isinstance(term, URIRef)
+
         try:
             knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term,
                 knowledge_builder=self.knowledge_builder)
@@ -298,8 +382,11 @@ class GlobalKnowledge(object):
 
             # use public endpoint to retrieve the graph
             graph = Graph()
+
+            print 'k/models.py,L369, term:', term
             graph.parse(term)
             # TODO: osetrit neexistenci grafu na danem zdroji
+            # except HTTPError
 
             # namespaces binding
             filtered_graph = Graph()

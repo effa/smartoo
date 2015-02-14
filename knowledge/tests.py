@@ -20,30 +20,31 @@ SKIP_ONLINE = True
 class VerticalTestCase(TestCase):
     def setUp(self):
         Vertical.objects.create(
-            topic_uri='http://en.wikipedia.org/wiki/Pan_Tau',
+            topic_uri='http://dbpedia.org/resource/Pan_Tau',
             content='test')
 
     def test_vertical_retrieval(self):
         vertical = Vertical.objects.get(
-            topic_uri='http://en.wikipedia.org/wiki/Pan_Tau')
+            topic_uri='http://dbpedia.org/resource/Pan_Tau')
         self.assertIsNotNone(vertical)
         self.assertEqual(vertical.topic_uri,
-            'http://en.wikipedia.org/wiki/Pan_Tau')
+            'http://dbpedia.org/resource/Pan_Tau')
         self.assertEqual(vertical.get_name(), 'Pan Tau')
 
     def test_nonexisting_vrtical_retrieval(self):
         with self.assertRaises(ObjectDoesNotExist):
             Vertical.objects.get(
-                topic_uri='http://en.wikipedia.org/wiki/Russell')
+                topic_uri='http://dbpedia.org/resource/Russell')
 
     def test_content_retrieval(self):
         vertical = Vertical.objects.get(
-            topic_uri='http://en.wikipedia.org/wiki/Pan_Tau')
+            topic_uri='http://dbpedia.org/resource/Pan_Tau')
         self.assertEqual(vertical.content, 'test')
 
 
 class KnowledgeGraphTestCase(TestCase):
-    fixtures = ['knowledge-graph-henry8.xml']
+    #fixtures = ['knowledge-graph-henry8.xml', 'complete-lincoln.xml']
+    fixtures = ['complete-lincoln.xml']
 
     def setUp(self):
         # get fake knowledge builder (already in DB: see fixture)
@@ -79,13 +80,13 @@ class KnowledgeGraphTestCase(TestCase):
         self.assertIsNone(knowledge_graph.label(tomF, fallback_guess=False))
 
     def test_types_of_term(self):
-        term = RESOURCE['Henry_VIII_of_England']
+        term = RESOURCE['Abraham_Lincoln']
         knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term)
         self.assertIsInstance(knowledge_graph.types_of_term, dict)
         self.assertIn(term, knowledge_graph.types_of_term)
 
     def test_terms_of_type(self):
-        term = RESOURCE['Henry_VIII_of_England']
+        term = RESOURCE['Abraham_Lincoln']
         knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term)
         self.assertIsInstance(knowledge_graph.terms_of_type, dict)
         self.assertIn(ONTOLOGY['Person'], knowledge_graph.terms_of_type)
@@ -93,15 +94,15 @@ class KnowledgeGraphTestCase(TestCase):
             knowledge_graph.terms_of_type[ONTOLOGY['Person']])
 
     def test_types(self):
-        term = RESOURCE['Henry_VIII_of_England']
+        term = RESOURCE['Abraham_Lincoln']
         knowledge_graph = KnowledgeGraph.objects.get(
             topic_uri=term)
         types = knowledge_graph.types(term)
         self.assertIsInstance(types, set)
         self.assertIn(ONTOLOGY['Agent'], types)
         self.assertIn(ONTOLOGY['Person'], types)
-        self.assertIn(ONTOLOGY['Royalty'], types)
-        self.assertIn(ONTOLOGY['BritishRoyalty'], types)
+        #self.assertIn(ONTOLOGY['Royalty'], types)
+        #self.assertIn(ONTOLOGY['BritishRoyalty'], types)
         self.assertNotIn(ONTOLOGY['Activity'], types)
 
     def test_types_set_manually(self):
@@ -141,10 +142,46 @@ class KnowledgeGraphTestCase(TestCase):
         knowledge_graph.add((termB, RDF['type'], SMARTOO['term']))
         self.assertEqual(len(knowledge_graph.all_terms), 2)
 
+    def test_get_all_resources(self):
+        knowledge_graph = KnowledgeGraph()
+        termA = RESOURCE['A']
+        termB = RESOURCE['B']
+        self.assertEqual(len(knowledge_graph.get_all_resources()), 0)
+        knowledge_graph.add((termA, SMARTOO['sth'], SMARTOO['sth']))
+        self.assertEqual(len(knowledge_graph.get_all_resources()), 1)
+        knowledge_graph.add((SMARTOO['sth'], SMARTOO['sth'], termA))
+        self.assertEqual(len(knowledge_graph.get_all_resources()), 1)
+        knowledge_graph.add((SMARTOO['sth'], SMARTOO['sth'], termB))
+        self.assertEqual(len(knowledge_graph.get_all_resources()), 2)
+        self.assertIn(termA, knowledge_graph.get_all_resources())
+        self.assertIn(termB, knowledge_graph.get_all_resources())
+
+    def test_add_related_global_knowledge(self):
+        # !!!!!!!!!!!!!!!!!!!!1
+        # TODO: az to rozbehnu, vytvorit ze ziskanych dat fixtures
+        # (complete-lincoln.xml) a zakazat pristup k online zdrojum
+        topic = RESOURCE['Abraham_Lincoln']
+        vertical = Vertical.objects.get(topic_uri=topic)
+        article = Article(vertical=vertical)
+        knowledge_graph = KnowledgeGraph(topic_uri=topic)
+        knowledge_graph.add_related_global_knowledge(article, online=False)
+        #print knowledge_graph
+        #self.assertEqual(len(knowledge_graph.graph), 774)
+        # there are 29 terms in article + Lincoln graph
+        self.assertEqual(len(set(knowledge_graph.get_subjects())), 29)
+        # test few triples in the graph
+        self.assertIn(ONTOLOGY['Person'],
+            knowledge_graph.types(RESOURCE['Abraham_Lincoln']))
+        self.assertIn(ONTOLOGY['Person'],
+            knowledge_graph.types(RESOURCE['Andrew_Johnson']))
+        self.assertEqual(
+            knowledge_graph.label(RESOURCE['Tad_Lincoln'], fallback_guess=False),
+            'Tad Lincoln')
+
 
 class KnowledgeBuilderTestCase(TestCase):
     def setUp(self):
-        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
+        self.topic_uri = 'http://dbpedia.org/resource/Pan_Tau',
         Vertical.objects.create(
             topic_uri=self.topic_uri,
             content='test')
@@ -199,88 +236,48 @@ class KnowledgeBuilderTestCase(TestCase):
 # ----------------------------------------------------------------------------
 
 class ArticleTestCase(TestCase):
-    def setUp(self):
-        # TODO: use DB fixtures instead of this:
-        self.vertical = '''
-<doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln"\
-     title="Abraham Lincoln">
-<p heading="1">
-<term wuri="Abraham_Lincoln">
-Abraham	NP	Abraham-n
-Lincoln	NP	Lincoln-n
-</term>
-</p>
-<p>
-<s>
-<term wuri="Abraham_Lincoln" uncertainty="1">
-Abraham	NP	Abraham-n
-Lincoln	NP	Lincoln-n
-</term>
-was	VBD	be-v
-the	DT	the-x
-<term wuri="List_of_Presidents_of_the_United_States">
-16	CD	16-x
-<g/>
-th	NN	th-n
-president	NN	president-n
-of	IN	of-i
-the	DT	the-x
-United	NP	United-n
-States	NPS	States-n
-</term>
-<g/>
-.	SENT	.-x
-</s>
-<s>
-Lincoln	NP	Lincoln-n
-led	VVD	lead-v
-the	DT	the-x
-United	NP	United-n
-States	NPS	States-n
-through	IN	through-i
-its	PP$	its-d
-<term wuri="American_Civil_War">
-Civil	NP	Civil-n
-War	NP	War-n
-</term>
-<g/>
-.	SENT	.-x
-</s>
-'''.strip()
+    fixtures = ['vertical-lincoln.xml']
 
-        self.article = Article(
-            uri='http://en.wikipedia.org/wiki/Abraham_Lincoln',
-            vertical=self.vertical)
+    def setUp(self):
+        self.topic_uri = 'http://dbpedia.org/resource/Abraham_Lincoln'
+        self.vertical = Vertical.objects.get(topic_uri=self.topic_uri)
+        self.article = Article(vertical=self.vertical)
         #self.maxDiff = None
 
-    def test_get_vertical(self):
+    def test_parsing_vertical(self):
         self.assertEqual(self.article.get_name(), 'Abraham Lincoln')
-        self.assertEqual(self.article.get_uri(), 'http://en.wikipedia.org/wiki/Abraham_Lincoln')
+        self.assertEqual(self.article.get_topic_uri(), self.topic_uri)
         self.assertEqual(len(self.article.get_sentences()), 2)
+
+    def test_get_all_terms(self):
+        terms = self.article.get_all_terms()
+        self.assertIn(RESOURCE['Abraham_Lincoln'], terms)
+        self.assertIn(RESOURCE['American_Civil_War'], terms)
 
 
 # ----------------------------------------------------------------------------
 #  Behaviors Tests
 # ----------------------------------------------------------------------------
 
-class BehaviorsTestCase(TestCase):
-    def setUp(self):
-        self.BEHAVIORS = [
-            ('simple', {'alpha': 0.5})
-        ]
-        self.vertical = 'test'
-        self.article = Article(
-            uri='http://en.wikipedia.org/wiki/Abraham_Lincoln',
-            vertical=self.vertical)
+# NOTE: nevim, jak tyhle testy delat, aby byla jistota, ze se nepouzivaji
+# online zdroje a pritom hodnota techto testu je opravdu nizka, takze se bez
+# nich zatim objedu
+#class BehaviorsTestCase(TestCase):
+#    def setUp(self):
+#        self.BEHAVIORS = [
+#            ('simple', {'alpha': 0.5})
+#        ]
+#        self.vertical = Vertical()
+#        self.article = Article(self.vertical)
 
-    def test_behavior(self):
-        for behavior_name, parameters in self.BEHAVIORS:
-            knowledge_builder = KnowledgeBuilder(
-                behavior_name=behavior_name,
-                parameters=parameters)
-            behavior = knowledge_builder.get_behavior()
-            knowledge_graph = behavior.build_knowledge_graph(self.article)
-            self.assertIsInstance(knowledge_graph, KnowledgeGraph)
+#    def test_behavior(self):
+#        for behavior_name, parameters in self.BEHAVIORS:
+#            knowledge_builder = KnowledgeBuilder(
+#                behavior_name=behavior_name,
+#                parameters=parameters)
+#            behavior = knowledge_builder.get_behavior()
+#            knowledge_graph = behavior.build_knowledge_graph(self.article)
+#            self.assertIsInstance(knowledge_graph, KnowledgeGraph)
 
 
 # ----------------------------------------------------------------------------

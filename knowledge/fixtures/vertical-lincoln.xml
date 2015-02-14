@@ -1,25 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <django-objects version="1.0">
-  <object pk="1" model="knowledge.knowledgebuilder">
-    <field type="CharField" name="behavior_name">global-knowledge</field>
-    <field type="TextField" name="parameters">{}</field>
-  </object>
-  <object pk="2" model="knowledge.knowledgebuilder">
-    <field type="CharField" name="behavior_name">simple</field>
-    <field type="TextField" name="parameters">{}</field>
-  </object>
-  <object pk="1" model="exercises.exercisescreator">
-    <field type="CharField" name="behavior_name">quasi</field>
-    <field type="TextField" name="parameters">{}</field>
-  </object>
-  <object pk="1" model="exercises.exercisesgrader">
-    <field type="CharField" name="behavior_name">fake</field>
-    <field type="TextField" name="parameters">{}</field>
-  </object>
-  <object pk="1" model="practice.practicer">
-    <field type="CharField" name="behavior_name">fake</field>
-    <field type="TextField" name="parameters">{}</field>
-  </object>
   <object pk="1" model="knowledge.Vertical">
     <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln</field>
     <field type="TextField" name="content"><![CDATA[

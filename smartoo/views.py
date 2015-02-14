@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
-from common.utils.wiki import name_to_uri
+from common.utils.wiki import name_to_resource_uri
 from smartoo.models import Session
 #import json
 
@@ -36,7 +36,7 @@ def start_session(request, topic):
     # TODO: vytvoreni tematu ... musi existovat v DB vsech temat
     # TODO: normalizace tematu, osetretni neexistence, ...
     #topic = Topic.objects.get(uri=name_to_uri(topic))
-    topic_uri = name_to_uri(topic)
+    topic_uri = name_to_resource_uri(topic)
 
     # create session and select components
     session = Session(topic_uri=topic_uri)

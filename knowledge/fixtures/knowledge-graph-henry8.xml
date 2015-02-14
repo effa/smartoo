@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <django-objects version="1.0">
-  <object pk="2" model="knowledge.knowledgebuilder">
+  <object pk="11" model="knowledge.knowledgebuilder">
     <field type="CharField" name="behavior_name">fake</field>
     <field type="TextField" name="parameters">{}</field>
   </object>
-  <object pk="2" model="knowledge.knowledgegraph">
-    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">2</field>
+  <object pk="11" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">11</field>
     <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Henry_VIII_of_England</field>
     <field type="TextField" name="graph">
 @prefix dbpedia: &lt;http://dbpedia.org/resource/&gt; .

@@ -7,7 +7,7 @@ from exercises.models import GradedExercise, ExercisesGrader
 class ExercisesCreatorTestCase(TestCase):
     def setUp(self):
         # create a topic_uri, knowledge builder and knowledge graph
-        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
+        self.topic_uri = 'http://dbpedia.org/resource/Pan_Tau',
         self.knowledge_builder = KnowledgeBuilder.objects.create(
             behavior_name='fake',
             parameters={"alpha": 0.5})
@@ -35,7 +35,7 @@ class ExercisesCreatorTestCase(TestCase):
 class ExercisesGraderTestCase(TestCase):
     def setUp(self):
         # create a topic_uri, knowledge builder and knowledge graph
-        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
+        self.topic_uri = 'http://dbpedia.org/resource/Pan_Tau',
         self.knowledge_builder = KnowledgeBuilder.objects.create(
             behavior_name='fake',
             parameters={"alpha": 0.5})

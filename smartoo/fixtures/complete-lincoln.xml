@@ -1,0 +1,1911 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <object pk="1" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">global-knowledge</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="2" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="3" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">simple</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="exercises.exercisescreator">
+    <field type="CharField" name="behavior_name">quasi</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="exercises.exercisesgrader">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="practice.practicer">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="knowledge.Vertical">
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln</field>
+    <field type="TextField" name="content"><![CDATA[
+<doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln" title="Abraham Lincoln">
+<p heading="1">
+<term wuri="Abraham_Lincoln">
+Abraham	NP	Abraham-n
+Lincoln	NP	Lincoln-n
+</term>
+</p>
+<p>
+<s>
+<term wuri="Abraham_Lincoln" uncertainty="1">
+Abraham	NP	Abraham-n
+Lincoln	NP	Lincoln-n
+</term>
+was	VBD	be-v
+the	DT	the-x
+<term wuri="List_of_Presidents_of_the_United_States">
+16	CD	16-x
+<g/>
+th	NN	th-n
+president	NN	president-n
+of	IN	of-i
+the	DT	the-x
+United	NP	United-n
+States	NPS	States-n
+</term>
+<g/>
+.	SENT	.-x
+</s>
+<s>
+Lincoln	NP	Lincoln-n
+led	VVD	lead-v
+the	DT	the-x
+United	NP	United-n
+States	NPS	States-n
+through	IN	through-i
+its	PP$	its-d
+<term wuri="American_Civil_War">
+Civil	NP	Civil-n
+War	NP	War-n
+</term>
+<g/>
+.	SENT	.-x
+</s>
+</doc>]]>
+    </field>
+  </object>
+  <object pk="1" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Abraham_Lincoln a <http://dbpedia.org/class/yago/Adult109605289>,
+        <http://dbpedia.org/class/yago/AmericanPeopleOfEnglishDescent>,
+        <http://dbpedia.org/class/yago/AmericanPeopleOfWelshDescent>,
+        <http://dbpedia.org/class/yago/AssassinatedUnitedStatesPresidents>,
+        <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/Communicator109610660>,
+        <http://dbpedia.org/class/yago/Employer110054657>,
+        <http://dbpedia.org/class/yago/HeadOfState110164747>,
+        <http://dbpedia.org/class/yago/Holder110180178>,
+        <http://dbpedia.org/class/yago/IllinoisLawyers>,
+        <http://dbpedia.org/class/yago/Lawyer110249950>,
+        <http://dbpedia.org/class/yago/Leader109623038>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/Master110298647>,
+        <http://dbpedia.org/class/yago/Negotiator110351874>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Officeholder110371450>,
+        <http://dbpedia.org/class/yago/Official110372373>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/Owner110389398>,
+        <http://dbpedia.org/class/yago/PeopleFromColesCounty,Illinois>,
+        <http://dbpedia.org/class/yago/PeopleFromLaRueCounty,Kentucky>,
+        <http://dbpedia.org/class/yago/PeopleFromMaconCounty,Illinois>,
+        <http://dbpedia.org/class/yago/PeopleFromSpencerCounty,Indiana>,
+        <http://dbpedia.org/class/yago/PeopleFromSpringfield,Illinois>,
+        <http://dbpedia.org/class/yago/PeopleMurderedInWashington,D.C.>,
+        <http://dbpedia.org/class/yago/PeopleOfIllinoisInTheAmericanCivilWar>,
+        <http://dbpedia.org/class/yago/PeopleOfTheBlackHawkWar>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Politician110450303>,
+        <http://dbpedia.org/class/yago/Postmaster110459575>,
+        <http://dbpedia.org/class/yago/Postmasters>,
+        <http://dbpedia.org/class/yago/President110467179>,
+        <http://dbpedia.org/class/yago/PresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Professional110480253>,
+        <http://dbpedia.org/class/yago/Representative110522035>,
+        <http://dbpedia.org/class/yago/RepublicanPartyPresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/SkilledWorker110605985>,
+        <http://dbpedia.org/class/yago/UnionPoliticalLeaders>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/Worker109632518>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:OfficeHolder,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://umbel.org/umbel/rc/PersonWithOccupation>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "Abraham Lincoln"@en ;
+    dbpedia-owl:abstract "Abraham Lincoln /ˈeɪbrəhæm ˈlɪŋkən/ (February 12, 1809 – April 15, 1865) was the 16th President of the United States, serving from March 1861 until his assassination in April 1865. Lincoln led the United States through its Civil War—its bloodiest war and its greatest moral, constitutional and political crisis. In so doing he preserved the Union, abolished slavery, strengthened the federal government, and modernized the economy.Reared in a poor family on the western frontier, Lincoln was a self-educated lawyer in Illinois, a Whig Party leader, state legislator during the 1830s, and a one-term member of the Congress during the 1840s. He promoted rapid modernization of the economy through banks, canals, railroads and tariffs to encourage the building of factories; he opposed the war with Mexico in 1846. After a series of highly publicized debates in 1858 during which he opposed the expansion of slavery, Lincoln lost the U.S. Senate race to his archrival, Democrat Stephen A. Douglas. Lincoln, a moderate from a swing state, secured the Republican Party presidential nomination in 1860. With almost no support in the South, Lincoln swept the North and was elected president in 1860. His election prompted seven southern slave states to form the Confederacy. No compromise or reconciliation was found regarding slavery.When the North enthusiastically rallied behind the national flag after the Confederate attack on Fort Sumter on April 12, 1861, Lincoln concentrated on the military and political dimensions of the war effort. His goal was to reunite the nation. He suspended habeas corpus, arresting and temporarily detaining thousands of suspected secessionists in the border states without trial. Lincoln averted British intervention by defusing the Trent affair in late 1861. His numerous complex moves toward ending slavery centered on the Emancipation Proclamation in 1863, using the Army to protect escaped slaves, encouraging the border states to outlaw slavery, and helping push through Congress the Thirteenth Amendment to the United States Constitution, which permanently outlawed slavery. Lincoln closely supervised the war effort, especially the selection of top generals, including commanding general Ulysses S. Grant. He made the major decisions on Union war strategy, Lincoln's Navy set up a naval blockade that shut down the South's normal trade, helped take control of Kentucky and Tennessee, and gained control of the Southern river system using gunboats. He tried repeatedly to capture the Confederate capital at Richmond. Each time a general failed, Lincoln substituted another until finally Grant succeeded in 1865.An exceptionally astute politician deeply involved with power issues in each state, Lincoln reached out to \"War Democrats\" (who supported the North against the South), and managed his own re-election in the 1864 presidential election. As the leader of the moderate faction of the Republican party, Lincoln confronted Radical Republicans who demanded harsher treatment of the South, War Democrats who called for more compromise, Copperheads who despised him, and irreconcilable secessionists who plotted his death. Politically, Lincoln fought back with patronage, by pitting his opponents against each other, and by appealing to the American people with his powers of oratory. His Gettysburg Address of 1863 became an iconic statement of America's dedication to the principles of nationalism, republicanism, equal rights, liberty, and democracy. Lincoln held a moderate view of Reconstruction, seeking to reunite the nation speedily through a policy of generous reconciliation in the face of lingering and bitter divisiveness. Six days after the surrender of Confederate commanding general Robert E. Lee, Lincoln was assassinated by John Wilkes Booth, a noted actor and Confederate sympathizer.Lincoln has been consistently ranked both by scholars and the public as one of the greatest U.S. presidents."@en ;
+    dbpedia-owl:activeYearsEndDate "1849-03-04"^^xsd:date,
+        "1865-04-15"^^xsd:date ;
+    dbpedia-owl:activeYearsStartDate "1834-12-01"^^xsd:date,
+        "1847-03-04"^^xsd:date,
+        "1861-03-04"^^xsd:date ;
+    dbpedia-owl:battle dbpedia:Black_Hawk_War ;
+    dbpedia-owl:birthDate "1809-02-12"^^xsd:date ;
+    dbpedia-owl:birthPlace <http://dbpedia.org/resource/Hardin_County,_Kentucky>,
+        <http://dbpedia.org/resource/Hodgenville,_Kentucky> ;
+    dbpedia-owl:birthYear "1809+02:00"^^xsd:gYear ;
+    dbpedia-owl:child dbpedia:Edward_Baker_Lincoln,
+        dbpedia:Robert_Todd_Lincoln,
+        dbpedia:Tad_Lincoln,
+        dbpedia:William_Wallace_Lincoln ;
+    dbpedia-owl:deathDate "1865-04-15"^^xsd:date ;
+    dbpedia-owl:deathPlace <http://dbpedia.org/resource/Petersen_House_(Washington,_D.C.)>,
+        <http://dbpedia.org/resource/Washington,_D.C.> ;
+    dbpedia-owl:deathYear "1865+02:00"^^xsd:gYear ;
+    dbpedia-owl:individualisedGnd "11857308X" ;
+    dbpedia-owl:militaryRank <http://dbpedia.org/resource/Captain_(United_States)>,
+        <http://dbpedia.org/resource/Private_(rank)> ;
+    dbpedia-owl:office "Member of the Illinois House of Representatives",
+        "President of the United States" ;
+    dbpedia-owl:orderInOffice "16th" ;
+    dbpedia-owl:party <http://dbpedia.org/resource/National_Union_Party_(United_States)>,
+        <http://dbpedia.org/resource/Republican_Party_(United_States)>,
+        <http://dbpedia.org/resource/Whig_Party_(United_States)> ;
+    dbpedia-owl:profession dbpedia:Lawyer ;
+    dbpedia-owl:region dbpedia:Illinois,
+        <http://dbpedia.org/resource/Illinois's_7th_congressional_district> ;
+    dbpedia-owl:religion dbpedia:Abraham_Lincoln_and_religion ;
+    dbpedia-owl:restingPlace <http://dbpedia.org/resource/Springfield,_Illinois> ;
+    dbpedia-owl:serviceEndYear "1832+02:00"^^xsd:gYear ;
+    dbpedia-owl:serviceStartYear "1832+02:00"^^xsd:gYear ;
+    dbpedia-owl:spouse dbpedia:Mary_Todd_Lincoln ;
+    dbpedia-owl:successor dbpedia:Andrew_Johnson,
+        dbpedia:Thomas_L._Harris ;
+    dbpedia-owl:termPeriod dbpedia:Abraham_Lincoln__1,
+        dbpedia:Abraham_Lincoln__2,
+        dbpedia:Abraham_Lincoln__3 ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Abraham_Lincoln_November_1863.jpg?width=300> ;
+    dbpedia-owl:ulanId "500344436" ;
+    dbpedia-owl:vicePresident dbpedia:Andrew_Johnson,
+        dbpedia:Hannibal_Hamlin ;
+    rdfs:comment "Abraham Lincoln /ˈeɪbrəhæm ˈlɪŋkən/ (February 12, 1809 – April 15, 1865) was the 16th President of the United States, serving from March 1861 until his assassination in April 1865. Lincoln led the United States through its Civil War—its bloodiest war and its greatest moral, constitutional and political crisis."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Abraham_Lincoln_November_1863.jpg> ;
+    foaf:givenName "Abraham"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Abraham_Lincoln> ;
+    foaf:name "Abraham Lincoln"@en,
+        "Lincoln, Abraham"@en ;
+    foaf:surname "Lincoln"@en .
+    ]]>
+    </field>
+  </object>
+  <object pk="2" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln_and_religion</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Abraham_Lincoln_and_religion rdfs:label "Abraham Lincoln and religion"@en ;
+    dbpedia-owl:abstract "Abraham Lincoln's religious beliefs are a matter of interest among scholars and the public. Lincoln grew up in a highly religious family, but never joined any church. As a young man he was a skeptic. He frequently referenced God. He had a deep knowledge of the Bible and quoted it often. He attended Protestant church services with his wife and children, and after the deaths of two children became more intensely concerned with religion. He was private about his beliefs and respected the beliefs of others. Lincoln never made a clear profession of Christian beliefs. However he did believe in an all-powerful God that shaped events and, by 1865, was expressing those beliefs in major speeches."@en ;
+    dbpedia-owl:thumbnail <http://en.wikipedia.org/wiki/Special:FilePath/Abraham_Lincoln_head_on_shoulders_photo_portrait.jpg?width=300> ;
+    rdfs:comment "Abraham Lincoln's religious beliefs are a matter of interest among scholars and the public. Lincoln grew up in a highly religious family, but never joined any church. As a young man he was a skeptic. He frequently referenced God. He had a deep knowledge of the Bible and quoted it often. He attended Protestant church services with his wife and children, and after the deaths of two children became more intensely concerned with religion."@en ;
+    foaf:depiction <http://en.wikipedia.org/wiki/Special:FilePath/Abraham_Lincoln_head_on_shoulders_photo_portrait.jpg> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Abraham_Lincoln_and_religion> .
+
+]]>
+    </field>
+  </object>
+  <object pk="3" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/National_Union_Party_(United_States)</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/National_Union_Party_(United_States)> a <http://dbpedia.org/class/yago/Abstraction100002137>,
+        <http://dbpedia.org/class/yago/DefunctPoliticalPartiesInTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Group100031264>,
+        <http://dbpedia.org/class/yago/Organization108008335>,
+        <http://dbpedia.org/class/yago/Party108256968>,
+        <http://dbpedia.org/class/yago/PoliticalPartiesEstablishedIn1864>,
+        <http://dbpedia.org/class/yago/SocialGroup107950920>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:Organisation,
+        dbpedia-owl:PoliticalParty,
+        <http://schema.org/Organization>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#SocialPerson>,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    rdfs:label "National Union Party (United States)"@en ;
+    dbpedia-owl:abstract "The National Union Party was the name used by the Republican Party for the national ticket in the 1864 presidential election, held during the Civil War. State Republican parties did not usually change their name.The temporary name was used to attract War Democrats and Border State Unionists who would not vote for the Republican Party. The party nominated incumbent President Abraham Lincoln and former Democrat Andrew Johnson, who were elected in a landslide."@en ;
+    dbpedia-owl:thumbnail <http://en.wikipedia.org/wiki/Special:FilePath/Republican_presidential_ticket_1864b.jpg?width=300> ;
+    rdfs:comment "The National Union Party was the name used by the Republican Party for the national ticket in the 1864 presidential election, held during the Civil War. State Republican parties did not usually change their name.The temporary name was used to attract War Democrats and Border State Unionists who would not vote for the Republican Party. The party nominated incumbent President Abraham Lincoln and former Democrat Andrew Johnson, who were elected in a landslide."@en ;
+    foaf:depiction <http://en.wikipedia.org/wiki/Special:FilePath/Republican_presidential_ticket_1864b.jpg> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/National_Union_Party_(United_States)> .
+
+]]>
+    </field>
+  </object>
+  <object pk="4" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Captain_(United_States)</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Captain_(United_States)> a <http://dbpedia.org/class/yago/Abstraction100002137>,
+        <http://dbpedia.org/class/yago/Arrangement107938773>,
+        <http://dbpedia.org/class/yago/Attribute100024264>,
+        <http://dbpedia.org/class/yago/Formation108426461>,
+        <http://dbpedia.org/class/yago/Group100031264>,
+        <http://dbpedia.org/class/yago/Line108430568>,
+        <http://dbpedia.org/class/yago/MilitaryRank114431471>,
+        <http://dbpedia.org/class/yago/MilitaryRanksOfTheUnitedStatesArmy>,
+        <http://dbpedia.org/class/yago/MilitaryRanksOfTheUnitedStatesCoastGuard>,
+        <http://dbpedia.org/class/yago/MilitaryRanksOfTheUnitedStatesNavy>,
+        <http://dbpedia.org/class/yago/OfficerRanksOfTheUnitedStatesAirForce>,
+        <http://dbpedia.org/class/yago/Rank108431942>,
+        <http://dbpedia.org/class/yago/Rank114429985>,
+        <http://dbpedia.org/class/yago/State100024720>,
+        <http://dbpedia.org/class/yago/Status113945919>,
+        <http://dbpedia.org/class/yago/UnitedStatesMarineCorpsRanks> ;
+    rdfs:label "Captain (United States)"@en ;
+    dbpedia-owl:abstract "In the United States uniformed services, captain is a commissioned officer rank. In keeping with the traditions of the militaries of most nations, the rank varies between the services, being a senior rank in the naval services and a junior rank in the ground and air forces.For the naval rank, a captain is a senior officer of pay grade O-6 (the sixth officer rank), typically commanding seagoing vessels, major aviation commands and shore installations. This rank is used by the U.S. Navy, U.S. Coast Guard, U.S. Public Health Service Commissioned Corps, the NOAA Commissioned Corps, and the U.S. Maritime Service.For the ground and air forces rank, a captain is of pay grade O-3 (the third officer rank), usually serving as the commander of a company-sized unit in the ground forces, as a flight leader or other squadron officer in air units, or serving as an executive officer or staff officer for a larger unit such as a battalion or squadron. This rank is used by the U.S. Army, U.S. Air Force, and U.S. Marine Corps.The rank of captain may also be used in other organizations outside of the military, particularly in fire departments, police, and law enforcement."@en ;
+    rdfs:comment "In the United States uniformed services, captain is a commissioned officer rank. In keeping with the traditions of the militaries of most nations, the rank varies between the services, being a senior rank in the naval services and a junior rank in the ground and air forces.For the naval rank, a captain is a senior officer of pay grade O-6 (the sixth officer rank), typically commanding seagoing vessels, major aviation commands and shore installations. This rank is used by the U.S. Navy, U.S."@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Captain_(United_States)> .
+
+]]>
+    </field>
+  </object>
+  <object pk="5" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Robert_Todd_Lincoln</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Robert_Todd_Lincoln a <http://dbpedia.org/class/yago/Alumnus109786338>,
+        <http://dbpedia.org/class/yago/AmateurAstronomers>,
+        <http://dbpedia.org/class/yago/Ambassador109787534>,
+        <http://dbpedia.org/class/yago/AmbassadorsOfTheUnitedStatesToTheUnitedKingdom>,
+        <http://dbpedia.org/class/yago/AmericanPeopleOfEnglishDescent>,
+        <http://dbpedia.org/class/yago/ArmyOfficer109809749>,
+        <http://dbpedia.org/class/yago/Astronomer109818343>,
+        <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/Child109917593>,
+        <http://dbpedia.org/class/yago/ChildrenOfPresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Diplomat110013927>,
+        <http://dbpedia.org/class/yago/HarvardLawSchoolAlumni>,
+        <http://dbpedia.org/class/yago/HarvardUniversityAlumni>,
+        <http://dbpedia.org/class/yago/Head110162991>,
+        <http://dbpedia.org/class/yago/Intellectual109621545>,
+        <http://dbpedia.org/class/yago/Juvenile109622049>,
+        <http://dbpedia.org/class/yago/Leader109623038>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/MilitaryOfficer110317007>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Official110372373>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/PeopleFromSpringfield,Illinois>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhillipsExeterAcademyAlumni>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Physicist110428004>,
+        <http://dbpedia.org/class/yago/Scholar110557854>,
+        <http://dbpedia.org/class/yago/Scientist110560637>,
+        <http://dbpedia.org/class/yago/Secretary110570019>,
+        <http://dbpedia.org/class/yago/Serviceman110582746>,
+        <http://dbpedia.org/class/yago/SkilledWorker110605985>,
+        <http://dbpedia.org/class/yago/UnionArmyOfficers>,
+        <http://dbpedia.org/class/yago/UnitedStatesSecretariesOfWar>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/Worker109632518>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:OfficeHolder,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "Robert Todd Lincoln"@en ;
+    dbpedia-owl:abstract "Robert Todd Lincoln (August 1, 1843 – July 26, 1926) was an American lawyer and Secretary of War, and the first son of President Abraham Lincoln and Mary Todd Lincoln. Born in Springfield, Illinois, United States, he was one of two of Lincoln's four sons to live to adulthood, and the only one to survive into the 1900s."@en ;
+    dbpedia-owl:activeYearsEndDate "1885-03-05"^^xsd:date ;
+    dbpedia-owl:activeYearsStartDate "1881-03-05"^^xsd:date ;
+    dbpedia-owl:almaMater dbpedia:Harvard_University,
+        dbpedia:Old_University_of_Chicago ;
+    dbpedia-owl:battle dbpedia:American_Civil_War ;
+    dbpedia-owl:birthDate "1843-08-01"^^xsd:date ;
+    dbpedia-owl:birthPlace <http://dbpedia.org/resource/Springfield,_Illinois>,
+        dbpedia:United_States ;
+    dbpedia-owl:birthYear "1843+02:00"^^xsd:gYear ;
+    dbpedia-owl:child dbpedia:Abraham_Lincoln_II,
+        dbpedia:Jessie_Harlan_Lincoln,
+        dbpedia:Mamie_Lincoln ;
+    dbpedia-owl:country dbpedia:United_States ;
+    dbpedia-owl:deathDate "1926-07-26"^^xsd:date ;
+    dbpedia-owl:deathPlace <http://dbpedia.org/resource/Manchester_(town),_Vermont>,
+        dbpedia:United_States ;
+    dbpedia-owl:deathYear "1926+02:00"^^xsd:gYear ;
+    dbpedia-owl:militaryBranch dbpedia:Union_Army ;
+    dbpedia-owl:militaryRank <http://dbpedia.org/resource/Captain_(United_States_O-3)> ;
+    dbpedia-owl:orderInOffice "35th" ;
+    dbpedia-owl:party <http://dbpedia.org/resource/Republican_Party_(United_States)> ;
+    dbpedia-owl:president dbpedia:Benjamin_Harrison,
+        dbpedia:Chester_A._Arthur,
+        dbpedia:James_A._Garfield ;
+    dbpedia-owl:profession dbpedia:Lawyer,
+        dbpedia:Politician ;
+    dbpedia-owl:restingPlace <http://dbpedia.org/resource/Arlington_County,_Virginia>,
+        dbpedia:Arlington_National_Cemetery ;
+    dbpedia-owl:serviceEndYear "1865+02:00"^^xsd:gYear ;
+    dbpedia-owl:serviceStartYear "1865+02:00"^^xsd:gYear ;
+    dbpedia-owl:spouse dbpedia:Mary_Eunice_Harlan ;
+    dbpedia-owl:successor dbpedia:Thomas_F._Bayard,
+        dbpedia:William_Crowninshield_Endicott ;
+    dbpedia-owl:termPeriod dbpedia:Robert_Todd_Lincoln__1 ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Robt-T-Lincoln-ca-1865.jpeg?width=300> ;
+    dbpedia-owl:viafId "60326336" ;
+    rdfs:comment "Robert Todd Lincoln (August 1, 1843 – July 26, 1926) was an American lawyer and Secretary of War, and the first son of President Abraham Lincoln and Mary Todd Lincoln. Born in Springfield, Illinois, United States, he was one of two of Lincoln's four sons to live to adulthood, and the only one to survive into the 1900s."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Robt-T-Lincoln-ca-1865.jpeg> ;
+    foaf:givenName "Robert Todd"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Robert_Todd_Lincoln> ;
+    foaf:name "Lincoln, Robert Todd"@en,
+        "Robert Todd Lincoln"@en ;
+    foaf:surname "Lincoln"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="6" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Petersen_House_(Washington,_D.C.)</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Petersen_House_(Washington,_D.C.)> a <http://dbpedia.org/class/yago/Artifact100021939>,
+        <http://dbpedia.org/class/yago/Depository103177349>,
+        <http://dbpedia.org/class/yago/Facility103315023>,
+        <http://dbpedia.org/class/yago/HistoricHouseMuseumsInWashington,D.C.>,
+        <http://dbpedia.org/class/yago/Museum103800563>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/YagoGeoEntity>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:ArchitecturalStructure,
+        dbpedia-owl:Building,
+        dbpedia-owl:Place,
+        <http://dbpedia.org/ontology/Wikidata:Q532>,
+        <http://schema.org/Place>,
+        <http://umbel.org/umbel/rc/Place>,
+        <http://www.ontologydesignpatterns.org/ont/d0.owl#Location>,
+        <http://www.opengis.net/gml/_Feature>,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    rdfs:label "Petersen House (Washington, D.C.)"@en ;
+    dbpedia-owl:abstract "The Petersen House is a 19th-century federal style rowhouse located at 516 10th Street NW in Washington, D.C. On April 15, 1865, United States President Abraham Lincoln died there after being shot the previous evening at Ford's Theatre, which was located across the street. The house was built in 1849 by William A. Petersen, a German tailor."@en ;
+    dbpedia-owl:area 1.17359e+03 ;
+    dbpedia-owl:governingBody dbpedia:National_Park_Service ;
+    dbpedia-owl:location <http://dbpedia.org/resource/Washington,_D.C.> ;
+    dbpedia-owl:numberOfVisitors 856079 ;
+    dbpedia-owl:numberOfVisitorsAsOf "2005+02:00"^^xsd:gYear ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Petersen_House-Ford's_Theatre_NHS.jpg?width=300> ;
+    dbpedia-owl:yearOfConstruction "1849+02:00"^^xsd:gYear ;
+    rdfs:comment "The Petersen House is a 19th-century federal style rowhouse located at 516 10th Street NW in Washington, D.C. On April 15, 1865, United States President Abraham Lincoln died there after being shot the previous evening at Ford's Theatre, which was located across the street. The house was built in 1849 by William A. Petersen, a German tailor."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Petersen_House-Ford's_Theatre_NHS.jpg> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Petersen_House_(Washington,_D.C.)> ;
+    foaf:name "Petersen House"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="7" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Mary_Todd_Lincoln</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Mary_Todd_Lincoln a <http://dbpedia.org/class/yago/Achiever109762821>,
+        <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/FirstLadiesOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/FirstLady110092880>,
+        <http://dbpedia.org/class/yago/Holder110180178>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Officeholder110371450>,
+        <http://dbpedia.org/class/yago/Official110372373>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/Owner110389398>,
+        <http://dbpedia.org/class/yago/PeopleWithBipolarDisorder>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/SkilledWorker110605985>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/Worker109632518>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:OfficeHolder,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "Mary Todd Lincoln"@en ;
+    dbpedia-owl:abstract "Mary Ann Todd Lincoln (née Todd; December 13, 1818 – July 16, 1882) was the wife of the sixteenth President of the United States, Abraham Lincoln, and was First Lady of the United States from 1861 to 1865.A member of a large, wealthy Kentucky family, Mary was well educated. After living in the Todd House and a finishing school during her teens, she moved to Springfield, in Illinois where she lived for a time with her married sister Elizabeth Edwards. Before she married Abraham Lincoln, Mary was courted by his long-time political opponent Stephen A. Douglas. She and Lincoln had four sons together, only one of whom outlived her. Their home of about 17 years still stands at Eighth and Jackson Streets in Springfield, Illinois.Mary Lincoln suffered from migraine headaches and other severe illnesses through much of her adult life. She supported her husband throughout his presidency. She witnessed his fatal shooting when they were together in the President's Box at Ford's Theatre on Tenth Street in Washington."@en ;
+    dbpedia-owl:activeYearsEndDate "1865-04-15"^^xsd:date ;
+    dbpedia-owl:activeYearsStartDate "1861-03-04"^^xsd:date ;
+    dbpedia-owl:birthDate "1818-12-13"^^xsd:date ;
+    dbpedia-owl:birthPlace dbpedia:Kentucky,
+        <http://dbpedia.org/resource/Lexington,_Kentucky>,
+        dbpedia:United_States ;
+    dbpedia-owl:birthYear "1818+02:00"^^xsd:gYear ;
+    dbpedia-owl:child dbpedia:Edward_Baker_Lincoln,
+        dbpedia:Robert_Todd_Lincoln,
+        dbpedia:Tad_Lincoln,
+        dbpedia:William_Wallace_Lincoln ;
+    dbpedia-owl:deathDate "1882-07-16"^^xsd:date ;
+    dbpedia-owl:deathPlace dbpedia:Illinois,
+        <http://dbpedia.org/resource/Springfield,_Illinois>,
+        dbpedia:United_States ;
+    dbpedia-owl:deathYear "1882+02:00"^^xsd:gYear ;
+    dbpedia-owl:orderInOffice "First Lady of the United States" ;
+    dbpedia-owl:religion dbpedia:Presbyterianism ;
+    dbpedia-owl:spouse dbpedia:Abraham_Lincoln ;
+    dbpedia-owl:successor dbpedia:Eliza_McCardle_Johnson ;
+    dbpedia-owl:termPeriod dbpedia:Mary_Todd_Lincoln__1 ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Mary_Todd_Lincoln2crop.jpg?width=300> ;
+    dbpedia-owl:viafId "52497655" ;
+    rdfs:comment "Mary Ann Todd Lincoln (née Todd; December 13, 1818 – July 16, 1882) was the wife of the sixteenth President of the United States, Abraham Lincoln, and was First Lady of the United States from 1861 to 1865.A member of a large, wealthy Kentucky family, Mary was well educated. After living in the Todd House and a finishing school during her teens, she moved to Springfield, in Illinois where she lived for a time with her married sister Elizabeth Edwards."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Mary_Todd_Lincoln2crop.jpg> ;
+    foaf:givenName "Mary Todd"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Mary_Todd_Lincoln> ;
+    foaf:name "Lincoln, Mary Todd"@en,
+        "Mary Ann Todd Lincoln"@en,
+        "Mary Todd Lincoln"@en ;
+    foaf:surname "Lincoln"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="8" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Andrew_Johnson</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Andrew_Johnson a <http://dbpedia.org/class/yago/Administrator109770949>,
+        <http://dbpedia.org/class/yago/AmericanPeopleOfEnglishDescent>,
+        <http://dbpedia.org/class/yago/AmericanPeopleOfScotch-IrishDescent>,
+        <http://dbpedia.org/class/yago/Authority109824609>,
+        <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/CivilAuthority110541833>,
+        <http://dbpedia.org/class/yago/CommissionedMilitaryOfficer109943239>,
+        <http://dbpedia.org/class/yago/CommissionedOfficer109942970>,
+        <http://dbpedia.org/class/yago/Communicator109610660>,
+        <http://dbpedia.org/class/yago/Creator109614315>,
+        <http://dbpedia.org/class/yago/DemocraticPartyPresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/DemocraticPartyStateGovernorsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/DemocraticPartyUnitedStatesSenators>,
+        <http://dbpedia.org/class/yago/DemocraticPartyVicePresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Executive110069645>,
+        <http://dbpedia.org/class/yago/Garmentmaker110120816>,
+        <http://dbpedia.org/class/yago/General110123844>,
+        <http://dbpedia.org/class/yago/GeneralOfficer110125786>,
+        <http://dbpedia.org/class/yago/Governor110140314>,
+        <http://dbpedia.org/class/yago/GovernorsOfTennessee>,
+        <http://dbpedia.org/class/yago/Head110162991>,
+        <http://dbpedia.org/class/yago/HeadOfState110164747>,
+        <http://dbpedia.org/class/yago/Holder110180178>,
+        <http://dbpedia.org/class/yago/ImpeachedUnitedStatesOfficials>,
+        <http://dbpedia.org/class/yago/Lawgiver110249270>,
+        <http://dbpedia.org/class/yago/Leader109623038>,
+        <http://dbpedia.org/class/yago/Legislator110253995>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/Maker110284064>,
+        <http://dbpedia.org/class/yago/Mayor110303814>,
+        <http://dbpedia.org/class/yago/MayorsOfPlacesInTennessee>,
+        <http://dbpedia.org/class/yago/MilitaryOfficer110317007>,
+        <http://dbpedia.org/class/yago/Needleworker110351281>,
+        <http://dbpedia.org/class/yago/Negotiator110351874>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Officeholder110371450>,
+        <http://dbpedia.org/class/yago/Official110372373>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/Owner110389398>,
+        <http://dbpedia.org/class/yago/PeopleFromGreeneville,Tennessee>,
+        <http://dbpedia.org/class/yago/PeopleFromRaleigh,NorthCarolina>,
+        <http://dbpedia.org/class/yago/PeopleOfAmericanReconstruction>,
+        <http://dbpedia.org/class/yago/PeopleOfNorthCarolinaInTheAmericanCivilWar>,
+        <http://dbpedia.org/class/yago/PeopleOfTennesseeInTheAmericanCivilWar>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Politician110450303>,
+        <http://dbpedia.org/class/yago/Politician110451263>,
+        <http://dbpedia.org/class/yago/President110467179>,
+        <http://dbpedia.org/class/yago/PresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Representative110522035>,
+        <http://dbpedia.org/class/yago/Senator110578471>,
+        <http://dbpedia.org/class/yago/Serviceman110582746>,
+        <http://dbpedia.org/class/yago/SkilledWorker110605985>,
+        <http://dbpedia.org/class/yago/StateSenator110650076>,
+        <http://dbpedia.org/class/yago/Tailor110689564>,
+        <http://dbpedia.org/class/yago/Tailors>,
+        <http://dbpedia.org/class/yago/TennesseeStateSenators>,
+        <http://dbpedia.org/class/yago/UnionArmyGenerals>,
+        <http://dbpedia.org/class/yago/UnionPoliticalLeaders>,
+        <http://dbpedia.org/class/yago/UnitedStatesSenatorsFromTennessee>,
+        <http://dbpedia.org/class/yago/VicePresident110751265>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/Worker109632518>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:OfficeHolder,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "Andrew Johnson"@en ;
+    dbpedia-owl:abstract "Andrew Johnson (December 29, 1808 – July 31, 1875) was the 17th President of the United States, serving from 1865 to 1869. Johnson became president as Abraham Lincoln's vice president at the time of Lincoln's assassination. A Democrat who ran with Lincoln on the National Union ticket, Johnson came to office as the Civil War concluded. The new president favored quick restoration of the seceded states to the Union. His plans did not give protection to the former slaves, and he came into conflict with the Republican-dominated Congress, culminating in his impeachment by the House of Representatives. The first American president to be impeached, he was acquitted in the Senate by one vote.Johnson was born in poverty in Raleigh, North Carolina. Apprenticed as a tailor, he worked in several frontier towns before settling in Greeneville, Tennessee. He served as alderman and mayor there before being elected to the Tennessee House of Representatives in 1835. After brief service in the Tennessee Senate, Johnson was elected to the federal House of Representatives in 1843, where he served five two-year terms. He became Governor of Tennessee for four years, and was elected by the legislature to the Senate in 1857. In his congressional service, he sought passage of the Homestead Bill, which was enacted soon after he left his Senate seat in 1862.As Southern states, including Tennessee, seceded to form the Confederate States of America, Johnson remained firmly with the Union. In 1862, Lincoln appointed him as military governor of Tennessee after it had been retaken. In 1864, Johnson, as a War Democrat and Southern Unionist, was a logical choice as running mate for Lincoln, who wished to send a message of national unity in his re-election campaign; their ticket easily won. Johnson was sworn in as vice president in March 1865, giving a rambling and possibly drunken speech, and he secluded himself to avoid public ridicule. Six weeks later, the assassination of Lincoln made him president.Johnson implemented his own form of Presidential Reconstruction – a series of proclamations directing the seceded states to hold conventions and elections to re-form their civil governments. When Southern states returned many of their old leaders, and passed Black Codes to deprive the freedmen of many civil liberties, Congress refused to seat legislators from those states and advanced legislation to overrule the Southern actions. Johnson vetoed their bills, and Congress overrode him, setting a pattern for the remainder of his presidency. Johnson opposed the Fourteenth Amendment, which gave citizenship to African-Americans. As the conflict between the branches of government grew, Congress passed the Tenure of Office Act, restricting Johnson in firing Cabinet officials. When he persisted in trying to dismiss Secretary of War Edwin Stanton, he was impeached by the House of Representatives, and narrowly avoided conviction in the Senate and removal from office. Returning to Tennessee after his presidency, Johnson sought political vindication, and gained it in his eyes when he was elected to the Senate again in 1875 (the only former president to serve there), just months before his death. Although Johnson's ranking has fluctuated over time, he is generally considered among the worst American presidents for his opposition to federally guaranteed rights for African Americans."@en ;
+    dbpedia-owl:activeYearsEndDate "1853-03-03"^^xsd:date,
+        "1857-11-03"^^xsd:date,
+        "1862-03-04"^^xsd:date,
+        "1865-03-04"^^xsd:date,
+        "1865-04-15"^^xsd:date,
+        "1869-03-04"^^xsd:date,
+        "1875-07-31"^^xsd:date ;
+    dbpedia-owl:activeYearsStartDate "1843-03-04"^^xsd:date,
+        "1853-10-17"^^xsd:date,
+        "1857-10-08"^^xsd:date,
+        "1862-03-12"^^xsd:date,
+        "1865-03-04"^^xsd:date,
+        "1865-04-15"^^xsd:date,
+        "1875-03-04"^^xsd:date ;
+    dbpedia-owl:battle dbpedia:American_Civil_War ;
+    dbpedia-owl:birthDate "1808-12-29"^^xsd:date ;
+    dbpedia-owl:birthPlace dbpedia:North_Carolina,
+        <http://dbpedia.org/resource/Raleigh,_North_Carolina> ;
+    dbpedia-owl:birthYear "1808+02:00"^^xsd:gYear ;
+    dbpedia-owl:deathDate "1875-07-31"^^xsd:date ;
+    dbpedia-owl:deathPlace <http://dbpedia.org/resource/Elizabethton,_Tennessee>,
+        <http://dbpedia.org/resource/Greeneville,_Tennessee>,
+        dbpedia:Tennessee ;
+    dbpedia-owl:deathYear "1875+02:00"^^xsd:gYear ;
+    dbpedia-owl:individualisedGnd "118776282" ;
+    dbpedia-owl:lccnId "n/79/56304" ;
+    dbpedia-owl:militaryBranch dbpedia:Union_Army ;
+    dbpedia-owl:militaryRank <http://dbpedia.org/resource/Brigadier_general_(United_States)> ;
+    dbpedia-owl:office "15th Governor of Tennessee",
+        "16th Vice President of the United States",
+        "17th President of the United States",
+        "Military Governor of Tennessee" ;
+    dbpedia-owl:otherParty <http://dbpedia.org/resource/National_Union_Party_(United_States)> ;
+    dbpedia-owl:party <http://dbpedia.org/resource/Democratic_Party_(United_States)> ;
+    dbpedia-owl:president dbpedia:Abraham_Lincoln ;
+    dbpedia-owl:region dbpedia:Tennessee,
+        <http://dbpedia.org/resource/Tennessee's_1st_congressional_district> ;
+    dbpedia-owl:restingPlace dbpedia:Andrew_Johnson_National_Cemetery,
+        <http://dbpedia.org/resource/Greeneville,_Tennessee> ;
+    dbpedia-owl:seniority "United States Senator" ;
+    dbpedia-owl:serviceEndYear "1865+02:00"^^xsd:gYear ;
+    dbpedia-owl:serviceStartYear "1862+02:00"^^xsd:gYear ;
+    dbpedia-owl:spouse dbpedia:Eliza_McCardle_Johnson ;
+    dbpedia-owl:successor dbpedia:Brookins_Campbell,
+        dbpedia:David_M._Key,
+        dbpedia:David_T._Patterson,
+        dbpedia:Isham_G._Harris,
+        dbpedia:Schuyler_Colfax,
+        dbpedia:Ulysses_S._Grant,
+        dbpedia:William_Gannaway_Brownlow ;
+    dbpedia-owl:termPeriod dbpedia:Andrew_Johnson__1,
+        dbpedia:Andrew_Johnson__2,
+        dbpedia:Andrew_Johnson__3,
+        dbpedia:Andrew_Johnson__4,
+        dbpedia:Andrew_Johnson__5,
+        dbpedia:Andrew_Johnson__6,
+        dbpedia:Andrew_Johnson__7 ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/President_Andrew_Johnson.jpg?width=300> ;
+    dbpedia-owl:viafId "73872723" ;
+    rdfs:comment "Andrew Johnson (December 29, 1808 – July 31, 1875) was the 17th President of the United States, serving from 1865 to 1869. Johnson became president as Abraham Lincoln's vice president at the time of Lincoln's assassination. A Democrat who ran with Lincoln on the National Union ticket, Johnson came to office as the Civil War concluded. The new president favored quick restoration of the seceded states to the Union."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/President_Andrew_Johnson.jpg> ;
+    foaf:givenName "Andrew"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Andrew_Johnson> ;
+    foaf:name "Andrew Johnson"@en,
+        "Johnson, Andrew"@en ;
+    foaf:surname "Johnson"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="9" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Lawyer</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Lawyer rdfs:label "Lawyer"@en ;
+    dbpedia-owl:abstract "A lawyer, according to Black's Law Dictionary, is \"a person learned in the law; as an attorney, counsel or solicitor; a person who is practicing law.\" Law is the system of rules of conduct established by the sovereign government of a society to correct wrongs, maintain the stability of political and social authority, and deliver justice. Working as a lawyer involves the practical application of abstract legal theories and knowledge to solve specific individualized problems, or to advance the interests of those who retain (i.e., hire) lawyers to perform legal services.The role of the lawyer varies significantly across legal jurisdictions, and so it can be treated here in only the most general terms."@en ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/M_Battye.jpg?width=300> ;
+    rdfs:comment "A lawyer, according to Black's Law Dictionary, is \"a person learned in the law; as an attorney, counsel or solicitor; a person who is practicing law.\" Law is the system of rules of conduct established by the sovereign government of a society to correct wrongs, maintain the stability of political and social authority, and deliver justice."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/M_Battye.jpg> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Lawyer> .
+
+]]>
+    </field>
+  </object>
+  <object pk="10" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/William_Wallace_Lincoln</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:William_Wallace_Lincoln a <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/Child109917593>,
+        <http://dbpedia.org/class/yago/ChildrenOfPresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Juvenile109622049>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "William Wallace Lincoln"@en ;
+    dbpedia-owl:abstract "William Wallace \"Willie\" Lincoln (December 21, 1850 – February 20, 1862) was the third son of Abraham Lincoln and Mary Todd Lincoln. He died at the age of 11 due to illness. He was named after Mary's brother-in-law Dr. William Wallace."@en ;
+    dbpedia-owl:birthDate "1850-12-21"^^xsd:date ;
+    dbpedia-owl:birthName "William Wallace Lincoln"@en ;
+    dbpedia-owl:birthPlace <http://dbpedia.org/resource/Springfield,_Illinois> ;
+    dbpedia-owl:birthYear "1850+02:00"^^xsd:gYear ;
+    dbpedia-owl:deathDate "1862-02-20"^^xsd:date ;
+    dbpedia-owl:deathPlace <http://dbpedia.org/resource/Washington,_D.C.> ;
+    dbpedia-owl:deathYear "1862+02:00"^^xsd:gYear ;
+    dbpedia-owl:parent dbpedia:Abraham_Lincoln,
+        dbpedia:Mary_Todd_Lincoln ;
+    dbpedia-owl:thumbnail <http://en.wikipedia.org/wiki/Special:FilePath/WILLIE.JPG?width=300> ;
+    rdfs:comment "William Wallace \"Willie\" Lincoln (December 21, 1850 – February 20, 1862) was the third son of Abraham Lincoln and Mary Todd Lincoln. He died at the age of 11 due to illness. He was named after Mary's brother-in-law Dr. William Wallace."@en ;
+    foaf:depiction <http://en.wikipedia.org/wiki/Special:FilePath/WILLIE.JPG> ;
+    foaf:givenName "William Wallace"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/William_Wallace_Lincoln> ;
+    foaf:name "Lincoln, William Wallace"@en,
+        "William Lincoln"@en,
+        "William Wallace Lincoln"@en ;
+    foaf:surname "Lincoln"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="11" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Illinois's_7th_congressional_district</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Illinois's_7th_congressional_district> a dbpedia-owl:Place,
+        dbpedia-owl:PopulatedPlace,
+        <http://dbpedia.org/ontology/Wikidata:Q532>,
+        <http://schema.org/Place>,
+        <http://www.ontologydesignpatterns.org/ont/d0.owl#Location>,
+        <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> ;
+    rdfs:label "Illinois's 7th congressional district"@en ;
+    dbpedia-owl:abstract "The 7th Congressional District of Illinois covers parts of Cook county, as of the 2011 redistricting which followed the 2010 census. All or parts of Bellwood, Chicago, Forest Park, Oak Park, and Maywood are included. Democrat Danny K. Davis has represented the district since January 1997.Abraham Lincoln represented the 7th district before being elected President, although the area he represented now lies within Illinois's 18th congressional district."@en ;
+    rdfs:comment "The 7th Congressional District of Illinois covers parts of Cook county, as of the 2011 redistricting which followed the 2010 census. All or parts of Bellwood, Chicago, Forest Park, Oak Park, and Maywood are included. Democrat Danny K. Davis has represented the district since January 1997.Abraham Lincoln represented the 7th district before being elected President, although the area he represented now lies within Illinois's 18th congressional district."@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Illinois's_7th_congressional_district> .
+
+]]>
+    </field>
+  </object>
+  <object pk="12" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln__1</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Abraham_Lincoln__1 a dbpedia-owl:TimePeriod,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    dbpedia-owl:activeYearsEndDate "1865-04-15"^^xsd:date ;
+    dbpedia-owl:activeYearsStartDate "1861-03-04"^^xsd:date ;
+    dbpedia-owl:office "President of the United States" .
+
+]]>
+    </field>
+  </object>
+  <object pk="13" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln__2</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Abraham_Lincoln__2 a dbpedia-owl:TimePeriod,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    dbpedia-owl:activeYearsEndDate "1849-03-04"^^xsd:date ;
+    dbpedia-owl:activeYearsStartDate "1847-03-04"^^xsd:date .
+
+]]>
+    </field>
+  </object>
+  <object pk="14" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln__3</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Abraham_Lincoln__3 a dbpedia-owl:TimePeriod,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    dbpedia-owl:activeYearsStartDate "1834-12-01"^^xsd:date ;
+    dbpedia-owl:office "Member of the Illinois House of Representatives" .
+
+]]>
+    </field>
+  </object>
+  <object pk="15" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Hannibal_Hamlin</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Hannibal_Hamlin a <http://dbpedia.org/class/yago/Administrator109770949>,
+        <http://dbpedia.org/class/yago/Ambassador109787534>,
+        <http://dbpedia.org/class/yago/AmbassadorsOfTheUnitedStatesToSpain>,
+        <http://dbpedia.org/class/yago/Articulator109811712>,
+        <http://dbpedia.org/class/yago/Authority109824609>,
+        <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/CivilAuthority110541833>,
+        <http://dbpedia.org/class/yago/Communicator109610660>,
+        <http://dbpedia.org/class/yago/DemocraticPartyUnitedStatesSenators>,
+        <http://dbpedia.org/class/yago/Diplomat110013927>,
+        <http://dbpedia.org/class/yago/Executive110069645>,
+        <http://dbpedia.org/class/yago/Governor110140314>,
+        <http://dbpedia.org/class/yago/GovernorsOfMaine>,
+        <http://dbpedia.org/class/yago/Head110162991>,
+        <http://dbpedia.org/class/yago/Lawgiver110249270>,
+        <http://dbpedia.org/class/yago/Leader109623038>,
+        <http://dbpedia.org/class/yago/Legislator110253995>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/Mayor110303814>,
+        <http://dbpedia.org/class/yago/MayorsOfBangor,Maine>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Official110372373>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/PeopleFromHampden,Maine>,
+        <http://dbpedia.org/class/yago/PeopleFromOxfordCounty,Maine>,
+        <http://dbpedia.org/class/yago/PeopleOfMaineInTheAmericanCivilWar>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Politician110450303>,
+        <http://dbpedia.org/class/yago/Politician110451263>,
+        <http://dbpedia.org/class/yago/RepublicanPartyUnitedStatesSenators>,
+        <http://dbpedia.org/class/yago/RepublicanPartyVicePresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Senator110578471>,
+        <http://dbpedia.org/class/yago/SkilledWorker110605985>,
+        <http://dbpedia.org/class/yago/Speaker110630188>,
+        <http://dbpedia.org/class/yago/SpeakersOfTheMaineHouseOfRepresentatives>,
+        <http://dbpedia.org/class/yago/UnionPoliticalLeaders>,
+        <http://dbpedia.org/class/yago/UnitedStatesSenatorsFromMaine>,
+        <http://dbpedia.org/class/yago/VicePresident110751265>,
+        <http://dbpedia.org/class/yago/VicePresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/Worker109632518>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:OfficeHolder,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "Hannibal Hamlin"@en ;
+    dbpedia-owl:abstract "Hannibal Hamlin (August 27, 1809 – July 4, 1891) was the 15th Vice President of the United States (1861–1865), serving under President Abraham Lincoln during the American Civil War. He was the first Vice President from the Republican Party.Prior to his election in 1860, Hamlin served in the United States Senate, the House of Representatives, and, briefly, as the 26th Governor of Maine."@en ;
+    dbpedia-owl:activeYearsEndDate "1847-03-03"^^xsd:date,
+        "1857-01-07"^^xsd:date,
+        "1857-02-25"^^xsd:date,
+        "1861-01-17"^^xsd:date,
+        "1865-03-04"^^xsd:date,
+        "1881-03-03"^^xsd:date,
+        "1882-10-17"^^xsd:date ;
+    dbpedia-owl:activeYearsStartDate "1843-03-04"^^xsd:date,
+        "1848-06-08"^^xsd:date,
+        "1857-01-08"^^xsd:date,
+        "1857-03-04"^^xsd:date,
+        "1861-03-04"^^xsd:date,
+        "1869-03-04"^^xsd:date,
+        "1881-06-30"^^xsd:date ;
+    dbpedia-owl:birthDate "1809-08-27"^^xsd:date ;
+    dbpedia-owl:birthPlace dbpedia:Maine,
+        <http://dbpedia.org/resource/Paris,_Maine>,
+        dbpedia:United_States ;
+    dbpedia-owl:birthYear "1809+02:00"^^xsd:gYear ;
+    dbpedia-owl:deathDate "1891-07-04"^^xsd:date ;
+    dbpedia-owl:deathPlace <http://dbpedia.org/resource/Bangor,_Maine>,
+        dbpedia:Maine,
+        dbpedia:United_States ;
+    dbpedia-owl:deathYear "1891+02:00"^^xsd:gYear ;
+    dbpedia-owl:orderInOffice "15th Vice President of the United States",
+        "26th Governor of Maine",
+        "Member of the",
+        "U.S. House of Representatives",
+        "United States Minister to Spain",
+        "United States Senator",
+        "from Maine",
+        "from Maine's 6th district" ;
+    dbpedia-owl:party <http://dbpedia.org/resource/Democratic_Party_(United_States)>,
+        <http://dbpedia.org/resource/Republican_Party_(United_States)> ;
+    dbpedia-owl:president dbpedia:Abraham_Lincoln ;
+    dbpedia-owl:religion dbpedia:Unitarianism ;
+    dbpedia-owl:successor dbpedia:Amos_Nourse,
+        dbpedia:Andrew_Johnson,
+        dbpedia:Eugene_Hale,
+        dbpedia:James_S._Wiley,
+        dbpedia:John_W._Foster,
+        dbpedia:Joseph_H._Williams,
+        dbpedia:Lot_M._Morrill ;
+    dbpedia-owl:termPeriod dbpedia:Hannibal_Hamlin__1,
+        dbpedia:Hannibal_Hamlin__2,
+        dbpedia:Hannibal_Hamlin__3,
+        dbpedia:Hannibal_Hamlin__4,
+        dbpedia:Hannibal_Hamlin__5,
+        dbpedia:Hannibal_Hamlin__6,
+        dbpedia:Hannibal_Hamlin__7 ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Hannibal_Hamlin,_photo_portrait_seated,_c1860-65-retouched-crop.jpg?width=300> ;
+    dbpedia-owl:viafId "67271157" ;
+    rdfs:comment "Hannibal Hamlin (August 27, 1809 – July 4, 1891) was the 15th Vice President of the United States (1861–1865), serving under President Abraham Lincoln during the American Civil War. He was the first Vice President from the Republican Party.Prior to his election in 1860, Hamlin served in the United States Senate, the House of Representatives, and, briefly, as the 26th Governor of Maine."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Hannibal_Hamlin,_photo_portrait_seated,_c1860-65-retouched-crop.jpg> ;
+    foaf:givenName "Jarrod Hannibal"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Hannibal_Hamlin> ;
+    foaf:name "Hamlin, Jarrod Hannibal"@en,
+        "Jarrod Hannibal Hamlin"@en ;
+    foaf:surname "Hamlin"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="16" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Republican_Party_(United_States)</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Republican_Party_(United_States)> a <http://dbpedia.org/class/yago/Abstraction100002137>,
+        <http://dbpedia.org/class/yago/Group100031264>,
+        <http://dbpedia.org/class/yago/InternationalDemocratUnionMemberParties>,
+        <http://dbpedia.org/class/yago/Organization108008335>,
+        <http://dbpedia.org/class/yago/Party108256968>,
+        <http://dbpedia.org/class/yago/PoliticalPartiesEstablishedIn1854>,
+        <http://dbpedia.org/class/yago/PoliticalPartiesInTheUnitedStates>,
+        <http://dbpedia.org/class/yago/SocialGroup107950920>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:Organisation,
+        dbpedia-owl:PoliticalParty,
+        <http://schema.org/Organization>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#SocialPerson>,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    rdfs:label "Republican Party (United States)"@en ;
+    dbpedia-owl:abstract "The Republican Party, also commonly called the GOP (for \"Grand Old Party\"), is one of the two major contemporary political parties in the United States, the other being the Democratic Party. Founded by anti-slavery activists in 1854, it dominated politics nationally for most of the period from 1860 to 1932. There have been 18 Republican presidents, the first being Abraham Lincoln, serving from 1861 to 1865, and the most recent being George W. Bush, serving from 2001 to 2009. The most recent Republican presidential nominee was former Massachusetts Governor Mitt Romney.The party's platform is generally based upon American conservatism, in contrast to the Democratic Party, whose members endorse more liberal policies. American conservatism of the Republican Party is not wholly based upon rejection of the political ideology of liberalism; some principles of American conservatism are based on classical liberalism. Rather, the Republican Party's conservatism is largely based upon its support of classical principles against the social liberalism of the Democratic Party that is considered American liberalism in contemporary American political discourse.In the 113th Congress, elected in 2012, the Republican Party holds a majority of seats in the United States House of Representatives and a minority of seats in the United States Senate. The party holds the majority of governorships as well as the majority of state legislatures."@en ;
+    dbpedia-owl:headquarter <http://dbpedia.org/resource/Washington,_D.C.> ;
+    dbpedia-owl:internationalAffiliation dbpedia:International_Democrat_Union ;
+    dbpedia-owl:thumbnail <http://en.wikipedia.org/wiki/Special:FilePath/Abraham_Lincoln_head_on_shoulders_photo_portrait.jpg?width=300> ;
+    dbpedia-owl:youthWing dbpedia:Teen_Age_Republicans,
+        dbpedia:Young_Republicans ;
+    rdfs:comment "The Republican Party, also commonly called the GOP (for \"Grand Old Party\"), is one of the two major contemporary political parties in the United States, the other being the Democratic Party. Founded by anti-slavery activists in 1854, it dominated politics nationally for most of the period from 1860 to 1932. There have been 18 Republican presidents, the first being Abraham Lincoln, serving from 1861 to 1865, and the most recent being George W. Bush, serving from 2001 to 2009."@en ;
+    foaf:depiction <http://en.wikipedia.org/wiki/Special:FilePath/Abraham_Lincoln_head_on_shoulders_photo_portrait.jpg> ;
+    foaf:homepage <http://www.gop.com/> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Republican_Party_(United_States)> ;
+    foaf:name "Republican Party"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="17" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Hodgenville,_Kentucky</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ns1: <http://dbpedia.org/ontology/PopulatedPlace/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Hodgenville,_Kentucky> a <http://dbpedia.org/class/yago/AdministrativeDistrict108491826>,
+        <http://dbpedia.org/class/yago/Area108497294>,
+        <http://dbpedia.org/class/yago/Center108523483>,
+        <http://dbpedia.org/class/yago/CitiesInKentucky>,
+        <http://dbpedia.org/class/yago/City108524735>,
+        <http://dbpedia.org/class/yago/CountySeat108547143>,
+        <http://dbpedia.org/class/yago/CountySeatsInKentucky>,
+        <http://dbpedia.org/class/yago/District108552138>,
+        <http://dbpedia.org/class/yago/GeographicalArea108574314>,
+        <http://dbpedia.org/class/yago/Location100027167>,
+        <http://dbpedia.org/class/yago/Municipality108626283>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/PopulatedPlacesInLaRueCounty,Kentucky>,
+        <http://dbpedia.org/class/yago/Region108630985>,
+        <http://dbpedia.org/class/yago/Seat108647945>,
+        <http://dbpedia.org/class/yago/Site108651247>,
+        <http://dbpedia.org/class/yago/Tract108673395>,
+        <http://dbpedia.org/class/yago/UrbanArea108675967>,
+        <http://dbpedia.org/class/yago/YagoGeoEntity>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:City,
+        dbpedia-owl:Place,
+        dbpedia-owl:PopulatedPlace,
+        dbpedia-owl:Settlement,
+        <http://dbpedia.org/ontology/Wikidata:Q532>,
+        <http://schema.org/City>,
+        <http://schema.org/Place>,
+        <http://umbel.org/umbel/rc/City>,
+        <http://www.ontologydesignpatterns.org/ont/d0.owl#Location>,
+        <http://www.opengis.net/gml/_Feature>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> ;
+    rdfs:label "Hodgenville, Kentucky"@en ;
+    ns1:areaTotal "4.4029797875712"^^<http://dbpedia.org/datatype/squareKilometre>,
+        "4.5"^^<http://dbpedia.org/datatype/squareKilometre> ;
+    ns1:populationDensity "643.9"^^<http://dbpedia.org/datatype/inhabitantsPerSquareKilometre>,
+        "643.9025698012371"^^<http://dbpedia.org/datatype/inhabitantsPerSquareKilometre> ;
+    dbpedia-owl:abstract "Hodgenville is a 4th-class city in of LaRue County, Kentucky, in the United States. It is the seat of its county. It sits along the North Fork of the Nolin River. The population was 2,874 at the 2000 census. It is included in the Elizabethtown metropolitan area."@en ;
+    dbpedia-owl:areaCode "270 & 364" ;
+    dbpedia-owl:areaLand 4.40298e+06,
+        4.5e+06 ;
+    dbpedia-owl:areaTotal 4.40298e+06,
+        4.5e+06 ;
+    dbpedia-owl:areaWater 0e+00 ;
+    dbpedia-owl:country dbpedia:United_States ;
+    dbpedia-owl:elevation 2.21894e+02,
+        2.22e+02 ;
+    dbpedia-owl:isPartOf dbpedia:Kentucky,
+        <http://dbpedia.org/resource/LaRue_County,_Kentucky> ;
+    dbpedia-owl:populationDensity 6.439e+02,
+        6.43903e+02 ;
+    dbpedia-owl:populationTotal 2874 ;
+    dbpedia-owl:postalCode "42748" ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Hodgenville_KY_Town_Square.jpg?width=300> ;
+    dbpedia-owl:timeZone dbpedia:Eastern_Time_Zone ;
+    dbpedia-owl:type dbpedia:List_of_cities_in_Kentucky ;
+    dbpedia-owl:utcOffset "-4",
+        "-5" ;
+    rdfs:comment "Hodgenville is a 4th-class city in of LaRue County, Kentucky, in the United States. It is the seat of its county. It sits along the North Fork of the Nolin River. The population was 2,874 at the 2000 census. It is included in the Elizabethtown metropolitan area."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Hodgenville_KY_Town_Square.jpg> ;
+    foaf:homepage <http://hodgenville.ky.gov/> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Hodgenville,_Kentucky> ;
+    foaf:name "Hodgenville, Kentucky"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="18" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Washington,_D.C.</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ns1: <http://dbpedia.org/ontology/PopulatedPlace/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Washington,_D.C.> a <http://dbpedia.org/class/yago/AdministrativeDistrict108491826>,
+        <http://dbpedia.org/class/yago/Area108497294>,
+        <http://dbpedia.org/class/yago/Capital108518505>,
+        <http://dbpedia.org/class/yago/CapitalDistrictsAndTerritories>,
+        <http://dbpedia.org/class/yago/CapitalsInNorthAmerica>,
+        <http://dbpedia.org/class/yago/Center108523483>,
+        <http://dbpedia.org/class/yago/City108524735>,
+        <http://dbpedia.org/class/yago/Country108544813>,
+        <http://dbpedia.org/class/yago/District108552138>,
+        <http://dbpedia.org/class/yago/GeographicalArea108574314>,
+        <http://dbpedia.org/class/yago/Location100027167>,
+        <http://dbpedia.org/class/yago/Municipality108626283>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/PlannedCapitals>,
+        <http://dbpedia.org/class/yago/PlannedCitiesInTheUnitedStates>,
+        <http://dbpedia.org/class/yago/PopulatedPlacesEstablishedIn1790>,
+        <http://dbpedia.org/class/yago/PopulatedPlacesInWashington,D.C.WithAfricanAmericanMajorityPopulations>,
+        <http://dbpedia.org/class/yago/PopulatedPlacesOnThePotomacRiver>,
+        <http://dbpedia.org/class/yago/Region108630985>,
+        <http://dbpedia.org/class/yago/Seat108647945>,
+        <http://dbpedia.org/class/yago/Site108651247>,
+        <http://dbpedia.org/class/yago/StatesAndTerritoriesEstablishedIn1790>,
+        <http://dbpedia.org/class/yago/Tract108673395>,
+        <http://dbpedia.org/class/yago/UrbanArea108675967>,
+        <http://dbpedia.org/class/yago/YagoGeoEntity>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:Place,
+        dbpedia-owl:PopulatedPlace,
+        dbpedia-owl:Settlement,
+        <http://dbpedia.org/ontology/Wikidata:Q532>,
+        <http://schema.org/Place>,
+        <http://umbel.org/umbel/rc/Location_Underspecified>,
+        <http://umbel.org/umbel/rc/PopulatedPlace>,
+        <http://umbel.org/umbel/rc/Village>,
+        <http://www.ontologydesignpatterns.org/ont/d0.owl#Location>,
+        <http://www.opengis.net/gml/_Feature>,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    rdfs:label "Washington, D.C."@en ;
+    ns1:area "1.0E-6"^^<http://dbpedia.org/datatype/squareKilometre> ;
+    ns1:areaTotal "176.8961879359488"^^<http://dbpedia.org/datatype/squareKilometre>,
+        "177.0"^^<http://dbpedia.org/datatype/squareKilometre> ;
+    ns1:populationDensity "4064.8835251348705"^^<http://dbpedia.org/datatype/inhabitantsPerSquareKilometre>,
+        "4066.0"^^<http://dbpedia.org/datatype/inhabitantsPerSquareKilometre> ;
+    dbpedia-owl:abstract "Washington, D.C., formally the District of Columbia and commonly referred to as Washington, \"the District\", or simply D.C., is the capital of the United States. The signing of the Residence Act on July 16, 1790, approved the creation of a capital district located along the Potomac River on the country's East Coast. As permitted by the U.S. Constitution, the District is under the exclusive jurisdiction of the Congress and is therefore not a part of any U.S. state.The states of Maryland and Virginia each donated land to form the federal district, which included the preexisting settlements of Georgetown and Alexandria. Named in honor of George Washington, the City of Washington was founded in 1791 to serve as the new national capital. In 1846, Congress returned the land originally ceded by Virginia and created a single municipal government for the remaining portion of the District in 1871.Washington, D.C., had an estimated population of 646,449 in 2013, the 24th most populous place in the United States. Commuters from the surrounding Maryland and Virginia suburbs raise the city's population to more than one million during the workweek. The Washington Metropolitan Area, of which the District is a part, has a population of 5.8 million, the seventh-largest metropolitan area in the country.The centers of all three branches of the federal government of the United States are in the District, including the Congress, President, and Supreme Court. Washington is home to many national monuments and museums, which are primarily situated on or around the National Mall. The city hosts 176 foreign embassies as well as the headquarters of many international organizations, trade unions, non-profit organizations, lobbying groups, and professional associations.A locally elected mayor and 13-member council have governed the District since 1973. However, the Congress maintains supreme authority over the city and may overturn local laws. D.C. residents elect a non-voting, at-large Congressional delegate to the U.S. House of Representatives but the District has no representation in the U.S. Senate. The Twenty-third Amendment to the United States Constitution, ratified in 1961, grants the District three electoral votes in presidential elections."@en ;
+    dbpedia-owl:area 1e+00 ;
+    dbpedia-owl:areaCode "202" ;
+    dbpedia-owl:areaLand 1.59e+08,
+        1.59025e+08 ;
+    dbpedia-owl:areaTotal 1.76896e+08,
+        1.77e+08 ;
+    dbpedia-owl:areaWater 1.78709e+07,
+        1.8e+07 ;
+    dbpedia-owl:elevation 0e+00 ;
+    dbpedia-owl:foundingDate "1790-07-16"^^xsd:date ;
+    dbpedia-owl:leaderName <http://dbpedia.org/resource/Democratic_Party_(United_States)>,
+        dbpedia:Phil_Mendelson,
+        dbpedia:Vincent_C._Gray ;
+    dbpedia-owl:leaderTitle "D.C. Council"@en,
+        "Mayor"@en ;
+    dbpedia-owl:motto "Justitia Omnibus()" ;
+    dbpedia-owl:populationDensity 4.06488e+03,
+        4.066e+03 ;
+    dbpedia-owl:populationMetro 5860342 ;
+    dbpedia-owl:populationTotal 646449 ;
+    dbpedia-owl:postalCode "20001-20098, 20201-20599" ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/DCmontage4.jpg?width=300> ;
+    dbpedia-owl:timeZone dbpedia:Eastern_Time_Zone ;
+    dbpedia-owl:type dbpedia:Federal_district ;
+    dbpedia-owl:utcOffset "−4",
+        "−5" ;
+    rdfs:comment "Washington, D.C., formally the District of Columbia and commonly referred to as Washington, \"the District\", or simply D.C., is the capital of the United States. The signing of the Residence Act on July 16, 1790, approved the creation of a capital district located along the Potomac River on the country's East Coast. As permitted by the U.S. Constitution, the District is under the exclusive jurisdiction of the Congress and is therefore not a part of any U.S."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/DCmontage4.jpg> ;
+    foaf:homepage <http://www.dc.gov/> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Washington,_D.C.> ;
+    foaf:name "District of Columbia"@en,
+        "Washington, D.C."@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="20" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/List_of_Presidents_of_the_United_States</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:List_of_Presidents_of_the_United_States a dbpedia-owl:Agent,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "List of Presidents of the United States"@en ;
+    dbpedia-owl:abstract "Under the United States Constitution, the President of the United States is the head of state and head of government of the United States. As chief of the executive branch and head of the federal government as a whole, the presidency is the highest political office in the United States by influence and recognition. The president is also the commander-in-chief of the United States Armed Forces. The president is indirectly elected to a four-year term by an Electoral College (or by the House of Representatives should the Electoral College fail to award an absolute majority of votes to any person). Since the ratification of the Twenty-second Amendment to the United States Constitution in 1951, no person may be elected President more than twice, and no one who has served more than two years of a term to which someone else was elected may be elected more than once. Upon the death, resignation, or removal from office of an incumbent President, the Vice President assumes the office. The President must be at least 35 years of age, has to live in the United States for 14 years, and has to be a \"natural born\" citizen of the United States.This list includes only those persons who were sworn into office as president following the ratification of the United States Constitution, which took effect on March 4, 1789. For American leaders before this ratification, see President of the Continental Congress. The list does not include any Acting Presidents under the Twenty-fifth Amendment to the United States Constitution.There have been 43 people sworn into office, and 44 presidencies, as Grover Cleveland served two non-consecutive terms and is counted chronologically as both the 22nd and 24th president. Of the individuals elected as president, four died in office of natural causes (William Henry Harrison, Zachary Taylor, Warren G. Harding, and Franklin D. Roosevelt), four were assassinated (Abraham Lincoln, James A. Garfield, William McKinley, and John F. Kennedy) and one resigned (Richard Nixon).George Washington, the first president, was inaugurated in 1789 after a unanimous vote of the Electoral College. William Henry Harrison spent the shortest time in office with 32 days in 1841. Franklin D. Roosevelt spent the longest with over twelve years, but died shortly into his fourth term in 1945; he is the only president to have served more than two terms. A constitutional amendment, affecting presidents after Harry Truman, was passed to limit the number of times an individual can be elected president. Andrew Jackson, the seventh president, was the first to be elected by men of all classes in 1828 after most laws barring non-land-owners from voting were repealed. Warren Harding was the first elected after women gained voting rights in 1920. Four presidents – John Q. Adams, Rutherford B. Hayes, Benjamin Harrison and George W. Bush – lost the popular vote but assumed office. John F. Kennedy has been the only president of Roman Catholic faith, and the current president, Barack Obama, is the first president of recent African descent.The listing below is complete for the current government of the USA. For this country, however, there were prior governments (including that under the Articles of Confederation). Prior to George Washington as first president under the current constitution, there were twelve people in leadership over the government of the United States of America who held the title of \"President\". Also during the Civil War, there was the position of \"President of the Confederate States of America\" in an entity separate from the USA, and this position was held by one person."@en ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/WhiteHouseSouthFacade.JPG?width=300> ;
+    rdfs:comment "Under the United States Constitution, the President of the United States is the head of state and head of government of the United States. As chief of the executive branch and head of the federal government as a whole, the presidency is the highest political office in the United States by influence and recognition. The president is also the commander-in-chief of the United States Armed Forces."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/WhiteHouseSouthFacade.JPG> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States> .
+
+]]>
+    </field>
+  </object>
+  <object pk="21" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/American_Civil_War</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:American_Civil_War a <http://dbpedia.org/class/yago/Abstraction100002137>,
+        <http://dbpedia.org/class/yago/Act100030358>,
+        <http://dbpedia.org/class/yago/Event100029378>,
+        <http://dbpedia.org/class/yago/GroupAction101080366>,
+        <http://dbpedia.org/class/yago/MilitaryAction100952963>,
+        <http://dbpedia.org/class/yago/PsychologicalFeature100023100>,
+        <http://dbpedia.org/class/yago/Rebellion101177327>,
+        <http://dbpedia.org/class/yago/RebellionsInTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Resistance101169317>,
+        <http://dbpedia.org/class/yago/War100973077>,
+        <http://dbpedia.org/class/yago/WarsInvolvingTheUnitedStates>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:Event,
+        dbpedia-owl:MilitaryConflict,
+        dbpedia-owl:SocietalEvent,
+        <http://schema.org/Event>,
+        <http://umbel.org/umbel/rc/ConflictEvent>,
+        <http://umbel.org/umbel/rc/Event>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Event>,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    rdfs:label "American Civil War"@en ;
+    dbpedia-owl:abstract "The American Civil War, also known as the War Between the States, or simply the Civil War in the United States (see naming), was a civil war fought from 1861 to 1865, after seven Southern slave states declared their secession and formed the Confederate States of America (the \"Confederacy\" or the \"South\"). The states that remained in the Union were known as the \"Union\" or the \"North\". The war had its origin in the fractious issue of slavery, especially the extension of slavery into the western territories. Foreign powers did not intervene. After four years of bloody combat that left over 600,000 soldiers dead and destroyed much of the South's infrastructure, the Confederacy collapsed, slavery was abolished, and the difficult Reconstruction process of restoring national unity and guaranteeing rights to the freed slaves began.In the 1860 presidential election, Republicans, led by Abraham Lincoln, opposed the expansion of slavery into United States' territories. Lincoln won, but before his inauguration on March 4, 1861, seven slave states with cotton-based economies formed the Confederacy. The first six to secede had the highest proportions of slaves in their populations, a total of 48.8% for the six. Outgoing Democratic President James Buchanan and the incoming Republicans rejected secession as illegal. Lincoln's inaugural address declared his administration would not initiate civil war. Eight remaining slave states continued to reject calls for secession. Confederate forces seized numerous federal forts within territory claimed by the Confederacy. A peace conference failed to find a compromise, and both sides prepared for war. The Confederates assumed that European countries were so dependent on \"King Cotton\" that they would intervene; none did and none recognized the new Confederate States of America.Hostilities began on April 12, 1861, when Confederate forces fired upon Fort Sumter, a key fort held by Union troops in South Carolina. Lincoln called for each state to provide troops to retake the fort; consequently, four more slave states joined the Confederacy, bringing their total to eleven. The Union soon controlled the border states and established a naval blockade that crippled the southern economy. The Eastern Theater was inconclusive in 1861–62. The autumn 1862 Confederate campaign into Maryland (a Union state) ended with Confederate retreat at the Battle of Antietam, dissuading British intervention. Lincoln issued the Emancipation Proclamation, which made ending slavery a war goal. To the west, by summer 1862 the Union destroyed the Confederate river navy, then much of their western armies, and the Union siege of Vicksburg split the Confederacy in two at the Mississippi River. In 1863, Robert E. Lee's Confederate incursion north ended at the Battle of Gettysburg. Western successes led to Ulysses S. Grant's command of all Union armies in 1864. In the Western Theater, William T. Sherman drove east to capture Atlanta and marched to the sea, destroying Confederate infrastructure along the way. The Union marshaled the resources and manpower to attack the Confederacy from all directions, and could afford to fight battles of attrition through the Overland Campaign towards Richmond, the Confederate capital. The defending Confederate army failed, leading to Lee's surrender to Grant at Appomattox Court House on April 9, 1865. All Confederate generals surrendered by that summer.The American Civil War was one of the earliest true industrial wars. Railroads, the telegraph, steamships, and mass-produced weapons were employed extensively. The mobilization of civilian factories, mines, shipyards, banks, transportation and food supplies all foreshadowed World War I. It remains the deadliest war in American history, resulting in the deaths of an estimated 750,000 soldiers and an undetermined number of civilian casualties. Historian John Huddleston estimates the death toll at ten percent of all Northern males 20–45 years old, and 30 percent of all Southern white males aged 18–40."@en ;
+    dbpedia-owl:causalties "110,000 Army killed in action/dead of wounds",
+        "2,260 Navy/Marines killed",
+        "25,000 Army dead in Confederate prisons",
+        "275,200 wounded",
+        "~ 365,000 total dead" ;
+    dbpedia-owl:commander dbpedia:Abraham_Lincoln,
+        dbpedia:David_Dixon_Porter,
+        dbpedia:David_Farragut,
+        dbpedia:Edwin_M._Stanton,
+        dbpedia:Jefferson_Davis,
+        dbpedia:Joseph_E._Johnston,
+        dbpedia:Josiah_Tattnall,
+        dbpedia:Judah_P._Benjamin,
+        dbpedia:Military_leadership_in_the_American_Civil_War,
+        dbpedia:Raphael_Semmes,
+        dbpedia:Robert_E._Lee,
+        dbpedia:Ulysses_S._Grant,
+        dbpedia:William_Tecumseh_Sherman ;
+    dbpedia-owl:date "1861-04-12"^^xsd:date,
+        "1865-06-22"^^xsd:date ;
+    dbpedia-owl:place dbpedia:Atlantic_Ocean,
+        dbpedia:Northeastern_United_States,
+        dbpedia:Southern_United_States,
+        dbpedia:Western_United_States ;
+    dbpedia-owl:result "* Beginning of the Reconstruction Era",
+        "* Dissolution of the Confederacy",
+        "* Lincoln assassinated five days after Lee's surrender",
+        "* Slavery abolished",
+        "* Territorial integrity preserved",
+        "Union victory" ;
+    dbpedia-owl:strength "1,064,000",
+        "2,100,000" ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/American_Civil_War_Montage.jpg?width=300> ;
+    rdfs:comment "The American Civil War, also known as the War Between the States, or simply the Civil War in the United States (see naming), was a civil war fought from 1861 to 1865, after seven Southern slave states declared their secession and formed the Confederate States of America (the \"Confederacy\" or the \"South\"). The states that remained in the Union were known as the \"Union\" or the \"North\"."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/American_Civil_War_Montage.jpg> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/American_Civil_War> .
+
+]]>
+    </field>
+  </object>
+  <object pk="22" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Whig_Party_(United_States)</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Whig_Party_(United_States)> a <http://dbpedia.org/class/yago/Abstraction100002137>,
+        <http://dbpedia.org/class/yago/DefunctPoliticalPartiesInTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Group100031264>,
+        <http://dbpedia.org/class/yago/Organization108008335>,
+        <http://dbpedia.org/class/yago/Party108256968>,
+        <http://dbpedia.org/class/yago/PoliticalPartiesEstablishedIn1833>,
+        <http://dbpedia.org/class/yago/SocialGroup107950920>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:Organisation,
+        dbpedia-owl:PoliticalParty,
+        <http://schema.org/Organization>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#SocialPerson>,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    rdfs:label "Whig Party (United States)"@en ;
+    dbpedia-owl:abstract "The Whig Party was a political party active in the early 19th century in the United States of America. Four Presidents of the United States were members of the Whig Party. Considered integral to the Second Party System and operating from the early 1830s to the mid-1850s, the party was formed in opposition to the policies of President Andrew Jackson and his Democratic Party. In particular, the Whigs supported the supremacy of Congress over the Presidency and favored a program of modernization and economic protectionism. This name was chosen to echo the American Whigs of 1776, who fought for independence, and because \"Whig\" was then a widely recognized label of choice for people who identified as opposing tyranny. The Whig Party counted among its members such national political luminaries as Daniel Webster, William Henry Harrison, and their preeminent leader, Henry Clay of Kentucky. In addition to Harrison, the Whig Party also nominated war hero generals Zachary Taylor and Winfield Scott.In its two decades of existence, the Whig Party had two of its candidates, William Henry Harrison and Zachary Taylor, elected President. Both died in office. John Tyler succeeded to the Presidency after Harrison's death, but was expelled from the party. Millard Fillmore, who became President after Taylor's death, was the last Whig to hold the nation's highest office.The party was ultimately destroyed by the question of whether to allow the expansion of slavery to the territories. With deep fissures in the party on this question, the anti-slavery faction prevented the re-nomination of its own incumbent President Fillmore in the 1852 presidential election; instead, the party nominated General Winfield Scott. Most Whig party leaders eventually quit politics (as Abraham Lincoln did temporarily) or changed parties. The northern voter base mostly joined the new Republican Party. By the 1856 presidential election, the party was virtually defunct. In the South, the party vanished, but Whig ideology as a policy orientation persisted for decades and played a major role in shaping the modernizing policies of the state governments during Reconstruction."@en ;
+    dbpedia-owl:extinctionYear "1860+02:00"^^xsd:gYear ;
+    dbpedia-owl:formationYear "1833+02:00"^^xsd:gYear ;
+    dbpedia-owl:ideology dbpedia:Agrarianism,
+        dbpedia:Economic_nationalism,
+        dbpedia:Federalism_in_the_United_States,
+        dbpedia:Liberalism ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Clay44.JPG?width=300> ;
+    rdfs:comment "The Whig Party was a political party active in the early 19th century in the United States of America. Four Presidents of the United States were members of the Whig Party. Considered integral to the Second Party System and operating from the early 1830s to the mid-1850s, the party was formed in opposition to the policies of President Andrew Jackson and his Democratic Party."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Clay44.JPG> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Whig_Party_(United_States)> ;
+    foaf:name "Whig Party"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="23" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Black_Hawk_War</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Black_Hawk_War a <http://dbpedia.org/class/yago/AdministrativeDistrict108491826>,
+        <http://dbpedia.org/class/yago/Country108544813>,
+        <http://dbpedia.org/class/yago/District108552138>,
+        <http://dbpedia.org/class/yago/Location100027167>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Region108630985>,
+        <http://dbpedia.org/class/yago/WarsBetweenTheUnitedStatesAndNativeAmericans>,
+        <http://dbpedia.org/class/yago/YagoGeoEntity>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:Event,
+        dbpedia-owl:MilitaryConflict,
+        dbpedia-owl:SocietalEvent,
+        <http://schema.org/Event>,
+        <http://umbel.org/umbel/rc/ConflictEvent>,
+        <http://umbel.org/umbel/rc/Event>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Event>,
+        <http://www.w3.org/2002/07/owl#Thing> ;
+    rdfs:label "Black Hawk War"@en ;
+    dbpedia-owl:abstract "The Black Hawk War was a brief 1832 conflict between the United States and Native Americans led by Black Hawk, a Sauk leader. The war erupted soon after Black Hawk and a group of Sauks, Meskwakis, and Kickapoos known as the \"British Band\" crossed the Mississippi River into the U.S. state of Illinois from Iowa in April 1832. Black Hawk's motives were ambiguous, but he was apparently hoping to avoid bloodshed while resettling on tribal land that had been ceded to the United States in the disputed 1804 Treaty of St. Louis.American officials, convinced that the British Band was hostile, mobilized a frontier militia and opened fire on a delegation from the Native Americans on May 14, 1832. Black Hawk responded by successfully attacking the militia at the Battle of Stillman's Run. He led his band to a secure location in what is now southern Wisconsin and was pursued by U.S. forces. Meanwhile, other Native Americans conducted raids against forts and settlements largely unprotected with the absence of US troops. Some Ho-Chunk and Potawatomi warriors with grievances against Americans took part in these raids, although most tribe members tried to avoid the conflict. The Menominee and Dakota tribes, already at odds with the Sauks and Meskwakis, supported the Americans.Commanded by General Henry Atkinson, the U.S. troops tracked the British Band. Militia under Colonel Henry Dodge caught up with the British Band on July 21 and defeated them at the Battle of Wisconsin Heights. Black Hawk's band was weakened by hunger, death, and desertion and many native survivors retreated towards the Mississippi. On August 2, American soldiers attacked the remnants of the British Band at the Battle of Bad Axe, killing many or capturing most who remained alive. Black Hawk and other leaders escaped, but later surrendered and were imprisoned for a year.The Black Hawk War is now often remembered as the conflict that gave young Abraham Lincoln his brief military service. Other notable American participants included Winfield Scott, Zachary Taylor, and Jefferson Davis. The war gave impetus to the US policy of Indian removal, in which Native American tribes were pressured to sell their lands and move west of the Mississippi River."@en ;
+    dbpedia-owl:causalties "77 killed (including non-combatants)" ;
+    dbpedia-owl:combatant "Black Hawk's British Band, with Ho-Chunk and Potawatomi allies",
+        "United States, with Ho-Chunk, Menominee, Dakota, and Potawatomi allies" ;
+    dbpedia-owl:commander <http://dbpedia.org/resource/Black_Hawk_(Sauk_leader)>,
+        <http://dbpedia.org/resource/Henry_Atkinson_(soldier)>,
+        dbpedia:Henry_Dodge,
+        dbpedia:Isaiah_Stillman,
+        dbpedia:Neapope,
+        dbpedia:Wabokieshiek ;
+    dbpedia-owl:result "United States victory" ;
+    dbpedia-owl:strength "500 warriors",
+        "6,000+ militiamen",
+        "600 non-combatants",
+        "630 Army regulars",
+        "700+ Native Americans" ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Battle_of_Bad_Axe.jpg?width=300> ;
+    rdfs:comment "The Black Hawk War was a brief 1832 conflict between the United States and Native Americans led by Black Hawk, a Sauk leader. The war erupted soon after Black Hawk and a group of Sauks, Meskwakis, and Kickapoos known as the \"British Band\" crossed the Mississippi River into the U.S. state of Illinois from Iowa in April 1832."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Battle_of_Bad_Axe.jpg> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Black_Hawk_War> ;
+    foaf:name "Black Hawk War"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="24" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Illinois</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ns1: <http://dbpedia.org/ontology/PopulatedPlace/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Illinois a <http://dbpedia.org/class/yago/AdministrativeDistrict108491826>,
+        <http://dbpedia.org/class/yago/Country108544813>,
+        <http://dbpedia.org/class/yago/District108552138>,
+        <http://dbpedia.org/class/yago/Location100027167>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Region108630985>,
+        <http://dbpedia.org/class/yago/StatesAndTerritoriesEstablishedIn1818>,
+        <http://dbpedia.org/class/yago/StatesOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/YagoGeoEntity>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:AdministrativeRegion,
+        dbpedia-owl:Place,
+        dbpedia-owl:PopulatedPlace,
+        dbpedia-owl:Region,
+        <http://dbpedia.org/ontology/Wikidata:Q532>,
+        <http://schema.org/AdministrativeArea>,
+        <http://schema.org/Place>,
+        <http://umbel.org/umbel/rc/PopulatedPlace>,
+        <http://www.ontologydesignpatterns.org/ont/d0.owl#Location>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> ;
+    rdfs:label "Illinois"@en ;
+    ns1:areaTotal "149998.0"^^<http://dbpedia.org/datatype/squareKilometre> ;
+    dbpedia-owl:abstract "Illinois (/ˌɪlɨˈnɔɪ/ IL-i-NOY) is a state in the Midwestern United States. It is the 5th most populous and 25th most extensive state, and is often noted as a microcosm of the entire country. With Chicago in the northeast, small industrial cities and great agricultural productivity in central and northern Illinois, and natural resources like coal, timber, and petroleum in the south, Illinois has a diverse economic base and is a major transportation hub. The Port of Chicago connects the state to other global ports from the Great Lakes, via the Saint Lawrence Seaway, to the Atlantic Ocean; as well as the Great Lakes to the Mississippi River, via the Illinois River. For decades, O'Hare International Airport has been ranked as one of the world's busiest airports. Illinois has long had a reputation as a bellwether both in social and cultural terms and politics.Although today the state's largest population center is around Chicago in the northern part of the state, the state's European population grew first in the west, with French Canadians who settled along the Mississippi River. After the American Revolutionary War established the United States, American settlers began arriving from Kentucky in the 1810s via the Ohio River, and the population grew from south to north. In 1818, Illinois achieved statehood. After construction of the Erie Canal increased traffic and trade through the Great Lakes, Chicago was founded in the 1830s on the banks of the Chicago River, at one of the few natural harbors on southern Lake Michigan. John Deere's invention of the self-scouring steel plow turned Illinois' rich prairie into some of the world's most productive and valuable farmlands, attracting immigrant farmers from Germany and Sweden. Railroads carried immigrants to new homes, as well as being used to ship their commodity crops out to markets.By 1900, the growth of industrial jobs in the northern cities and coal mining in the central and southern areas attracted immigrants from Eastern and Southern Europe. Illinois was an important manufacturing center during both world wars. The Great Migration from the South established a large community of African Americans in Chicago, who created the city's famous jazz and blues cultures.Three U.S. presidents have been elected while living in Illinois: Abraham Lincoln, Ulysses S. Grant, and Barack Obama. Additionally, Ronald Reagan, whose political career was based in California, was the only US President born and raised in Illinois. Today, Illinois honors Lincoln with its official state slogan, Land of Lincoln, which has been displayed on its license plates since 1954. The Abraham Lincoln Presidential Library and Museum is located in the state capital of Springfield."@en ;
+    dbpedia-owl:areaLand 1.43968e+11 ;
+    dbpedia-owl:areaTotal 1.49998e+11 ;
+    dbpedia-owl:areaWater 5.981e+09 ;
+    dbpedia-owl:capital <http://dbpedia.org/resource/Springfield,_Illinois> ;
+    dbpedia-owl:country dbpedia:United_States ;
+    dbpedia-owl:demonym "Illinoisan"@en ;
+    dbpedia-owl:language dbpedia:English_language ;
+    dbpedia-owl:largestCity dbpedia:Chicago ;
+    dbpedia-owl:maximumElevation 3.764e+02 ;
+    dbpedia-owl:minimumElevation 8.5e+01 ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Illinois.svg?width=300> ;
+    rdfs:comment "Illinois (/ˌɪlɨˈnɔɪ/ IL-i-NOY) is a state in the Midwestern United States. It is the 5th most populous and 25th most extensive state, and is often noted as a microcosm of the entire country. With Chicago in the northeast, small industrial cities and great agricultural productivity in central and northern Illinois, and natural resources like coal, timber, and petroleum in the south, Illinois has a diverse economic base and is a major transportation hub."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Illinois.svg> ;
+    foaf:homepage <http://www.illinois.gov> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Illinois> ;
+    foaf:name "State of Illinois"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="25" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Springfield,_Illinois</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Springfield,_Illinois> a <http://dbpedia.org/class/yago/AdministrativeDistrict108491826>,
+        <http://dbpedia.org/class/yago/Area108497294>,
+        <http://dbpedia.org/class/yago/Center108523483>,
+        <http://dbpedia.org/class/yago/CitiesInIllinois>,
+        <http://dbpedia.org/class/yago/City108524735>,
+        <http://dbpedia.org/class/yago/CountySeat108547143>,
+        <http://dbpedia.org/class/yago/CountySeatsInIllinois>,
+        <http://dbpedia.org/class/yago/District108552138>,
+        <http://dbpedia.org/class/yago/GeographicalArea108574314>,
+        <http://dbpedia.org/class/yago/Location100027167>,
+        <http://dbpedia.org/class/yago/Municipality108626283>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/PopulatedPlacesEstablishedIn1819>,
+        <http://dbpedia.org/class/yago/Region108630985>,
+        <http://dbpedia.org/class/yago/Seat108647945>,
+        <http://dbpedia.org/class/yago/Site108651247>,
+        <http://dbpedia.org/class/yago/Tract108673395>,
+        <http://dbpedia.org/class/yago/UrbanArea108675967>,
+        <http://dbpedia.org/class/yago/YagoGeoEntity>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:Place,
+        dbpedia-owl:PopulatedPlace,
+        dbpedia-owl:Settlement,
+        <http://dbpedia.org/ontology/Wikidata:Q532>,
+        <http://schema.org/Place>,
+        <http://www.ontologydesignpatterns.org/ont/d0.owl#Location>,
+        <http://www.opengis.net/gml/_Feature>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> ;
+    rdfs:label "Springfield, Illinois"@en ;
+    dbpedia-owl:abstract "Springfield is the capital of the US state of Illinois and the county seat of Sangamon County with a population of 116,250 (U.S. Bureau of the Census, 2010), making it the sixth most populated city in the state. It is the largest city in central Illinois. Just over 208,000 residents live in the Springfield Metropolitan Statistical Area, which includes Sangamon County and adjacent Menard County. Present-day Springfield was first settled by European Americans in the late 1810s, around the time Illinois became a state. The most famous past resident is Abraham Lincoln, who lived in Springfield from 1837 until 1861, when he went to the White House as President. Major tourist attractions include a multitude of historic sites connected with Lincoln.The city lies on a mostly flat plain that encompasses much of the surrounding countryside. Hilly terrain lies near the Sangamon River. Lake Springfield, a large artificial lake owned by City Water, Light & Power company called CWLP, supplies the city with recreation and drinking water. Weather is fairly typical for middle latitude locations, with hot summers and cold winters. Spring and summer weather is like that of most midwestern cities; severe thunderstorms are common. Tornadoes hit Springfield in 1957 and 2006.The city is governed by a mayor-council form of government. The city proper is also the \"Capital Township\" governmental entity. In addition, the government of the state of Illinois is also based in Springfield. State government entities located in the city include the Illinois General Assembly, the Illinois Supreme Court and the Office of the Governor of Illinois. There are three public and two private high schools in Springfield. Public schools in Springfield are operated by District No. 186. The economy of Springfield is marked by government jobs, which account for a large percentage of the city's workforce."@en ;
+    dbpedia-owl:daylightSavingTimeZone dbpedia:Central_Time_Zone ;
+    dbpedia-owl:elevation 1.81966e+02 ;
+    dbpedia-owl:foundingDate "1821-04-10"^^xsd:date,
+        "1832-04-02"^^xsd:date,
+        "1840-04-06"^^xsd:date ;
+    dbpedia-owl:leader dbpedia:J._Michael_Houston ;
+    dbpedia-owl:motto "Home of President Abraham Lincoln" ;
+    dbpedia-owl:populationMetro 208182 ;
+    dbpedia-owl:populationTotal 117400 ;
+    dbpedia-owl:postalCode "62701" ;
+    dbpedia-owl:region <http://dbpedia.org/resource/Sangamon_County,_Illinois> ;
+    dbpedia-owl:state dbpedia:Illinois ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Downtown_Springfield.JPG?width=300> ;
+    dbpedia-owl:timeZone dbpedia:Central_Time_Zone ;
+    dbpedia-owl:type dbpedia:List_of_cities_in_Illinois ;
+    rdfs:comment "Springfield is the capital of the US state of Illinois and the county seat of Sangamon County with a population of 116,250 (U.S. Bureau of the Census, 2010), making it the sixth most populated city in the state. It is the largest city in central Illinois. Just over 208,000 residents live in the Springfield Metropolitan Statistical Area, which includes Sangamon County and adjacent Menard County."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Downtown_Springfield.JPG> ;
+    foaf:homepage <http://www.springfield.il.us> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Springfield,_Illinois> ;
+    foaf:name "Springfield, Illinois"@en ;
+    foaf:nick "Flower City"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="26" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Edward_Baker_Lincoln</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Edward_Baker_Lincoln a <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/Child109917593>,
+        <http://dbpedia.org/class/yago/ChildrenOfPresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Juvenile109622049>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "Edward Baker Lincoln"@en ;
+    dbpedia-owl:abstract "Edward Baker \"Eddie\" Lincoln (March 10, 1846 – February 1, 1850) was the second son of Abraham Lincoln and Mary Todd Lincoln. He was named after Lincoln's friend Edward Dickinson Baker. Both his mother and father spelled his name \"Eddy\";[citation needed] the National Park Service uses \"Eddie\", which is on his gravestone."@en ;
+    dbpedia-owl:alias "Eddie/Eddy" ;
+    dbpedia-owl:birthDate "1846-03-10"^^xsd:date ;
+    dbpedia-owl:birthPlace <http://dbpedia.org/resource/Springfield,_Illinois> ;
+    dbpedia-owl:birthYear "1846+02:00"^^xsd:gYear ;
+    dbpedia-owl:deathDate "1850-02-01"^^xsd:date ;
+    dbpedia-owl:deathYear "1850+02:00"^^xsd:gYear ;
+    dbpedia-owl:knownFor dbpedia:Abraham_Lincoln ;
+    dbpedia-owl:thumbnail <http://en.wikipedia.org/wiki/Special:FilePath/Eddielincoln.jpg?width=300> ;
+    rdfs:comment "Edward Baker \"Eddie\" Lincoln (March 10, 1846 – February 1, 1850) was the second son of Abraham Lincoln and Mary Todd Lincoln. He was named after Lincoln's friend Edward Dickinson Baker. Both his mother and father spelled his name \"Eddy\";[citation needed] the National Park Service uses \"Eddie\", which is on his gravestone."@en ;
+    foaf:depiction <http://en.wikipedia.org/wiki/Special:FilePath/Eddielincoln.jpg> ;
+    foaf:givenName "Edward Baker"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Edward_Baker_Lincoln> ;
+    foaf:name "Edward Baker Lincoln"@en,
+        "Lincoln, Edward Baker"@en ;
+    foaf:surname "Lincoln"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="27" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Private_(rank)</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Private_(rank)> a <http://dbpedia.org/class/yago/Abstraction100002137>,
+        <http://dbpedia.org/class/yago/Arrangement107938773>,
+        <http://dbpedia.org/class/yago/Attribute100024264>,
+        <http://dbpedia.org/class/yago/Formation108426461>,
+        <http://dbpedia.org/class/yago/Group100031264>,
+        <http://dbpedia.org/class/yago/Line108430568>,
+        <http://dbpedia.org/class/yago/MilitaryRank114431471>,
+        <http://dbpedia.org/class/yago/MilitaryRanks>,
+        <http://dbpedia.org/class/yago/MilitaryRanksOfAustralia>,
+        <http://dbpedia.org/class/yago/MilitaryRanksOfCanada>,
+        <http://dbpedia.org/class/yago/MilitaryRanksOfIreland>,
+        <http://dbpedia.org/class/yago/MilitaryRanksOfTheUnitedKingdom>,
+        <http://dbpedia.org/class/yago/MilitaryRanksOfTheUnitedStatesArmy>,
+        <http://dbpedia.org/class/yago/Rank108431942>,
+        <http://dbpedia.org/class/yago/Rank114429985>,
+        <http://dbpedia.org/class/yago/State100024720>,
+        <http://dbpedia.org/class/yago/Status113945919>,
+        <http://dbpedia.org/class/yago/UnitedStatesMarineCorpsRanks>,
+        <http://dbpedia.org/class/yago/UnitedStatesMilitaryEnlistedRanks> ;
+    rdfs:label "Private (rank)"@en ;
+    dbpedia-owl:abstract "A private is a soldier of the lowest military rank (equivalent to NATO Rank Grades OR-1 to OR-3 depending on the force served in).In modern military parlance, 'private' is shortened to 'Pte' in the United Kingdom and other Commonwealth countries and to 'Pvt.' in the United States."@en ;
+    rdfs:comment "A private is a soldier of the lowest military rank (equivalent to NATO Rank Grades OR-1 to OR-3 depending on the force served in).In modern military parlance, 'private' is shortened to 'Pte' in the United Kingdom and other Commonwealth countries and to 'Pvt.' in the United States."@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Private_(rank)> .
+
+]]>
+    </field>
+  </object>
+  <object pk="28" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Tad_Lincoln</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Tad_Lincoln a <http://dbpedia.org/class/yago/AmericanPeopleOfEnglishDescent>,
+        <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/Child109917593>,
+        <http://dbpedia.org/class/yago/ChildrenOfPresidentsOfTheUnitedStates>,
+        <http://dbpedia.org/class/yago/Juvenile109622049>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/PeopleFromSpringfield,Illinois>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:Person,
+        <http://schema.org/Person>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "Tad Lincoln"@en ;
+    dbpedia-owl:abstract "Thomas \"Tad\" Lincoln III (April 4, 1853 – July 15, 1871) was the fourth and youngest son of Abraham and Mary Lincoln. The nickname \"Tad\" was given to him by his father, who found him \"as wriggly as a tadpole\" when he was a baby. Lincoln was known to be impulsive and unrestrained, and he did not attend school during his father's lifetime. He had free run of the White House, and there are stories of him interrupting Presidential meetings, collecting animals, and charging visitors to see his father. He died at the age of 18 on July 15, 1871, in Chicago."@en ;
+    dbpedia-owl:alias "Lincoln, Thomas" ;
+    dbpedia-owl:birthDate "1853-04-04"^^xsd:date ;
+    dbpedia-owl:birthName "Thomas Lincoln"@en ;
+    dbpedia-owl:birthPlace <http://dbpedia.org/resource/Springfield,_Illinois> ;
+    dbpedia-owl:birthYear "1853+02:00"^^xsd:gYear ;
+    dbpedia-owl:deathDate "1871-07-15"^^xsd:date ;
+    dbpedia-owl:deathPlace dbpedia:Chicago,
+        dbpedia:Illinois ;
+    dbpedia-owl:deathYear "1871+02:00"^^xsd:gYear ;
+    dbpedia-owl:parent dbpedia:Abraham_Lincoln,
+        dbpedia:Mary_Todd_Lincoln ;
+    dbpedia-owl:relative dbpedia:Lincoln_family_tree ;
+    dbpedia-owl:restingPlace dbpedia:Lincoln_Tomb ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Tad_Lincoln_in_uniform.jpg?width=300> ;
+    dbpedia-owl:viafId "30784899" ;
+    rdfs:comment "Thomas \"Tad\" Lincoln III (April 4, 1853 – July 15, 1871) was the fourth and youngest son of Abraham and Mary Lincoln. The nickname \"Tad\" was given to him by his father, who found him \"as wriggly as a tadpole\" when he was a baby. Lincoln was known to be impulsive and unrestrained, and he did not attend school during his father's lifetime."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Tad_Lincoln_in_uniform.jpg> ;
+    foaf:givenName "Tad"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Tad_Lincoln> ;
+    foaf:name "Lincoln, Tad"@en,
+        "Tad Lincoln"@en ;
+    foaf:surname "Lincoln"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="29" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Hardin_County,_Kentucky</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ns1: <http://dbpedia.org/ontology/PopulatedPlace/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://dbpedia.org/resource/Hardin_County,_Kentucky> a <http://dbpedia.org/class/yago/County108546183>,
+        <http://dbpedia.org/class/yago/KentuckyCounties>,
+        <http://dbpedia.org/class/yago/Location100027167>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/OhioRiverCounties>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Region108630039>,
+        <http://dbpedia.org/class/yago/YagoGeoEntity>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        <http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity>,
+        dbpedia-owl:AdministrativeRegion,
+        dbpedia-owl:Place,
+        dbpedia-owl:PopulatedPlace,
+        dbpedia-owl:Region,
+        <http://dbpedia.org/ontology/Wikidata:Q532>,
+        <http://schema.org/AdministrativeArea>,
+        <http://schema.org/Place>,
+        <http://umbel.org/umbel/rc/PopulatedPlace>,
+        <http://www.ontologydesignpatterns.org/ont/d0.owl#Location>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> ;
+    rdfs:label "Hardin County, Kentucky"@en ;
+    ns1:areaTotal "1632.0447478946858"^^<http://dbpedia.org/datatype/squareKilometre> ;
+    ns1:populationDensity "64.67211155585969"^^<http://dbpedia.org/datatype/inhabitantsPerSquareKilometre> ;
+    dbpedia-owl:abstract "Hardin County is a county located in the U.S. state of Kentucky. As of the 2010 census, the population was 105,543. Its county seat is at Elizabethtown. The county was formed in 1793.Hardin County is part of the Elizabethtown-Fort Knox, KY Metropolitan Statistical Area, as well as the Louisville/Jefferson County--Elizabethtown--Madison, KY-IN Combined Statistical Area."@en ;
+    dbpedia-owl:areaLand 1.61428e+09 ;
+    dbpedia-owl:areaTotal 1.63204e+09 ;
+    dbpedia-owl:areaWater 1.77621e+07 ;
+    dbpedia-owl:censusYear "2010+02:00"^^xsd:gYear ;
+    dbpedia-owl:country dbpedia:United_States ;
+    dbpedia-owl:countySeat <http://dbpedia.org/resource/Elizabethtown,_Kentucky> ;
+    dbpedia-owl:foundingYear "1793+02:00"^^xsd:gYear ;
+    dbpedia-owl:largestCity <http://dbpedia.org/resource/Elizabethtown,_Kentucky> ;
+    dbpedia-owl:percentageOfAreaWater "1.09"^^xsd:float ;
+    dbpedia-owl:populationDensity 6.46721e+01 ;
+    dbpedia-owl:populationTotal 105543 ;
+    dbpedia-owl:state dbpedia:Kentucky ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Hardin_County_Courthouse_in_Elizabethtown.jpg?width=300> ;
+    rdfs:comment "Hardin County is a county located in the U.S. state of Kentucky. As of the 2010 census, the population was 105,543. Its county seat is at Elizabethtown. The county was formed in 1793.Hardin County is part of the Elizabethtown-Fort Knox, KY Metropolitan Statistical Area, as well as the Louisville/Jefferson County--Elizabethtown--Madison, KY-IN Combined Statistical Area."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Hardin_County_Courthouse_in_Elizabethtown.jpg> ;
+    foaf:homepage <http://www.hcky.org> ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Hardin_County,_Kentucky> ;
+    foaf:name "Hardin County"@en .
+
+]]>
+    </field>
+  </object>
+  <object pk="30" model="knowledge.knowledgegraph">
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Thomas_L._Harris</field>
+    <field type="TextField" name="graph"><![CDATA[
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smartoo: <http://fi.muni.cz/smartoo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dbpedia:Thomas_L._Harris a <http://dbpedia.org/class/yago/ArmyOfficer109809749>,
+        <http://dbpedia.org/class/yago/CausalAgent100007347>,
+        <http://dbpedia.org/class/yago/Congressman109955781>,
+        <http://dbpedia.org/class/yago/Lawgiver110249270>,
+        <http://dbpedia.org/class/yago/Leader109623038>,
+        <http://dbpedia.org/class/yago/Legislator110253995>,
+        <http://dbpedia.org/class/yago/LivingThing100004258>,
+        <http://dbpedia.org/class/yago/MilitaryOfficer110317007>,
+        <http://dbpedia.org/class/yago/Object100002684>,
+        <http://dbpedia.org/class/yago/Organism100004475>,
+        <http://dbpedia.org/class/yago/PeopleFromMenardCounty,Illinois>,
+        <http://dbpedia.org/class/yago/PeopleFromNorwich,Connecticut>,
+        <http://dbpedia.org/class/yago/Person100007846>,
+        <http://dbpedia.org/class/yago/PhysicalEntity100001930>,
+        <http://dbpedia.org/class/yago/Politician110451263>,
+        <http://dbpedia.org/class/yago/Serviceman110582746>,
+        <http://dbpedia.org/class/yago/SkilledWorker110605985>,
+        <http://dbpedia.org/class/yago/UnitedStatesArmyOfficers>,
+        <http://dbpedia.org/class/yago/Whole100003553>,
+        <http://dbpedia.org/class/yago/Worker109632518>,
+        <http://dbpedia.org/class/yago/YagoLegalActor>,
+        <http://dbpedia.org/class/yago/YagoLegalActorGeo>,
+        dbpedia-owl:Agent,
+        dbpedia-owl:Congressman,
+        dbpedia-owl:Person,
+        dbpedia-owl:Politician,
+        <http://schema.org/Person>,
+        <http://umbel.org/umbel/rc/USRepresentative>,
+        <http://wikidata.dbpedia.org/resource/Q215627>,
+        <http://wikidata.dbpedia.org/resource/Q5>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Agent>,
+        <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson>,
+        <http://www.w3.org/2002/07/owl#Thing>,
+        foaf:Person ;
+    rdfs:label "Thomas L. Harris"@en ;
+    dbpedia-owl:abstract "Thomas Langrell Harris (October 29, 1816 – November 24, 1858) was a U.S. Representative from Illinois."@en ;
+    dbpedia-owl:almaMater <http://dbpedia.org/resource/Hartford,_Connecticut>,
+        <http://dbpedia.org/resource/Trinity_College_(Connecticut)>,
+        dbpedia:United_States ;
+    dbpedia-owl:battle dbpedia:Battle_of_Cerro_Gordo,
+        dbpedia:Mexico ;
+    dbpedia-owl:birthDate "1816-10-20"^^xsd:date,
+        "1816-10-29"^^xsd:date ;
+    dbpedia-owl:birthName "Thomas Langrell Harris"@en ;
+    dbpedia-owl:birthPlace <http://dbpedia.org/resource/Norwich,_Connecticut>,
+        dbpedia:United_States ;
+    dbpedia-owl:birthYear "1816+02:00"^^xsd:gYear ;
+    dbpedia-owl:country dbpedia:United_States ;
+    dbpedia-owl:deathDate "1858-11-24"^^xsd:date ;
+    dbpedia-owl:deathPlace <http://dbpedia.org/resource/Springfield,_Illinois>,
+        dbpedia:United_States ;
+    dbpedia-owl:deathYear "1858+02:00"^^xsd:gYear ;
+    dbpedia-owl:militaryCommand "Branch Commander" ;
+    dbpedia-owl:nationality dbpedia:United_States ;
+    dbpedia-owl:party <http://dbpedia.org/resource/Democratic_Party_(United_States)> ;
+    dbpedia-owl:profession dbpedia:Lawyer,
+        dbpedia:Politician ;
+    dbpedia-owl:region dbpedia:Illinois,
+        <http://dbpedia.org/resource/Illinois's_6th_congressional_district>,
+        <http://dbpedia.org/resource/Illinois's_7th_congressional_district> ;
+    dbpedia-owl:restingPlace <http://dbpedia.org/resource/Petersburg,_Illinois>,
+        dbpedia:United_States ;
+    dbpedia-owl:serviceStartYear "1846+02:00"^^xsd:gYear ;
+    dbpedia-owl:thumbnail <http://commons.wikimedia.org/wiki/Special:FilePath/Hon._Harris_-_NARA_-_528403.jpg?width=300> ;
+    dbpedia-owl:viafId "73665797" ;
+    rdfs:comment "Thomas Langrell Harris (October 29, 1816 – November 24, 1858) was a U.S. Representative from Illinois."@en ;
+    foaf:depiction <http://commons.wikimedia.org/wiki/Special:FilePath/Hon._Harris_-_NARA_-_528403.jpg> ;
+    foaf:givenName "Thomas Langrell"@en ;
+    foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Thomas_L._Harris> ;
+    foaf:name "Harris, Thomas Langrell"@en,
+        "Thomas L. Harris"@en,
+        "Thomas Langrell Harris"@en ;
+    foaf:surname "Harris"@en .
+
+]]>
+    </field>
+  </object>
+</django-objects>

@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
 
 from nltk import ParentedTree
+from collections import defaultdict
 import re
 
 from common.utils.xml import is_xml_tag
 from common.utils.wiki import uri_to_name
+#from knowledge.models import Vertical
 from knowledge.namespaces import RESOURCE
 
 # NOTE: ? Presunout do models baliku ?
@@ -107,22 +109,17 @@ class Article(object):
 ])
     """
 
-    def __init__(self, uri, vertical):
+    def __init__(self, vertical):
         """
         Args:
-            vertical: string representing the vertical of this article,
-                in tree-tagger format
+            vertical: vertical from which to build the article
+                [knowledge.models.Vertical]
         """
-        self._uri = uri
-        # assert top_uri == uri stated in the vertical header
-        # (may remove topic_uri argument later, but for now, it's usefull
-        # check, that we do things right)
-        # TODO: process vertical
-        # check :vertical: is unicode
-        assert isinstance(vertical, basestring)
-        vertical = unicode(vertical)
-        lines = vertical.split('\n')
+        self._topic_uri = vertical.topic_uri
+        lines = vertical.content.split('\n')
 
+        # _terms dictionary maps uri to list of references to positions (nodes)
+        self._terms = defaultdict(list)
         self._sentences = []
         discarding = True
         for line in lines:
@@ -148,31 +145,34 @@ class Article(object):
                     # NOTE: it's easier to work with string labels than with
                     # dictionaries as a node (unfortunatelly)
                     wuri = term_match.group('wuri')
-                    #current_node = Tree('TERM:%s' % wuri, [])
+                    # TODO: use DBpedia to get more specific type sequence, e.g
+                    # "TERM:AGENT:PERSON", "TERM:EVENT", "DATE", "NUMBER", ...
                     current_node = ParentedTree('TERM', [])
                     # save the uri information to the node
-                    current_node.uri = RESOURCE[wuri]
-                    #current_node = Tree({
-                    #    # TODO: use DBpedia to get more precise RDFS type
-                    #    'type': 'term',
-                    #    'uri': RESOURCE[term_match.group('wuri')]
-                    #}, [])
+                    current_node.term = RESOURCE[wuri]
+                    # remember term and its position
+                    self._terms[current_node.term].append(current_node)
+
                 elif line == '</term>':
                     new_sentence.append(current_node)
                     # change refference of current node back to the sentence
                     current_node = new_sentence
+
                 elif line == '<g/>':
                     # ignore glue, we don't need it
                     pass
+
                 elif line == '</s>':
                     #print 'sentence'
                     #print new_sentence
                     if not discarding:
                         self._sentences.append(new_sentence)
+
                 else:
                     # structure which is not handled (like <math>)
                     # -> discard the sentence
                     discarding = True
+
             else:
                 # use tuples to represent tokens
                 #token = Token(line)
@@ -187,11 +187,6 @@ class Article(object):
     def __unicode__(self):
         return '<Article name="{name}">'.format(name=self.get_name())
 
-    #def get(self, index):
-    #    """Returns line (Token or sgml tag in unicode) on given index
-    #    """
-    #    return self._lines[index]
-
     #def get_vertical(self, new_line=False):
     #    # NOTE: some lines are Tokens and some are strings
     #    vertical = '\n'.join(map(unicode, self._lines))
@@ -199,14 +194,20 @@ class Article(object):
     #        vertical += '\n'
     #    return vertical
 
-    def get_uri(self):
-        return self._uri
+    def get_topic_uri(self):
+        return self._topic_uri
 
     def get_name(self):
         """
         Returns the name of the article.
         """
-        return uri_to_name(self.get_uri())
+        return uri_to_name(self.get_topic_uri())
+
+    def get_all_terms(self):
+        """
+        Returns set of all terms in the article.
+        """
+        return set(self._terms.keys())
 
     def get_sentences(self):
         """

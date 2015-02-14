@@ -17,14 +17,14 @@ from practice.models import Practicer
 from smartoo.models import Session
 
 # skip flag: whether to execute these special tests or not
-SKIP = False
+SKIP = True
 
 
 class ComponentsTestCase(TestCase):
     fixtures = ['initial-lincoln.xml']
 
     def setUp(self):
-        self.topic_uri = 'http://en.wikipedia.org/wiki/Abraham_Lincoln'
+        self.topic_uri = 'http://dbpedia.org/resource/Abraham_Lincoln'
         self.session = Session(topic_uri=self.topic_uri)
         # ------------------------------------------------------------------
         # components to test

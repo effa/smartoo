@@ -57,7 +57,7 @@ class AccumulativeFeedbackTestCase(TestCase):
 class SessiontTestCase(TestCase):
     def setUp(self):
         # create topic uri and vertical
-        self.topic_uri = 'http://en.wikipedia.org/wiki/Pan_Tau',
+        self.topic_uri = 'http://dbpedia.org/resource/Pan_Tau',
         Vertical.objects.create(
             topic_uri=self.topic_uri,
             content='test')
