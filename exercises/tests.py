@@ -1,7 +1,9 @@
 from django.test import TestCase
 from knowledge.models import KnowledgeBuilder, KnowledgeGraph
+from knowledge.namespaces import RDF, SMARTOO, ONTOLOGY, RESOURCE
 from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
+from exercises.utils.distractors import generate_similar_terms
 
 
 class ExercisesCreatorTestCase(TestCase):
@@ -59,3 +61,23 @@ class ExercisesGraderTestCase(TestCase):
         # check that grades were saved and can be retrieved
         grades = GradedExercise.objects.all().first()
         self.assertIsInstance(grades.difficulty, float)
+
+
+class DistractorsUtilsTestCase(TestCase):
+    def setUp(self):
+        pass
+
+    def test_generate_similar_terms(self):
+        knowledge_graph = KnowledgeGraph()
+        termA = RESOURCE['A']
+        termB = RESOURCE['B']
+        knowledge_graph.add((termA, RDF['type'], SMARTOO['term']))
+        knowledge_graph.add((termB, RDF['type'], SMARTOO['term']))
+        knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Person']))
+        knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Person']))
+        terms = generate_similar_terms(termA, knowledge_graph, 4)
+        self.assertEqual(len(terms), 4)
+        self.assertNotIn(termA, terms)
+        terms = generate_similar_terms(termA, knowledge_graph, 5)
+        self.assertEqual(len(terms), 5)
+        self.assertNotIn(termA, terms)

@@ -263,8 +263,12 @@ class KnowledgeGraph(models.Model):
         term1_types = self.types(term1)
         term2_types = self.types(term2)
         common_types = term1_types & term2_types
-        # normalization -> number between 0 and 1)
-        similarity = 1 - (1.0 / (len(common_types) + 1))
+        # all terms should have at least one type (smartoo:term), but if not,
+        # just return 0
+        if not common_types:
+            return 0.0
+        # normalization -> number between 0 and 1
+        similarity = 1 - (1.0 / len(common_types))
         return similarity
 
     @cached_property

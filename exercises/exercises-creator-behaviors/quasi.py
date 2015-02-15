@@ -27,11 +27,13 @@ class Quasi(ExercisesCreatorBehavior):
         """)
 
         terms_in_sentence = knowledge_graph.query(TERM_IN_SENTENCE_QUERY)
-        print '***'
         for before, term, after in terms_in_sentence:
             distractors = generate_similar_terms(term, knowledge_graph)
-            choices = create_choice_list(term, distractors, knowledge_graph)
-            correct_answer_label = knowledge_graph.label(term)
+            choices, correct_answer_label = create_choice_list(
+                correct=term,
+                distractors=distractors,
+                knowledge_graph=knowledge_graph)
+            #correct_answer_label = knowledge_graph.label(term)
             exercise = Exercise(data={
                 'question': '{before} _______ {after}'.format(
                     before=unicode(before),

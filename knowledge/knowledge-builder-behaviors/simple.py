@@ -18,7 +18,9 @@ class Simple(KnowledgeBuilderBehavior):
 
     def build_knowledge_graph(self, article):
         knowledge_graph = KnowledgeGraph()
-        knowledge_graph.add_related_global_knowledge(article)
+        knowledge_graph.add_related_global_knowledge(article,
+            predicates=[RDFS['label'], RDF['type']],
+            online=False)
 
         for sentence in contextfree_sentences(article):
             # TODO: tohle by chtelo delat spis pomoci reqexu/gramatiky
@@ -33,7 +35,7 @@ class Simple(KnowledgeBuilderBehavior):
                         term = chunk.term
                         # !!! TODO: problem se sklonovanim, lepe pouzit global
                         # knowledge pro zijsteni labelu
-                        term_text = join_words(chunk.leaves())
+                        #term_text = join_words(chunk.leaves())
                         term_found = True
                         continue
                         # TODO: pomocna metoda na vytvoreni uri z pojmenovane
@@ -64,14 +66,14 @@ class Simple(KnowledgeBuilderBehavior):
                 quasifact,
                 SMARTOO['part-after-term'],
                 Literal(join_words(after_term))))
-            # info about the term
-            knowledge_graph.add((
-                term,
-                RDF['type'],
-                SMARTOO['term']))
-            knowledge_graph.add((
-                term,
-                RDFS['label'],
-                Literal(term_text)))
+            # info about the term - added through add_related_global_knowledge
+            #knowledge_graph.add((
+            #    term,
+            #    RDF['type'],
+            #    SMARTOO['term']))
+            #knowledge_graph.add((
+            #    term,
+            #    RDFS['label'],
+            #    Literal(term_text)))
 
         return knowledge_graph

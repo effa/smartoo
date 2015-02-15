@@ -122,12 +122,14 @@ class KnowledgeGraphTestCase(TestCase):
         knowledge_graph.add((termA, RDF['type'], SMARTOO['term']))
         self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0)
         knowledge_graph.add((termB, RDF['type'], SMARTOO['term']))
-        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.5)
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0)
         knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Agent']))
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0)
+        knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Agent']))
         self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.5)
         knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Person']))
         self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.5)
-        knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Agent']))
+        knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Person']))
         self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 2.0 / 3)
 
     def test_all_terms(self):

@@ -21,7 +21,7 @@ SKIP = True
 
 
 class ComponentsTestCase(TestCase):
-    fixtures = ['initial-lincoln.xml']
+    fixtures = ['complete-lincoln.xml']
 
     def setUp(self):
         self.topic_uri = 'http://dbpedia.org/resource/Abraham_Lincoln'
@@ -47,8 +47,13 @@ class ComponentsTestCase(TestCase):
     @skipIf(SKIP, "special components behavior test")
     def test_components(self):
         # there will whatever I want to test right now
+
+        # knowledge building
         self.session.build_knowledge()
         #print self.session.get_knowledge_graph()
+
+        # exercises creating
         self.session.create_graded_exercises()
+        print '***'
         for exercise in self.session.get_graded_exercises():
             print exercise
