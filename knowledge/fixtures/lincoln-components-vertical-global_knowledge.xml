@@ -25,7 +25,7 @@
     <field type="TextField" name="parameters">{}</field>
   </object>
   <object pk="1" model="knowledge.Vertical">
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln</field>
+    <field type="CharField" name="topic">Abraham_Lincoln</field>
     <field type="TextField" name="content"><![CDATA[
 <doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln" title="Abraham Lincoln">
 <p heading="1">
@@ -75,7 +75,7 @@ War	NP	War-n
   </object>
   <object pk="1" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln</field>
+    <field type="CharField" name="topic">Abraham_Lincoln</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -200,7 +200,7 @@ dbpedia:Abraham_Lincoln a <http://dbpedia.org/class/yago/Adult109605289>,
   </object>
   <object pk="2" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln_and_religion</field>
+    <field type="CharField" name="topic">Abraham_Lincoln_and_religion</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -224,7 +224,7 @@ dbpedia:Abraham_Lincoln_and_religion rdfs:label "Abraham Lincoln and religion"@e
   </object>
   <object pk="3" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/National_Union_Party_(United_States)</field>
+    <field type="CharField" name="topic">National_Union_Party_(United_States)</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -265,7 +265,7 @@ dbpedia:Abraham_Lincoln_and_religion rdfs:label "Abraham Lincoln and religion"@e
   </object>
   <object pk="4" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Captain_(United_States)</field>
+    <field type="CharField" name="topic">Captain_(United_States)</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -303,7 +303,7 @@ dbpedia:Abraham_Lincoln_and_religion rdfs:label "Abraham Lincoln and religion"@e
   </object>
   <object pk="5" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Robert_Todd_Lincoln</field>
+    <field type="CharField" name="topic">Robert_Todd_Lincoln</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -414,7 +414,7 @@ dbpedia:Robert_Todd_Lincoln a <http://dbpedia.org/class/yago/Alumnus109786338>,
   </object>
   <object pk="6" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Petersen_House_(Washington,_D.C.)</field>
+    <field type="CharField" name="topic">Petersen_House_(Washington,_D.C.)</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -464,7 +464,7 @@ dbpedia:Robert_Todd_Lincoln a <http://dbpedia.org/class/yago/Alumnus109786338>,
   </object>
   <object pk="7" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Mary_Todd_Lincoln</field>
+    <field type="CharField" name="topic">Mary_Todd_Lincoln</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -544,7 +544,7 @@ dbpedia:Mary_Todd_Lincoln a <http://dbpedia.org/class/yago/Achiever109762821>,
   </object>
   <object pk="8" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Andrew_Johnson</field>
+    <field type="CharField" name="topic">Andrew_Johnson</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -706,7 +706,7 @@ dbpedia:Andrew_Johnson a <http://dbpedia.org/class/yago/Administrator109770949>,
   </object>
   <object pk="9" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Lawyer</field>
+    <field type="CharField" name="topic">Lawyer</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -730,7 +730,7 @@ dbpedia:Lawyer rdfs:label "Lawyer"@en ;
   </object>
   <object pk="10" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/William_Wallace_Lincoln</field>
+    <field type="CharField" name="topic">William_Wallace_Lincoln</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -789,7 +789,7 @@ dbpedia:William_Wallace_Lincoln a <http://dbpedia.org/class/yago/CausalAgent1000
   </object>
   <object pk="11" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Illinois's_7th_congressional_district</field>
+    <field type="CharField" name="topic">Illinois's_7th_congressional_district</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -817,7 +817,7 @@ dbpedia:William_Wallace_Lincoln a <http://dbpedia.org/class/yago/CausalAgent1000
   </object>
   <object pk="12" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln__1</field>
+    <field type="CharField" name="topic">Abraham_Lincoln__1</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -840,7 +840,7 @@ dbpedia:Abraham_Lincoln__1 a dbpedia-owl:TimePeriod,
   </object>
   <object pk="13" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln__2</field>
+    <field type="CharField" name="topic">Abraham_Lincoln__2</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -862,7 +862,7 @@ dbpedia:Abraham_Lincoln__2 a dbpedia-owl:TimePeriod,
   </object>
   <object pk="14" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Abraham_Lincoln__3</field>
+    <field type="CharField" name="topic">Abraham_Lincoln__3</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -884,7 +884,7 @@ dbpedia:Abraham_Lincoln__3 a dbpedia-owl:TimePeriod,
   </object>
   <object pk="15" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Hannibal_Hamlin</field>
+    <field type="CharField" name="topic">Hannibal_Hamlin</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1017,7 +1017,7 @@ dbpedia:Hannibal_Hamlin a <http://dbpedia.org/class/yago/Administrator109770949>
   </object>
   <object pk="16" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Republican_Party_(United_States)</field>
+    <field type="CharField" name="topic">Republican_Party_(United_States)</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1065,7 +1065,7 @@ dbpedia:Hannibal_Hamlin a <http://dbpedia.org/class/yago/Administrator109770949>
   </object>
   <object pk="17" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Hodgenville,_Kentucky</field>
+    <field type="CharField" name="topic">Hodgenville,_Kentucky</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1149,7 +1149,7 @@ dbpedia:Hannibal_Hamlin a <http://dbpedia.org/class/yago/Administrator109770949>
   </object>
   <object pk="18" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Washington,_D.C.</field>
+    <field type="CharField" name="topic">Washington,_D.C.</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1246,7 +1246,7 @@ dbpedia:Hannibal_Hamlin a <http://dbpedia.org/class/yago/Administrator109770949>
   </object>
   <object pk="20" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/List_of_Presidents_of_the_United_States</field>
+    <field type="CharField" name="topic">List_of_Presidents_of_the_United_States</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1279,7 +1279,7 @@ dbpedia:List_of_Presidents_of_the_United_States a dbpedia-owl:Agent,
   </object>
   <object pk="21" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/American_Civil_War</field>
+    <field type="CharField" name="topic">American_Civil_War</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1355,7 +1355,7 @@ dbpedia:American_Civil_War a <http://dbpedia.org/class/yago/Abstraction100002137
   </object>
   <object pk="22" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Whig_Party_(United_States)</field>
+    <field type="CharField" name="topic">Whig_Party_(United_States)</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1403,7 +1403,7 @@ dbpedia:American_Civil_War a <http://dbpedia.org/class/yago/Abstraction100002137
   </object>
   <object pk="23" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Black_Hawk_War</field>
+    <field type="CharField" name="topic">Black_Hawk_War</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1462,7 +1462,7 @@ dbpedia:Black_Hawk_War a <http://dbpedia.org/class/yago/AdministrativeDistrict10
   </object>
   <object pk="24" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Illinois</field>
+    <field type="CharField" name="topic">Illinois</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1523,7 +1523,7 @@ dbpedia:Illinois a <http://dbpedia.org/class/yago/AdministrativeDistrict10849182
   </object>
   <object pk="25" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Springfield,_Illinois</field>
+    <field type="CharField" name="topic">Springfield,_Illinois</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1595,7 +1595,7 @@ dbpedia:Illinois a <http://dbpedia.org/class/yago/AdministrativeDistrict10849182
   </object>
   <object pk="26" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Edward_Baker_Lincoln</field>
+    <field type="CharField" name="topic">Edward_Baker_Lincoln</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1651,7 +1651,7 @@ dbpedia:Edward_Baker_Lincoln a <http://dbpedia.org/class/yago/CausalAgent1000073
   </object>
   <object pk="27" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Private_(rank)</field>
+    <field type="CharField" name="topic">Private_(rank)</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1692,7 +1692,7 @@ dbpedia:Edward_Baker_Lincoln a <http://dbpedia.org/class/yago/CausalAgent1000073
   </object>
   <object pk="28" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Tad_Lincoln</field>
+    <field type="CharField" name="topic">Tad_Lincoln</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1757,7 +1757,7 @@ dbpedia:Tad_Lincoln a <http://dbpedia.org/class/yago/AmericanPeopleOfEnglishDesc
   </object>
   <object pk="29" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Hardin_County,_Kentucky</field>
+    <field type="CharField" name="topic">Hardin_County,_Kentucky</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .
@@ -1819,7 +1819,7 @@ dbpedia:Tad_Lincoln a <http://dbpedia.org/class/yago/AmericanPeopleOfEnglishDesc
   </object>
   <object pk="30" model="knowledge.knowledgegraph">
     <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-    <field type="CharField" name="topic_uri">http://dbpedia.org/resource/Thomas_L._Harris</field>
+    <field type="CharField" name="topic">Thomas_L._Harris</field>
     <field type="TextField" name="graph"><![CDATA[
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbpedia-owl: <http://dbpedia.org/ontology/> .

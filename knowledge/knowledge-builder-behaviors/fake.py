@@ -1,6 +1,6 @@
 from knowledge import KnowledgeBuilderBehavior
 from knowledge.models import KnowledgeGraph
-from knowledge.namespaces import RESOURCE, ONTOLOGY, RDFS, DC, XSD
+from knowledge.namespaces import TERM, ONTOLOGY, RDFS, DC, XSD
 from rdflib import Literal
 
 
@@ -16,7 +16,7 @@ class Fake(KnowledgeBuilderBehavior):
 
     def build_knowledge_graph(self, article):
         knowledge_graph = KnowledgeGraph()
-        henry = RESOURCE['Henry_VIII_of_England']
+        henry = TERM['Henry_VIII_of_England']
         knowledge_graph.add((henry,
             RDFS['label'],
             Literal('Henry VIII of England')))

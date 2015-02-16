@@ -1,6 +1,6 @@
 from django.test import TestCase
 from knowledge.models import KnowledgeBuilder, KnowledgeGraph
-from knowledge.namespaces import RDF, SMARTOO, ONTOLOGY, RESOURCE
+from knowledge.namespaces import RDF, SMARTOO, ONTOLOGY, TERM
 from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
 from exercises.utils.distractors import generate_similar_terms
@@ -9,12 +9,12 @@ from exercises.utils.distractors import generate_similar_terms
 class ExercisesCreatorTestCase(TestCase):
     def setUp(self):
         # create a topic_uri, knowledge builder and knowledge graph
-        self.topic_uri = 'http://dbpedia.org/resource/Pan_Tau',
+        self.topic = 'http://dbpedia.org/resource/Pan_Tau'
         self.knowledge_builder = KnowledgeBuilder.objects.create(
             behavior_name='fake',
             parameters={"alpha": 0.5})
         self.knowledge_graph = KnowledgeGraph.objects.create(
-            topic_uri=self.topic_uri,
+            topic=self.topic,
             knowledge_builder=self.knowledge_builder)
 
     def test_create_exercises(self):
@@ -37,12 +37,12 @@ class ExercisesCreatorTestCase(TestCase):
 class ExercisesGraderTestCase(TestCase):
     def setUp(self):
         # create a topic_uri, knowledge builder and knowledge graph
-        self.topic_uri = 'http://dbpedia.org/resource/Pan_Tau',
+        self.topic = 'http://dbpedia.org/resource/Pan_Tau'
         self.knowledge_builder = KnowledgeBuilder.objects.create(
             behavior_name='fake',
             parameters={"alpha": 0.5})
         self.knowledge_graph = KnowledgeGraph.objects.create(
-            topic_uri=self.topic_uri,
+            topic=self.topic,
             knowledge_builder=self.knowledge_builder)
         self.exercises_creator = ExercisesCreator.objects.create(
             behavior_name='fake', parameters={})
@@ -69,8 +69,8 @@ class DistractorsUtilsTestCase(TestCase):
 
     def test_generate_similar_terms(self):
         knowledge_graph = KnowledgeGraph()
-        termA = RESOURCE['A']
-        termB = RESOURCE['B']
+        termA = TERM['A']
+        termB = TERM['B']
         knowledge_graph.add((termA, RDF['type'], SMARTOO['term']))
         knowledge_graph.add((termB, RDF['type'], SMARTOO['term']))
         knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Person']))

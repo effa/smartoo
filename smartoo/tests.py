@@ -1,5 +1,6 @@
 from django.test import TestCase
 from knowledge.models import Vertical, KnowledgeGraph, KnowledgeBuilder
+from knowledge.namespaces import TERM
 from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
 from practice.models import Practicer
@@ -57,9 +58,9 @@ class AccumulativeFeedbackTestCase(TestCase):
 class SessiontTestCase(TestCase):
     def setUp(self):
         # create topic uri and vertical
-        self.topic_uri = 'http://dbpedia.org/resource/Pan_Tau',
+        self.topic = TERM['Pan_Tau']
         Vertical.objects.create(
-            topic_uri=self.topic_uri,
+            topic=self.topic,
             content='test')
         # create fake components in the DB
         KnowledgeBuilder.objects.create(
@@ -76,9 +77,9 @@ class SessiontTestCase(TestCase):
             parameters={"alpha": 1.0})
 
     def test_create_session(self):
-        session = Session.objects.create_with_components(self.topic_uri)
+        session = Session.objects.create_with_components(self.topic)
         self.assertIsNotNone(session)
-        self.assertEqual(session.topic_uri, self.topic_uri)
+        self.assertEqual(session.topic, self.topic)
         self.assertIsInstance(session.knowledge_builder, KnowledgeBuilder)
         self.assertIsInstance(session.exercises_creator, ExercisesCreator)
         self.assertIsInstance(session.exercises_grader, ExercisesGrader)
@@ -86,14 +87,14 @@ class SessiontTestCase(TestCase):
         self.assertEqual(session.finnished, False)
 
     def test_build_knowledge(self):
-        session = Session.objects.create_with_components(self.topic_uri)
+        session = Session.objects.create_with_components(self.topic)
         session.build_knowledge()
         knowledge_graph = KnowledgeGraph.objects.all().first()
         self.assertIsNotNone(knowledge_graph)
         self.assertIsInstance(knowledge_graph, KnowledgeGraph)
 
     def test_create_graded_exercises(self):
-        session = Session.objects.create_with_components(self.topic_uri)
+        session = Session.objects.create_with_components(self.topic)
         # TODO: lepsi by bylo tam graf vlozit manualne (abychom se zbavili
         # zavislosti na uspechu build_knowledge()
         session.build_knowledge()
@@ -109,7 +110,7 @@ class SessiontTestCase(TestCase):
             "The number of stored grades and exercises is different.")
 
     def test_get_graded_exercises(self):
-        session = Session.objects.create_with_components(self.topic_uri)
+        session = Session.objects.create_with_components(self.topic)
         session.build_knowledge()
         session.create_graded_exercises()
         exercises = session.get_graded_exercises()
@@ -117,7 +118,7 @@ class SessiontTestCase(TestCase):
         self.assertIsInstance(exercises[0], GradedExercise)
 
     def test_get_new_exercise(self):
-        session = Session.objects.create_with_components(self.topic_uri)
+        session = Session.objects.create_with_components(self.topic)
         session.build_knowledge()
         session.create_graded_exercises()
         exercise = session.next_exercise()
@@ -128,7 +129,7 @@ class SessiontTestCase(TestCase):
         Test that after n calls of provide_feedback, there will be n used
         exericises and (all - n) unused exercises.
         """
-        session = Session.objects.create_with_components(self.topic_uri)
+        session = Session.objects.create_with_components(self.topic)
         session.build_knowledge()
         session.create_graded_exercises()
         # n-times new_exercises -> feedback

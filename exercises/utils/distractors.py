@@ -2,7 +2,7 @@
 Module for generating distractors
 """
 
-from knowledge.namespaces import ONTOLOGY, RESOURCE
+from knowledge.namespaces import ONTOLOGY, TERM
 from random import sample, shuffle
 
 # TODO: inspirace viz procvicinik-v1
@@ -11,13 +11,13 @@ from random import sample, shuffle
 # some terms to use if there is not enough of them in the article context
 TERMS_OF_TYPE = {
     ONTOLOGY['Person']: [
-        RESOURCE['Popeye_the_Sailor_Man'],
-        RESOURCE['Asterix'],
-        RESOURCE['Meta-Meta-Genie']],
+        TERM['Popeye_the_Sailor_Man'],
+        TERM['Asterix'],
+        TERM['Meta-Meta-Genie']],
     ONTOLOGY['Event']: [
-        RESOURCE['the_Battle_of_Pallet_Town'],
-        RESOURCE['race_between_Achilles_and_a_tortoise'],
-        RESOURCE['the_Clone_Wars']]
+        TERM['the_Battle_of_Pallet_Town'],
+        TERM['race_between_Achilles_and_a_tortoise'],
+        TERM['the_Clone_Wars']]
     # TODO ...
 }
 

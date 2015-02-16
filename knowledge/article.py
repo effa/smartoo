@@ -7,7 +7,7 @@ import re
 from common.utils.xml import is_xml_tag
 from common.utils.wiki import uri_to_name
 #from knowledge.models import Vertical
-from knowledge.namespaces import RESOURCE
+from knowledge.namespaces import TERM
 
 # NOTE: ? Presunout do models baliku ?
 
@@ -115,7 +115,7 @@ class Article(object):
             vertical: vertical from which to build the article
                 [knowledge.models.Vertical]
         """
-        self._topic_uri = vertical.topic_uri
+        self._topic = vertical.topic
         lines = vertical.content.split('\n')
 
         # _terms dictionary maps uri to list of references to positions (nodes)
@@ -149,7 +149,7 @@ class Article(object):
                     # "TERM:AGENT:PERSON", "TERM:EVENT", "DATE", "NUMBER", ...
                     current_node = ParentedTree('TERM', [])
                     # save the uri information to the node
-                    current_node.term = RESOURCE[wuri]
+                    current_node.term = TERM[wuri]
                     # remember term and its position
                     self._terms[current_node.term].append(current_node)
 
@@ -194,14 +194,14 @@ class Article(object):
     #        vertical += '\n'
     #    return vertical
 
-    def get_topic_uri(self):
-        return self._topic_uri
+    def get_topic(self):
+        return self._topic
 
     def get_name(self):
         """
         Returns the name of the article.
         """
-        return uri_to_name(self.get_topic_uri())
+        return uri_to_name(self.get_topic())
 
     def get_all_terms(self):
         """

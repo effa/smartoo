@@ -6,8 +6,8 @@ from django.utils.functional import cached_property
 from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
 from knowledge import Article
-from knowledge.fields import GraphField
-from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, RESOURCE
+from knowledge.fields import GraphField, TermField
+from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, TERM
 from rdflib import Graph, URIRef
 from collections import defaultdict
 
@@ -23,28 +23,30 @@ class KnowledgeBuilder(Component):
     def get_behaviors_path(cls):
         return cls.BEHAVIORS_PATH
 
-    def build_knowledge(self, topic_uri):
+    def build_knowledge(self, topic):
         """
         Creates (and stores) knowledge graph for given topic.
 
         Args:
-            topic_uri: topic for which to build the knowledge graph
+            topic: topic for which to build the knowledge graph
         Raises:
             IntegrityError: if this knowledge builder is not already in DB
                 (its ID is needed to store the graph)
         """
+        # TODO: odstranit toto cachovani behem vyvoje, lepe prepisovat
+        # existujici graf
         # At first check if the knowledge graph hasn't already been created
         # (for this builder-topic combo)
-        if KnowledgeGraph.objects.filter(topic_uri=topic_uri,
+        if KnowledgeGraph.objects.filter(topic=topic,
                 knowledge_builder=self).exists():
             return  # already created, nothing to do
         behavior = self.get_behavior()
         # TODO: osetrit neexistenci vertikalu
-        vertical = Vertical.objects.get(topic_uri=topic_uri)
+        vertical = Vertical.objects.get(topic=topic)
         article = Article(vertical)
         knowledge_graph = behavior.build_knowledge_graph(article)
         knowledge_graph.knowledge_builder = self
-        knowledge_graph.topic_uri = topic_uri
+        knowledge_graph.topic = topic
         knowledge_graph.save()
 
     def __str__(self):
@@ -67,9 +69,9 @@ class Vertical(models.Model):
     """
     # URI of the topic
     # NOTE that it can be different from article URL (e.g.
-    # topic_uri=http://dbpedia.org/resource/Abraham_Lincoln
+    # topic=http://dbpedia.org/resource/Abraham_Lincoln
     # but article_url=http://en.wikipedia.org/wiki/Abraham_Lincoln)
-    topic_uri = models.CharField(max_length=120, unique=True)
+    topic = TermField(unique=True)
 
     # TODO: if article URL is needed as well, than make an attribute for it
 
@@ -80,13 +82,13 @@ class Vertical(models.Model):
         """
         Returns the name of the topic.
         """
-        return uri_to_name(self.topic_uri)
+        return uri_to_name(self.topic)
 
     def __str__(self):
         return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        return '<Vertical uri="{uri}">'.format(uri=self.topic_uri)
+        return '<Vertical topic="{topic}">'.format(topic=self.topic)
 
 
 # ----------------------------------------------------------------------------
@@ -111,7 +113,7 @@ def get_initialized_graph():
 class KnowledgeGraph(models.Model):
     # knowledge graph is determined by KnowledgeBuilder + topic URI
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
-    topic_uri = models.CharField(max_length=120)
+    topic = TermField()
 
     # graph representation
     graph = GraphField(default=get_initialized_graph)
@@ -158,7 +160,7 @@ class KnowledgeGraph(models.Model):
         """
         # at first find all related terms
         terms = article.get_all_terms()
-        topic = article.get_topic_uri()
+        topic = article.get_topic()
         global_knowledge = GlobalKnowledge()
         # online=False is just to make sure test don't use public endpoint,
         # all data should be in fixtures
@@ -179,7 +181,7 @@ class KnowledgeGraph(models.Model):
 #            print """
 #  <object pk="{i}" model="knowledge.knowledgegraph">
 #    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-#    <field type="CharField" name="topic_uri">{topic}</field>
+#    <field type="CharField" name="topic">{topic}</field>
 #    <field type="TextField" name="graph"><![CDATA[
 #{graph}]]>
 #    </field>
@@ -297,13 +299,14 @@ class KnowledgeGraph(models.Model):
         #all_terms = set(smartoo_terms) | set(dbpedia_terms)
         return all_terms
 
+    # TODO: sloucit s get_all_terms ?????
     def get_all_resources(self):
         """
         Returns all subject or objects in the graph which are in RESOURCE
         namespace.
         """
         resources = set()
-        resource_prefix = unicode(RESOURCE)
+        resource_prefix = unicode(TERM)
         # NOTE: Graph.all_nodes() iterates through all subjects and objects
         for node in self.graph.all_nodes():
             if node.startswith(resource_prefix):
@@ -329,7 +332,7 @@ class KnowledgeGraph(models.Model):
         return 'builder: {builder}\ntopic: {topic}\ngraph:\n{graph}'.format(
             builder=self.knowledge_builder if self.knowledge_builder_id is
             not None else '---',
-            topic=self.topic_uri if self.topic_uri is not None else '---',
+            topic=self.topic if self.topic is not None else '---',
             graph=self.graph.serialize(format='turtle').decode('utf-8'))
 
 
@@ -369,12 +372,12 @@ class GlobalKnowledge(object):
         Returns:
             knowledge graph
         """
-        if isinstance(term, unicode):
-            term = URIRef(term)
+        #if isinstance(term, unicode):
+        #    term = URIRef(term)
         assert isinstance(term, URIRef)
 
         try:
-            knowledge_graph = KnowledgeGraph.objects.get(topic_uri=term,
+            knowledge_graph = KnowledgeGraph.objects.get(topic=term,
                 knowledge_builder=self.knowledge_builder)
             return knowledge_graph
 
@@ -385,7 +388,7 @@ class GlobalKnowledge(object):
             # use public endpoint to retrieve the graph
             graph = Graph()
 
-            print 'k/models.py,L369, term:', term
+            print '(online!) k/models.py,L369, term:', term
             graph.parse(term)
             # TODO: osetrit neexistenci grafu na danem zdroji
             # except HTTPError
@@ -414,24 +417,24 @@ class GlobalKnowledge(object):
             # store created (and filtered) graph in DB
             knowledge_graph = KnowledgeGraph.objects.create(
                 knowledge_builder=self.knowledge_builder,
-                topic_uri=term,
+                topic=term,
                 graph=filtered_graph)
 
             return knowledge_graph
 
-    def label(self, uri, fallback_guess=True):
-        """
-        Returns label for given uri reference.
+    #def label(self, term, fallback_guess=True):
+    #    """
+    #    Returns label for given term.
 
-        Args:
-            uri: URI reference to the object for which to find label
-            fallback_guess: guess the label (using URI) if label wasn't found
-        Returns:
-            label [unicode]
-        """
-        # TODO: osetrit neexistenci grafu
-        graph = self.get_graph(uri)
-        return graph.label(uri)
+    #    Args:
+    #        term: URI reference to the object for which to find label
+    #        fallback_guess: guess the label (using URI) if label wasn't found
+    #    Returns:
+    #        label [unicode]
+    #    """
+    #    # TODO: osetrit neexistenci grafu
+    #    graph = self.get_graph(term)
+    #    return graph.label(term)
 
     # NOTE: vzhledem k zvolene zjednodusene reprezentaci globalnich znalosti,
     # nelze v obecnosti implementovat metodu query(sparql), ale pro nase ucely
