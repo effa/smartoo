@@ -1,0 +1,14 @@
+Fixtures
+========
+
+.knowledge/
+- henry8-knowledge-graph-by-fakeKB.xml
+- henry8-knowledge-graph-by-global_knowledge.xml
+- lincoln-vertical-short.xml
+- lincoln-components-vertical-global_knowledge.xml
+
+.exercises/
+
+.practice/
+
+.smartoo/

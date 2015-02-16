@@ -195,13 +195,6 @@ class KnowledgeGraph(models.Model):
                 for value in secondary_graph.get_objects(term, predicate):
                     self.add((term, predicate, value))
 
-        #print
-        #print 'article terms:'
-        #print article_terms
-        #print 'resources:'
-        #print resources
-        #print 'pocet', len(resources)
-        # TODO: add context (pro termy a zdroje)
         self._update_notification()
 
     # TODO: cachovani dotazu (pozor na add())
@@ -311,12 +304,17 @@ class KnowledgeGraph(models.Model):
         """
         resources = set()
         resource_prefix = unicode(RESOURCE)
-        for (s, p, o) in self.graph:
-            if s.startswith(resource_prefix):
-                resources.add(s)
-            if o.startswith(resource_prefix):
-                resources.add(o)
+        # NOTE: Graph.all_nodes() iterates through all subjects and objects
+        for node in self.graph.all_nodes():
+            if node.startswith(resource_prefix):
+                resources.add(node)
         return resources
+        #for (s, p, o) in self.graph:
+        #    if s.startswith(resource_prefix):
+        #        resources.add(s)
+        #    if o.startswith(resource_prefix):
+        #        resources.add(o)
+        #return resources
 
     def get_subjects(self, predicate=None, object=None):
         return list(self.graph.subjects(predicate, object))

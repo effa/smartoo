@@ -43,8 +43,7 @@ class VerticalTestCase(TestCase):
 
 
 class KnowledgeGraphTestCase(TestCase):
-    #fixtures = ['knowledge-graph-henry8.xml', 'complete-lincoln.xml']
-    fixtures = ['complete-lincoln.xml']
+    fixtures = ['lincoln-components-vertical-global_knowledge.xml']
 
     def setUp(self):
         # get fake knowledge builder (already in DB: see fixture)
@@ -159,9 +158,6 @@ class KnowledgeGraphTestCase(TestCase):
         self.assertIn(termB, knowledge_graph.get_all_resources())
 
     def test_add_related_global_knowledge(self):
-        # !!!!!!!!!!!!!!!!!!!!1
-        # TODO: az to rozbehnu, vytvorit ze ziskanych dat fixtures
-        # (complete-lincoln.xml) a zakazat pristup k online zdrojum
         topic = RESOURCE['Abraham_Lincoln']
         vertical = Vertical.objects.get(topic_uri=topic)
         article = Article(vertical=vertical)
@@ -238,7 +234,7 @@ class KnowledgeBuilderTestCase(TestCase):
 # ----------------------------------------------------------------------------
 
 class ArticleTestCase(TestCase):
-    fixtures = ['vertical-lincoln.xml']
+    fixtures = ['lincoln-vertical-short.xml']
 
     def setUp(self):
         self.topic_uri = 'http://dbpedia.org/resource/Abraham_Lincoln'
@@ -322,7 +318,7 @@ class GlobalKnowledgeTestCase(TestCase):
     """
     Tests GlobalKnowledge class when the DB is populated.
     """
-    fixtures = ['global-knowledge.xml']
+    fixtures = ['henry8-knowledge-graph-by-global_knowledge.xml']
 
     def setUp(self):
         self.global_knowledge = GlobalKnowledge()
