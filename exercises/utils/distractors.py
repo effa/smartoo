@@ -54,7 +54,14 @@ def generate_similar_terms(term, knowledge_graph, number=3):
         # missing, take random make-up terms
         if number_rest > 0:
             all_terms = {t for l in TERMS_OF_TYPE.values() for t in l}
-            selected += sample(all_terms, min(len(all_terms), number_rest))
+            # removes the terms which were alread selected to prevent duplicats
+            all_terms.difference_update(selected)
+            # if there is not enough made up terms, take all of them
+            if len(all_terms) <= number_rest:
+                selected += all_terms
+            else:
+                # randomly select rest terms
+                selected += sample(all_terms, number_rest)
     return selected
 
 

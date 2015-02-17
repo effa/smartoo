@@ -6,11 +6,13 @@ from rdflib.namespace import FOAF, RDFS, DC, XSD, RDF
 Module for RDF namespaces.
 """
 
+# namespaces
 TERM = Namespace('http://dbpedia.org/resource/')
 ONTOLOGY = Namespace('http://dbpedia.org/ontology/')
 # own namespaces
 SMARTOO = Namespace('http://fi.muni.cz/smartoo/')
 
+# mapping of prefixes to namespaces
 NAMESPACES_DICT = {
     'dbpedia': TERM,
     'dbpedia-owl': ONTOLOGY,
@@ -21,6 +23,10 @@ NAMESPACES_DICT = {
     'dc': DC,
     'xsd': XSD
 }
+
+# preprepared nodes
+LABEL = RDFS['label']
+TYPE = RDF['type']
 
 
 # NOTE: Vysvetleni reseni: pri desiralizaci grafu se jsou vsechny uzly URIref,

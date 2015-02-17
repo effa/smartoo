@@ -1,9 +1,11 @@
+from __future__ import unicode_literals
 from django.test import TestCase
 from knowledge.models import KnowledgeBuilder, KnowledgeGraph
-from knowledge.namespaces import RDF, SMARTOO, ONTOLOGY, TERM
+from knowledge.namespaces import RDF, SMARTOO, ONTOLOGY, TERM, LABEL
 from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
-from exercises.utils.distractors import generate_similar_terms
+from exercises.utils.distractors import generate_similar_terms, create_choice_list
+from rdflib import Literal
 
 
 class ExercisesCreatorTestCase(TestCase):
@@ -76,8 +78,28 @@ class DistractorsUtilsTestCase(TestCase):
         knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Person']))
         knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Person']))
         terms = generate_similar_terms(termA, knowledge_graph, 4)
+        # as the generating method might be random, we cant's say a term is in
+        # the result for sure, so we just check that correct number of terms
+        # was returned, that it doesn't contains any duplicats and that the
+        # root term itself is not between distractors
         self.assertEqual(len(terms), 4)
+        self.assertEqual(len(set(terms)), 4)
         self.assertNotIn(termA, terms)
         terms = generate_similar_terms(termA, knowledge_graph, 5)
         self.assertEqual(len(terms), 5)
+        self.assertEqual(len(set(terms)), 5)
         self.assertNotIn(termA, terms)
+
+    def test_create_choice_list(self):
+        knowledge_graph = KnowledgeGraph()
+        henry = TERM['Henry_VIII_of_England']
+        edward = TERM['Edward_VI_of_England']
+        elizabeth = TERM['Elizabeth_of_York']
+        knowledge_graph.add((henry, LABEL, Literal('Henry VIII')))
+        knowledge_graph.add((edward, LABEL, Literal('Edward VI')))
+        # it should also work without havin some terms in the graph (using
+        # label fallback)
+        #knowledge_graph.add((elizabeth, LABEL, Literal('Elizabeth of York')))
+        choices, correct = create_choice_list(henry, [edward, elizabeth], knowledge_graph)
+        self.assertEqual(sorted(choices), ['Edward VI', 'Elizabeth of York', 'Henry VIII'])
+        self.assertEqual(correct, 'Henry VIII')
