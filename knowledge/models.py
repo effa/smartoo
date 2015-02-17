@@ -166,7 +166,7 @@ class KnowledgeGraph(models.Model):
         # all data should be in fixtures
         primary_graph = global_knowledge.get_graph(topic, online=online)
         if primary_graph:
-            terms.update(primary_graph.get_all_resources())
+            terms.update(primary_graph.all_terms)
 
         #i = 2
         for term in terms:
@@ -286,38 +286,26 @@ class KnowledgeGraph(models.Model):
             terms_dict[type_uri].add(term)
         return terms_dict
 
-    @cached_property
+    # if it's used often, consider caching (@cached_property etc.)
+    @property
     def all_terms(self):
         """
         Set of all terms in the knowledge graph.
 
-        As terms are only cosidered subjects with type "smartoo:term"
+        As terms are consider all subjects/objects in the TERM namespace.
         """
-        all_terms = set(self.graph.subjects(RDF['type'], SMARTOO['term']))
-        #smartoo_terms = self.graph.subjects(RDF['type'], SMARTOO['term'])
-        #dbpedia_terms = self.graph.subjects(RDF['type'], ONTOLOGY['Thing'])
-        #all_terms = set(smartoo_terms) | set(dbpedia_terms)
-        return all_terms
-
-    # TODO: sloucit s get_all_terms ?????
-    def get_all_resources(self):
-        """
-        Returns all subject or objects in the graph which are in RESOURCE
-        namespace.
-        """
-        resources = set()
-        resource_prefix = unicode(TERM)
+        terms = set()
+        term_prefix = unicode(TERM)
         # NOTE: Graph.all_nodes() iterates through all subjects and objects
         for node in self.graph.all_nodes():
-            if node.startswith(resource_prefix):
-                resources.add(node)
-        return resources
-        #for (s, p, o) in self.graph:
-        #    if s.startswith(resource_prefix):
-        #        resources.add(s)
-        #    if o.startswith(resource_prefix):
-        #        resources.add(o)
-        #return resources
+            if isinstance(node, URIRef) and node.startswith(term_prefix):
+                terms.add(node)
+
+        ## NOTE: Previously, we have considered as terms only subjects with
+        ## type "smartoo:term".
+        #terms = set(self.graph.subjects(RDF['type'], SMARTOO['term']))
+
+        return terms
 
     def get_subjects(self, predicate=None, object=None):
         return list(self.graph.subjects(predicate, object))

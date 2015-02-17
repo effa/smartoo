@@ -99,27 +99,21 @@ class KnowledgeGraphWithoutFixtureTestCase(TestCase):
         knowledge_graph = KnowledgeGraph()
         termA = TERM['A']
         termB = TERM['B']
+        termC = TERM['C']
         self.assertEqual(len(knowledge_graph.all_terms), 0)
+        knowledge_graph.add((termA, SMARTOO['sth'], SMARTOO['sth']))
+        # we use implicit definition of terms so there should alredy be 1
+        self.assertEqual(len(knowledge_graph.all_terms), 1)
         knowledge_graph.add((termA, RDF['type'], SMARTOO['term']))
         self.assertEqual(len(knowledge_graph.all_terms), 1)
         knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Agent']))
         self.assertEqual(len(knowledge_graph.all_terms), 1)
         knowledge_graph.add((termB, RDF['type'], SMARTOO['term']))
         self.assertEqual(len(knowledge_graph.all_terms), 2)
-
-    def test_get_all_resources(self):
-        knowledge_graph = KnowledgeGraph()
-        termA = TERM['A']
-        termB = TERM['B']
-        self.assertEqual(len(knowledge_graph.get_all_resources()), 0)
-        knowledge_graph.add((termA, SMARTOO['sth'], SMARTOO['sth']))
-        self.assertEqual(len(knowledge_graph.get_all_resources()), 1)
-        knowledge_graph.add((SMARTOO['sth'], SMARTOO['sth'], termA))
-        self.assertEqual(len(knowledge_graph.get_all_resources()), 1)
-        knowledge_graph.add((SMARTOO['sth'], SMARTOO['sth'], termB))
-        self.assertEqual(len(knowledge_graph.get_all_resources()), 2)
-        self.assertIn(termA, knowledge_graph.get_all_resources())
-        self.assertIn(termB, knowledge_graph.get_all_resources())
+        # also objects can be terms
+        knowledge_graph.add((SMARTOO['sth'], SMARTOO['sth'], termC))
+        self.assertEqual(len(knowledge_graph.all_terms), 3)
+        self.assertEqual(sorted(knowledge_graph.all_terms), [termA, termB, termC])
 
 
 class KnowledgeGraphTestCase(TestCase):
