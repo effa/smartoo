@@ -1,8 +1,9 @@
-#from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import JsonResponse
+#from django.http import HttpResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
-from common.utils.wiki import name_to_resource_uri
+#from common.utils.wiki import name_to_resource_uri
+from knowledge.utils.terms import name_to_term, term_to_name
 from smartoo.models import Session
 #import json
 
@@ -16,30 +17,32 @@ def home(request):
     pass
 
 
-def practice_session(request, topic):
+def practice_session(request, topic_name):
     """
     Main view for practice session.
     Returns base HTML page for the practice session.
     """
     return render(request, 'smartoo/index.html', {
-        'topic': topic.get_name()})
+        'topic': term_to_name(topic_name)})
 
 
 # ----------------------------------------------------------------------------
 #  Interface
 # ----------------------------------------------------------------------------
 
-def start_session(request, topic):
+def start_session(request, topic_name):
     """
     Creates new session for given topic, selects components.
     """
     # TODO: vytvoreni tematu ... musi existovat v DB vsech temat
-    # TODO: normalizace tematu, osetretni neexistence, ...
+    # TODO: normalizace tematu, osetretni neexistence termatu!!!, ...
+    # ale to by melo nastat uz ve view practice_session
     #topic = Topic.objects.get(uri=name_to_uri(topic))
-    topic_uri = name_to_resource_uri(topic)
+    #topic_uri = name_to_resource_uri(topic)
+    topic = name_to_term(topic_name)
 
     # create session and select components
-    session = Session(topic_uri=topic_uri)
+    session = Session(topic=topic)
     session.select_components()
     session.save()
 
@@ -47,8 +50,29 @@ def start_session(request, topic):
     request.session['session_id'] = session.id
     # print 'key', request.session.session_key
 
-    # Vysledek asi predavat nejak inteligentneji??
-    return HttpResponse("done")
+    return JsonResponse({"success": True})
+
+
+# NOTE: all views are in the main smartoo application, since all needs Session
+# model
+def build_knowledge(request):
+    """
+    Builds knowledge (if not already built) and returns "done" message.
+    """
+    print 'build knowledge..'
+    # retrieve current session
+    session_id = request.session['session_id']
+    session = Session.objects.get(id=session_id)
+    print session
+    return JsonResponse({"success": True})
+
+
+def create_exercises(request):
+    """
+    Creates exercises (if not already created) and returns "done" message.
+    """
+    print 'create-exercises'
+    pass
 
 
 def new_exercise(request):

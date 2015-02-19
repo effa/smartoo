@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <object pk="1" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="exercises.exercisescreator">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="exercises.exercisesgrader">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="practice.practicer">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="TextField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="knowledge.Vertical">
+    <field type="CharField" name="topic">Abraham_Lincoln</field>
+    <field type="TextField" name="content"><![CDATA[
+<doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln" title="Abraham Lincoln">
+  fake vertical
+</doc>]]>
+    </field>
+  </object>
+</django-objects>

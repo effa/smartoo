@@ -7,11 +7,11 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     # gui views
     url(r'^$', views.home, name='home'),
-    url(r'^practice/(?P<topic>[^/]*)$', views.practice_session),
+    url(r'^practice/(?P<topic_name>[^/]*)$', views.practice_session),
     # interface
-    url(r'^interface/start-session/(?P<topic>[^/]*)$', views.start_session),
-    url(r'^interface/knowledge/', include('knowledge.urls')),
-    url(r'^interface/exercises/', include('exercises.urls')),
+    url(r'^interface/start-session/(?P<topic_name>[^/]*)$', views.start_session),
+    url('^interface/build-knowledge$', views.build_knowledge),
+    url('^interface/create-exercises$', views.create_exercises),
     url(r'^interface/new-exercise$', views.new_exercise),
     url(r'^interface/session-feedback$', views.session_feedback)
 )
