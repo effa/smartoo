@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 #from common.utils.wiki import name_to_resource_uri
 from knowledge.utils.terms import name_to_term, term_to_name
+from knowledge.utils.topics import is_valid_topic
 from smartoo.models import Session
 #import json
 
@@ -40,17 +41,19 @@ def start_session(request, topic_name):
     #topic = Topic.objects.get(uri=name_to_uri(topic))
     #topic_uri = name_to_resource_uri(topic)
     topic = name_to_term(topic_name)
-
-    # create session and select components
-    session = Session(topic=topic)
-    session.select_components()
-    session.save()
-
-    # remember the session id
-    request.session['session_id'] = session.id
-    # print 'key', request.session.session_key
-
-    return JsonResponse({"success": True})
+    if is_valid_topic(topic):
+        # create session and select components
+        session = Session(topic=topic)
+        session.select_components()
+        session.save()
+        # remember the session id
+        request.session['session_id'] = session.id
+        # print 'key', request.session.session_key
+        return JsonResponse({"success": True})
+    else:
+        # topic doesn't exist, don't create a session
+        # TODO: ? suggest "near" topics? ("Did you mean ... ?")
+        return JsonResponse({"success": False})
 
 
 # NOTE: all views are in the main smartoo application, since all needs Session
