@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 #from django.db import models
 from abstract_component.models import Component
+from exercises.models import GradedExercise
 
 
 class Practicer(Component):
@@ -27,9 +28,14 @@ class Practicer(Component):
         """
         if not graded_exercises:
             return None
+
         behavior = self.get_behavior()
-        exercise = behavior.next_exercise(graded_exercises,
+        graded_exercise = behavior.next_exercise(graded_exercises,
             accumulated_feedback)
+
+        assert isinstance(graded_exercise, GradedExercise)
+        exercise = graded_exercise.exercise
+
         return exercise
 
     def __unicode__(self):

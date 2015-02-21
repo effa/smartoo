@@ -2,7 +2,8 @@ from django.db import models
 from django.db import IntegrityError
 from knowledge.fields import TermField
 from knowledge.models import KnowledgeGraph, KnowledgeBuilder
-from exercises.models import ExercisesCreator, GradedExercise, ExercisesGrader
+from exercises.models import ExercisesCreator, Exercise
+from exercises.models import ExercisesGrader, GradedExercise
 from practice.models import Practicer
 from smartoo import ComponentsSelector
 from smartoo.exceptions import SessionError
@@ -198,19 +199,20 @@ class Session(models.Model):
         """
         return FeedbackedExercise.objects.filter(session=self)
 
-    def get_unused_exercises(self):
+    def get_unused_graded_exercises(self):
         """
         Returns exercises which were generated but not used already.
 
         Returns:
-            list of exercises
+            list of graded exercises
         """
         # first find which graded exercises were created for this session
         all_exercises = self.get_graded_exercises()
         # discard exercises which were already used
+        # NOTE that used_exercises are not graded ones
         used_exercises = self.get_feedbacked_exercises()\
-            .values_list('graded_exercise', flat=True)
-        unused_exercises = all_exercises.exclude(pk__in=used_exercises)
+            .values_list('exercise', flat=True)
+        unused_exercises = all_exercises.exclude(exercise__pk__in=used_exercises)
         return list(unused_exercises)
 
     def next_exercise(self):
@@ -218,14 +220,12 @@ class Session(models.Model):
         Returns new exercise or None if the practice session is over.
 
         Returns:
-            new exercise (exercises.models.GradedExercise) || None
+            new exercise (exercises.models.Exercise) || None
         """
-        graded_exercises = self.get_unused_exercises()
-        graded_exercise = self.practicer.next_exercise(graded_exercises,
-            self.feedback)
-        # return graded exercise (not only exercise) so that primary key of
-        # the graded exercise can be saved into request.sesion
-        return graded_exercise
+        graded_exercises = self.get_unused_graded_exercises()
+        exercise = self.practicer.next_exercise(graded_exercises, self.feedback)
+        # return exercise (not graded exercise)
+        return exercise
 
     def provide_feedback(self, feedback_dictionary):
         """
@@ -250,12 +250,12 @@ class Session(models.Model):
         any stored session.
         """
         # get the exercise from DB
-        graded_exercise = GradedExercise.objects.get(
+        exercise = Exercise.objects.get(
             pk=feedback_dictionary["exercise-pk"])
         # store  the feedback in DB
         feedbacked_exercise = FeedbackedExercise(
             session=self,
-            graded_exercise=graded_exercise,
+            exercise=exercise,
             answered=feedback_dictionary["answered"],
             correct=feedback_dictionary["correct"],
             invalid=feedback_dictionary["invalid"],
@@ -271,7 +271,7 @@ class FeedbackedExercise(models.Model):
     """
     # identification: session + exercise
     session = models.ForeignKey(Session)
-    graded_exercise = models.ForeignKey(GradedExercise)
+    exercise = models.ForeignKey(Exercise)
 
     # feedback
     answered = models.BooleanField(default=False)

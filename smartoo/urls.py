@@ -12,6 +12,6 @@ urlpatterns = patterns('',
     url(r'^interface/start-session/(?P<topic_name>[^/]*)$', views.start_session),
     url('^interface/build-knowledge$', views.build_knowledge),
     url('^interface/create-exercises$', views.create_exercises),
-    url(r'^interface/new-exercise$', views.new_exercise),
+    url(r'^interface/new-exercise$', views.next_exercise),
     url(r'^interface/session-feedback$', views.session_feedback)
 )

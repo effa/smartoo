@@ -63,7 +63,7 @@ def build_knowledge(request):
         session = retrieve_current_session(request)
         session.build_knowledge()
         return JsonResponse({"success": True})
-    except (AttributeError, SessionError):
+    except SessionError:
         return JsonResponse({"success": False})
 
 
@@ -71,32 +71,38 @@ def create_exercises(request):
     """
     Creates exercises (if not already created) and returns "done" message.
     """
-    session = retrieve_current_session(request)
-    session.create_graded_exercises()
-    return JsonResponse({"success": True})
+    try:
+        session = retrieve_current_session(request)
+        session.create_graded_exercises()
+        return JsonResponse({"success": True})
+    except SessionError:
+        return JsonResponse({"success": False})
 
 
-def new_exercise(request):
+def next_exercise(request):
     """
     Saves the feedback from previous exercise and returns a new exercise
     (or feedback form, if the session is over).
     """
-    #print 'key', request.session.session_key
+    # TODO: retrieve feedback from request post data and process it
     try:
         session = retrieve_current_session(request)
-        # retrieve current session
-        #session_id = request.session['session_id']
-        #session = Session.objects.get(id=session_id)
+        exercise = session.next_exercise()
 
-        # get a new exercise, render it and return
-        exercise = session.get_new_exercise()
         # TODO: pokud uz je konec session, vratit feedback form
-        #return JsonResponse(exercise)
-        return render_exercise(request, exercise)
+        if exercise is None:
+            pass
 
-    except:
-        # TODO: asi nejakou chybovou informaci?
-        raise
+        response_data = {
+            'success': True,
+            'exercise': exercise.data
+        }
+
+        #return render_exercise(request, exercise)
+
+        return JsonResponse(response_data)
+    except SessionError:
+        return JsonResponse({"success": False})
 
 
 def session_feedback(request):
@@ -118,11 +124,16 @@ def render_exercise(request, exercise):
 
 def retrieve_current_session(request):
     """
-    Returns session for current request. (None if there is no current session.)
+    Returns session for current request.
+
+    Raises:
+        SessionError: if there is not current session
     """
     try:
         session_id = request.session['session_id']
         session = Session.objects.get(id=session_id)
         return session
-    except (KeyError, ObjectDoesNotExist):
-        return None
+    except KeyError:
+        raise SessionError("No session_id stored in the session.")
+    except ObjectDoesNotExist:
+        raise SessionError("Session with id=%s doesn't exist." % session_id)

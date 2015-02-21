@@ -55,7 +55,7 @@ class AccumulativeFeedbackTestCase(TestCase):
         self.assertEqual(feedback.irrelevant_count, 1)
 
 
-class SessiontTestCase(TestCase):
+class SessionTestCase(TestCase):
     def setUp(self):
         # create topic uri and vertical
         self.topic = TERM['Pan_Tau']
@@ -117,12 +117,13 @@ class SessiontTestCase(TestCase):
         self.assertGreater(len(exercises), 0)
         self.assertIsInstance(exercises[0], GradedExercise)
 
-    def test_get_new_exercise(self):
+    def test_next_exercise(self):
         session = Session.objects.create_with_components(self.topic)
         session.build_knowledge()
         session.create_graded_exercises()
         exercise = session.next_exercise()
-        self.assertIsInstance(exercise, GradedExercise)
+        # should return Exercise, not GradedExercise
+        self.assertIsInstance(exercise, Exercise)
 
     def test_provide_feedback(self):
         """
@@ -137,7 +138,7 @@ class SessiontTestCase(TestCase):
         for i in range(all_exercises):
             # check the counts of used vs. unused exercises
             used = len(session.get_feedbacked_exercises())
-            unused = len(session.get_unused_exercises())
+            unused = len(session.get_unused_graded_exercises())
             self.assertEqual(used, i)
             self.assertEqual(unused, all_exercises - i)
             # get and provide feedback for next exercise

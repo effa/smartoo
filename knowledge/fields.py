@@ -64,7 +64,7 @@ class TermField(models.CharField):
     def to_python(self, value):
         if isinstance(value, URIRef):
             return value
-        if value == '':
+        if value == '' or value is None:
             return None
         # deserialize string
         # sometimes, value will be unicode with TERM prefix

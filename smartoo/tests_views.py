@@ -8,8 +8,9 @@ from django.test import TestCase
 from common.utils.mock import MockObject
 from knowledge.namespaces import TERM
 from knowledge.models import KnowledgeGraph
+from exercises.models import Exercise, GradedExercise
 from smartoo.models import Session
-from smartoo.views import build_knowledge
+from smartoo.views import build_knowledge, create_exercises, next_exercise
 
 from json import loads
 
@@ -77,6 +78,45 @@ class BuildKnowledgeViewTestCase(TestCase):
         self.assertEqual(loads(response.content)["success"], False)
         knowledge_graphs = KnowledgeGraph.objects.all()
         self.assertEqual(len(knowledge_graphs), 0)
+
+
+class CreateExercisesViewTestCase(TestCase):
+    fixtures = ['fake-components-vertical.xml']
+
+    def test_create_exercises(self):
+        topic = TERM['Abraham_Lincoln']
+        session = Session.objects.create_with_components(topic)
+        session.build_knowledge()
+        fake_request = MockObject(session={'session_id': session.id})
+        response = create_exercises(fake_request)
+        self.assertEqual(loads(response.content)["success"], True)
+        self.assertEqual(response.status_code, 200)
+
+        # check that exercises were stored
+        exercises = Exercise.objects.all()
+        grades = GradedExercise.objects.all()
+        self.assertGreater(len(exercises), 0, "No exercises were stored.")
+        self.assertGreater(len(grades), 0, "No grades were stored.")
+        self.assertEqual(len(exercises), len(grades),
+            "The number of stored grades and exercises is different.")
+
+
+class NextExerciseViewTestCase(TestCase):
+    fixtures = ['fake-components-vertical.xml']
+
+    def test_next_exercise(self):
+        topic = TERM['Abraham_Lincoln']
+        session = Session.objects.create_with_components(topic)
+        session.build_knowledge()
+        session.create_graded_exercises()
+        fake_request = MockObject(session={'session_id': session.id})
+        response = next_exercise(fake_request)
+        self.assertEqual(response.status_code, 200)
+        response_content = loads(response.content)
+        self.assertEqual(response_content["success"], True)
+        self.assertIn('exercise', response_content)
+        self.assertIn('question', response_content['exercise'])
+
 
 #def _session_storage_init(test_case):
 #    """
