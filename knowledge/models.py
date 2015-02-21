@@ -32,6 +32,7 @@ class KnowledgeBuilder(Component):
         Raises:
             IntegrityError: if this knowledge builder is not already in DB
                 (its ID is needed to store the graph)
+            ValueError: if the topic is invalid (there is no such topic)
         """
         # TODO: odstranit toto cachovani behem vyvoje, lepe prepisovat
         # existujici graf
@@ -40,10 +41,17 @@ class KnowledgeBuilder(Component):
         if KnowledgeGraph.objects.filter(topic=topic,
                 knowledge_builder=self).exists():
             return  # already created, nothing to do
+
         behavior = self.get_behavior()
-        # TODO: osetrit neexistenci vertikalu
-        vertical = Vertical.objects.get(topic=topic)
+
+        try:
+            vertical = Vertical.objects.get(topic=topic)
+        except ObjectDoesNotExist:
+            raise ValueError('Invalid topic (without vertical): {topic}'
+                .format(topic=unicode(topic)))
+
         article = Article(vertical)
+
         knowledge_graph = behavior.build_knowledge_graph(article)
         knowledge_graph.knowledge_builder = self
         knowledge_graph.topic = topic

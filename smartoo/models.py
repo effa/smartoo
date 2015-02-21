@@ -1,9 +1,11 @@
 from django.db import models
+from django.db import IntegrityError
 from knowledge.fields import TermField
 from knowledge.models import KnowledgeGraph, KnowledgeBuilder
 from exercises.models import ExercisesCreator, GradedExercise, ExercisesGrader
 from practice.models import Practicer
 from smartoo import ComponentsSelector
+from smartoo.exceptions import SessionError
 
 
 #class AccumulativeFeedbackManager(models.Manager):
@@ -148,7 +150,11 @@ class Session(models.Model):
         Uses KnowledgeBuilder to build and store knowledge graph for current
         topic.
         """
-        self.knowledge_builder.build_knowledge(self.topic)
+        try:
+            self.knowledge_builder.build_knowledge(self.topic)
+        except (IntegrityError, ValueError):
+            # TODO: zrava + retezeni? + logovani
+            raise SessionError
 
     def get_knowledge_graph(self):
         """
@@ -170,6 +176,7 @@ class Session(models.Model):
         """
         # retrieve knowledge graph for the session topic and used knowledge
         # builder
+        # TODO (?) nejprve kontrolovat zda uz nejsou cviceni vytvorena?
         knowledge_graph = self.get_knowledge_graph()
         self.exercises_grader.create_graded_exercises(
             knowledge_graph=knowledge_graph,
