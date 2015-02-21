@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app>
 <head>
     <title>{% block title %}Smartoo{% endblock %}</title>
+
+    <!-- AngularJS -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+
+    <!-- styles -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
-<body>
-    <div id="content">
-        {% block content %}{% endblock %}
+<body ng-controller="mainController">
+
+    <!-- TODO: robot, smartoo, neural networks theme, feedback, social buttons-->
+
+    {% block content %}{% endblock %}
+
+    <!-- TODO: sticky footer -->
+    <div class="container footer">
+      footer...
     </div>
 
-    <!-- static files -->
-    <link href="/static/style.css" rel="stylesheet">
-    {% block static-files %}{% endblock %}
+    <!-- javascript -->
+    <script src="/static/smartoo.js"></script>
+    {% block javascript %}{% endblock %}
 </body>
 </html>

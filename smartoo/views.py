@@ -16,8 +16,7 @@ from smartoo.models import Session
 # ----------------------------------------------------------------------------
 
 def home(request):
-    # TODO: home template
-    pass
+    return render(request, 'smartoo/home.html')
 
 
 def practice_session(request, topic_name):
@@ -25,12 +24,12 @@ def practice_session(request, topic_name):
     Main view for practice session.
     Returns base HTML page for the practice session.
     """
-    return render(request, 'smartoo/index.html', {
+    return render(request, 'smartoo/practice.html', {
         'topic': term_to_name(topic_name)})
 
 
 # ----------------------------------------------------------------------------
-#  Interface
+#  Interface (controllers)
 # ----------------------------------------------------------------------------
 
 def start_session(request, topic_name):
