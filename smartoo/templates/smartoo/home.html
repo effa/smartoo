@@ -4,18 +4,63 @@
 
 
 {% block content %}
-<div class="full-page">
+<div class="full-page container">
   <div class="vertical-center">
-      <h3>Practice anything</h3>
-      <p>... search box ... Practice</p>
+      <h1>Practice anything</h1>
+      <p>
+      Type a topic or copy a URL of any
+      <a href="http://en.wikipedia.org/">Wikipedia</a>
+      article.
+      </p>
+      <div class="vertical-space-around center-limit-width">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Wars of the Roses, Abraham Lincoln, Elephant, ...">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="button">Practice!</button>
+          </span>
+        </div>
+      </div>
+      <!--<div class="row">                                                                                             -->
+      <!--  <div class="col-xs-offset-1 col-xs-10                                                                       -->
+      <!--              col-sm-offset-2 col-sm-8                                                                        -->
+      <!--              col-md-offset-2 col-md-8                                                                        -->
+      <!--              col-lg-offset-3 col-lg-6">                                                                      -->
+      <!--    <div class="input-group">                                                                                 -->
+      <!--      <input type="text" class="form-control" placeholder="Wars of the Roses, Abraham Lincoln, Elephant, ...">-->
+      <!--      <span class="input-group-btn">                                                                          -->
+      <!--        <button class="btn btn-primary" type="button">Practice!</button>                                      -->
+      <!--      </span>                                                                                                 -->
+      <!--    </div>                                                                                                    -->
+      <!--  </div>                                                                                                      -->
+      <!--</div>                                                                                                        -->
   </div>
 </div>
 
 <!-- TODO: text (about, Wiki and DBpedia, ...)-->
 <div class="container">
-  <p>
-  About...
-  </p>
+<div class="row">
+    <h1 class="page-header">About the Project</h1>
+    <p>
+    The project was created in 2015 as a bachelor thesis
+    of
+    <a href="http://is.muni.cz/person/410350?lang=en">Tomáš Effenberger</a>
+    at the
+    <a href="http://www.fi.muni.cz/index.xhtml.en">Faculty of Informatics, Masaryk University</a>.
+    The aim was to create an application for practicing facts
+    from any article on the
+    <a href="http://en.wikipedia.org/">Wikipedia</a>.
+    </p>
+
+    <h2>Acknowledgment / Credits</h2>
+    <p>
+    TODO: acknowledge Wikipedia, DBpedia and NLP center (and anything else)
+    </p>
+
+    <h2>Some very clever text</h2>
+    <p>
+    TODO... (anything I would like to say and somebody would like to now)
+    </p>
+</div>
 </div>
 {% endblock %}
 

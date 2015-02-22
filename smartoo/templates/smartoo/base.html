@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" ng-app>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Application for efficient practicing of anything."/>
+    <meta name="keywords" content="practice, exercises, questions, adaptive, intelligent" />
+
     <title>{% block title %}Smartoo{% endblock %}</title>
+
+    <!--<link rel="shortcut icon" type="image/png" href="/static/favicon.ico"/>-->
 
     <!-- AngularJS -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
@@ -18,11 +25,29 @@
     {% block content %}{% endblock %}
 
     <!-- TODO: sticky footer -->
-    <div class="container footer">
-      footer...
+    <div class="container" id="footer">
+        <span class="pull-left">
+            <button type="button" class="navbar-btn btn btn-primary">Write to us</button>
+        </span>
+        <span class="pull-right">
+          <a href="http://www.fi.muni.cz/adaptivelearning/" class="">
+            <img src="/static/img/alg-logo-small.png" alt="Adaptive Learning Group logo"/>
+          </a>
+          <a href="http://www.fi.muni.cz/index.xhtml.en" class="">
+            <img src="/static/img/fi-logo.png" alt="Faculty of Informatics, Masaryk University logo"
+              height="80px"/>
+          </a>
+        </span>
+      <!--<div class="clearfix"></div>-->
     </div>
 
+    <!-- ========== -->
     <!-- javascript -->
+    <!-- ========== -->
+
+    <!-- NOTE: jQuery is necessary for Bootstrap's JavaScript plugins -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
     <script src="/static/smartoo.js"></script>
     {% block javascript %}{% endblock %}
 </body>
