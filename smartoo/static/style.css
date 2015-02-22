@@ -30,10 +30,23 @@ html, body {
     background-color: #35546e;
     color: #7EB5D6;
     padding: 10px 15px;
-    margin-top: 30px;
+    /*margin-top: 30px;*/
 }
 
-.full-page {
+.background-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    padding-bottom: 30px;
+    /*background: url(../img/bg.jpg) no-repeat center center scroll;*/
+    /*background-color: #C1DAD6;     */
+    /*-webkit-background-size: cover;*/
+    /*-moz-background-size: cover;   */
+    /*background-size: cover;        */
+    /*-o-background-size: cover;     */
+}
+
+.full-page-cover {
     display: table;
     position: relative;
     width: 100%;
@@ -52,6 +65,10 @@ html, body {
     vertical-align: middle;
 }
 
+
+.filler {
+    margin-bottom: 30px;
+}
 
 /* -------------------------------------------- */
 /*         styles, fonts and colors             */

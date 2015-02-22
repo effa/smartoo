@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<div class="full-page container">
+<div class="full-page-cover">
   <div class="vertical-center">
       <h1>Practice anything</h1>
       <p>
@@ -14,25 +14,14 @@
       </p>
       <div class="vertical-space-around center-limit-width">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Wars of the Roses, Abraham Lincoln, Elephant, ...">
+          <input type="text" class="form-control"
+              placeholder="Wars of the Roses, Abraham Lincoln, Elephant, ..."
+              ng-model="searchText">
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button">Practice!</button>
+            <button class="btn btn-primary" type="button" ng-click="practice()">Practice!</button>
           </span>
         </div>
       </div>
-      <!--<div class="row">                                                                                             -->
-      <!--  <div class="col-xs-offset-1 col-xs-10                                                                       -->
-      <!--              col-sm-offset-2 col-sm-8                                                                        -->
-      <!--              col-md-offset-2 col-md-8                                                                        -->
-      <!--              col-lg-offset-3 col-lg-6">                                                                      -->
-      <!--    <div class="input-group">                                                                                 -->
-      <!--      <input type="text" class="form-control" placeholder="Wars of the Roses, Abraham Lincoln, Elephant, ...">-->
-      <!--      <span class="input-group-btn">                                                                          -->
-      <!--        <button class="btn btn-primary" type="button">Practice!</button>                                      -->
-      <!--      </span>                                                                                                 -->
-      <!--    </div>                                                                                                    -->
-      <!--  </div>                                                                                                      -->
-      <!--</div>                                                                                                        -->
   </div>
 </div>
 
@@ -51,17 +40,19 @@
     <a href="http://en.wikipedia.org/">Wikipedia</a>.
     </p>
 
-    <h2>Acknowledgment / Credits</h2>
+    <!--<h2>Acknowledgment / Credits</h2>-->
     <p>
-    TODO: acknowledge Wikipedia, DBpedia and NLP center (and anything else)
+    TODO: acknowledge/credit Wikipedia, DBpedia and NLP center (and anything else)
     </p>
 
-    <h2>Some very clever text</h2>
+    <!--<h2>Some very clever text</h2>-->
     <p>
     TODO... (anything I would like to say and somebody would like to now)
     </p>
 </div>
 </div>
+
+<div class="container filler"></div>
 {% endblock %}
 
 

@@ -20,5 +20,5 @@ def term_to_name(term):
     """
     Returns name for the given term.
     """
-    name = unicode(term).split('/')[-1].repalce('_', ' ')
+    name = unicode(term).split('/')[-1].replace('_', ' ')
     return name
