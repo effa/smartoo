@@ -8,14 +8,17 @@ html, body {
     height: 100%;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 .center-limit-width {
     max-width: 750px;
     margin: 0px auto;
 }
 
-.vertical-space-around {
-    margin-top: 10px;
-    margin-bottom: 40px;
+.space-below {
+    margin-bottom: 70px;
 }
 
 /*.container {          */
@@ -33,13 +36,21 @@ html, body {
     /*margin-top: 30px;*/
 }
 
+
+.bottom-fixed {
+    position: fixed;
+    bottom: 0;
+}
+
 .background-wrapper {
     position: relative;
     width: 100%;
     min-height: 100%;
+    /* for modern browsers, leave some place for the footer */
+    min-height: calc(100% - 100px);
     padding-bottom: 30px;
     /*background: url(../img/bg.jpg) no-repeat center center scroll;*/
-    /*background-color: #C1DAD6;     */
+    background-color: #C1DAD6;
     /*-webkit-background-size: cover;*/
     /*-moz-background-size: cover;   */
     /*background-size: cover;        */
@@ -68,6 +79,15 @@ html, body {
 
 .filler {
     margin-bottom: 30px;
+}
+
+.card {
+    display: block;
+    background-color: #FFF;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
+    border-radius: 2px;
+    margin-top: 30px;
+    /*overflow: hidden;*/
 }
 
 /* -------------------------------------------- */

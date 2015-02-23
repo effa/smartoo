@@ -1,49 +1,20 @@
-// ---------------------------------------------------------
-//  Event handlers
-// ---------------------------------------------------------
+smartooApp.controller('practiceController', ['$scope', function($scope) {
+    // TODO
+}]);
 
-function nextExerciseClick() {
-    newExercise();
+// for each new card displayed:
+function fullHeightWorkingArea() {
+    var footerTop = $("#footer").offset().top;
+    var margin = parseInt($("#working-area").css("marginTop"));
+    var fullHeight = footerTop - 2 * margin;
+    console.log(footerTop);
+    console.log(margin);
+    console.log(fullHeight);
+
+
+    //$("#working-area").height(footerTop - 2 * margin);
+    $("#working-area").css("min-height", fullHeight);
 }
 
-function answerClick() {
-    if (answered) {
-        return;
-    }
-    answered = true;
-    evaluateAnswer(this);
-}
-
-
-// ----------------------------------------------------------
-//  Ajax callbacks
-// ----------------------------------------------------------
-function exerciseDelivered(exercise) {
-    console.log(response);
-    newExercise(exercise);
-}
-
-
-// ----------------------------------------------------------
-//  Exercise session actions
-// ----------------------------------------------------------
-
-function startExerciseSession() {
-    // TODO: use AngularJS
-    $.ajax({
-        url: "/interface/create-ontology",
-        type: "POST",
-        datatype: "json",
-        data: JSON.stringify({"url":url}),
-        success: exerciseDelivered
-    });
-}
-
-function newExercise(exerciseHtml) {
-    // use AngluarJS
-    $("#working-area").html(exerciseHtml);
-    //$("#exercise .choices .button.active").click(answerClick);
-    //$("#new-exercise").click(nextExerciseClick);
-    answered = false;
-}
-
+// TODO: call after each new card display
+fullHeightWorkingArea()

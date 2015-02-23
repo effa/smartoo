@@ -1,24 +1,24 @@
 {% extends "smartoo/base.html" %}
 
-{% block title %}Smartoo{% endblock %}
+{% block title %}Smartoo - practice anything{% endblock %}
 
 
 {% block content %}
-<div class="full-page-cover">
-  <div class="vertical-center">
+<div ng-controller="homeController" class="full-page-cover">
+  <div class="container vertical-center">
       <h1>Practice anything</h1>
       <p>
       Type a topic or copy a URL of any
       <a href="http://en.wikipedia.org/">Wikipedia</a>
       article.
       </p>
-      <div class="vertical-space-around center-limit-width">
+      <div class="space-below center-limit-width">
         <div class="input-group">
           <input type="text" class="form-control"
               placeholder="Wars of the Roses, Abraham Lincoln, Elephant, ..."
               ng-model="searchText">
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" ng-click="practice()">Practice!</button>
+            <button class="btn btn-primary" type="button" ng-click="practice($event)">Practice!</button>
           </span>
         </div>
       </div>
@@ -27,7 +27,6 @@
 
 <!-- TODO: text (about, Wiki and DBpedia, ...)-->
 <div class="container">
-<div class="row">
     <h1 class="page-header">About the Project</h1>
     <p>
     The project was created in 2015 as a bachelor thesis
@@ -40,9 +39,9 @@
     <a href="http://en.wikipedia.org/">Wikipedia</a>.
     </p>
 
-    <!--<h2>Acknowledgment / Credits</h2>-->
+    <!--<h2>Credits</h2>-->
     <p>
-    TODO: acknowledge/credit Wikipedia, DBpedia and NLP center (and anything else)
+    TODO: credit to Wikipedia, DBpedia and NLP center (and anything else)
     </p>
 
     <!--<h2>Some very clever text</h2>-->
@@ -50,12 +49,11 @@
     TODO... (anything I would like to say and somebody would like to now)
     </p>
 </div>
-</div>
 
 <div class="container filler"></div>
 {% endblock %}
 
 
-{% block javasript %}
-<!--<script src="/static/home.js"></script>-->
+{% block javascript %}
+<script src="/static/home.js"></script>
 {% endblock %}
