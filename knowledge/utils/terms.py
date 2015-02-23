@@ -10,6 +10,9 @@ def name_to_term(name):
     """
     Returns term created from given name.
     """
+    if not name:
+        raise ValueError("Invalid argument: " + str(name))
+
     # name normalization
     name = name.replace(' ', '_')
 

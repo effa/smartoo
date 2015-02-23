@@ -8,7 +8,7 @@ from knowledge.utils.terms import name_to_term, term_to_name
 from knowledge.utils.topics import is_valid_topic
 from smartoo.exceptions import SessionError
 from smartoo.models import Session
-#import json
+import json
 
 
 # ----------------------------------------------------------------------------
@@ -32,13 +32,28 @@ def practice_session(request, topic_name):
 #  Interface (controllers)
 # ----------------------------------------------------------------------------
 
-def start_session(request, topic_name):
+#def start_session(request, topic_name):
+def start_session(request):
     """
     Creates new session for given topic, selects components.
     """
+    #topic_name = request.POST.get("topic")
+    #print request.POST
+    #print 'topic_name =', topic_name
+
+    post_data = json.loads(request.body)
+    topic_name = post_data.get('topic')
+
+    if not topic_name:
+        return JsonResponse({"success": False, "message": "Misssing topic."})
+
     # TODO: normalizace tematu, osetretni neexistence termatu!!!, ...
     # ale to by melo nastat uz ve view practice_session
-    topic = name_to_term(topic_name)
+    try:
+        topic = name_to_term(topic_name)
+    except ValueError:
+        return JsonResponse({"success": False, "message": "Invalid topic."})
+
     if is_valid_topic(topic):
         # create session and select components
         # TODO: i nasledujici operace muze selhat, osetrit...
@@ -49,7 +64,7 @@ def start_session(request, topic_name):
     else:
         # topic doesn't exist, don't create a session
         # TODO: ? suggest "near" topics? ("Did you mean ... ?")
-        return JsonResponse({"success": False})
+        return JsonResponse({"success": False, "message": "No such topic."})
 
 
 # NOTE: all views are in the main smartoo app, since they use Session model
