@@ -2,6 +2,7 @@ from django.contrib import admin
 from knowledge.models import Vertical, KnowledgeBuilder, KnowledgeGraph
 from exercises.models import Exercise, GradedExercise
 from exercises.models import ExercisesCreator, ExercisesGrader
+from practice.models import Practicer
 
 # models admin registration
 admin.site.register(Vertical)
@@ -11,3 +12,4 @@ admin.site.register(Exercise)
 admin.site.register(GradedExercise)
 admin.site.register(ExercisesCreator)
 admin.site.register(ExercisesGrader)
+admin.site.register(Practicer)

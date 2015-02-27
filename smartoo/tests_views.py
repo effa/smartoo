@@ -10,9 +10,9 @@ from knowledge.namespaces import TERM
 from knowledge.models import KnowledgeGraph
 from exercises.models import Exercise, GradedExercise
 from smartoo.models import Session
-from smartoo.views import build_knowledge, create_exercises, next_exercise
+from smartoo.views import start_session, build_knowledge, create_exercises, next_exercise
 
-from json import loads
+from json import loads, dumps
 
 
 class StartSessionViewTestCase(TestCase):
@@ -21,8 +21,17 @@ class StartSessionViewTestCase(TestCase):
     def setUp(self):
         pass
 
+# NOTE: As it's problematic too test view using session data (and encode
+# request body the same way as AngularJS?!), we will test directly views
+# methods using fake requests (with fake session dictionary)
+
     def test_start_session_successfully(self):
-        response = self.client.post('/interface/start-session/Abraham_Lincoln')
+        #response = self.client.post('/interface/start-session',
+        #    {"topic": "Abraham_Lincoln"})
+        fake_request = MockObject(
+            session={},
+            body=dumps({'topic': 'Abraham_Lincoln'}))
+        response = start_session(fake_request)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(loads(response.content)["success"], True)
         sessions = Session.objects.all()
@@ -31,15 +40,17 @@ class StartSessionViewTestCase(TestCase):
         self.assertEqual(session.topic, TERM['Abraham_Lincoln'])
 
     def test_start_session_unsuccessfully(self):
-        response = self.client.post('/interface/start-session/Some_nonsense')
+        #response = self.client.post('/interface/start-session',
+        #    {'topic': 'Some_nonsense_definitely_not_in_Wiki'})
+        fake_request = MockObject(
+            session={},
+            body=dumps({'topic': 'Some_nonsense'}))
+        response = start_session(fake_request)
         #self.assertEqual(response.status_code, 200)
         #print 'code', response.status_code
         self.assertEqual(loads(response.content)["success"], False)
         sessions = Session.objects.all()
         self.assertEqual(len(sessions), 0)
-
-# NOTE: As it's problematic too test view using session data, we will test
-# directly views methods using fake requests (with fake session dictionary)
 
 
 class BuildKnowledgeViewTestCase(TestCase):

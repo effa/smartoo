@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.db import IntegrityError
 from knowledge.fields import TermField
@@ -120,8 +121,9 @@ class Session(models.Model):
     # Workarround: I will save feedback on saving session
     feedback = models.OneToOneField(AccumulativeFeedback)
 
-    # time (when created), set automatically on creation
-    start = models.DateTimeField(auto_now_add=True)
+    # time (when created), set automatically on creation (--> see save())
+    #start = models.DateTimeField(auto_now_add=True)
+    start = models.DateTimeField()
 
     # status flag (whether the session was finnished and feedback was used
     # to update performance)
@@ -132,9 +134,17 @@ class Session(models.Model):
 
     # override save method
     def save(self, *args, **kwargs):
+        # automatically set start field on creation
+        if self.id is None:
+            self.start = datetime.datetime.now()
+
         # create feedback if it wasn't already
         if self.feedback_id is None:
             self.feedback = AccumulativeFeedback.objects.create()
+
+        #from django.core import serializers
+        #print serializers.serialize('xml', [self], indent=2)
+
         super(Session, self).save(*args, **kwargs)
 
     def select_components(self):
@@ -263,6 +273,10 @@ class Session(models.Model):
         feedbacked_exercise.save()
         # accumulate the feedback
         self.feedback.add(feedbacked_exercise)
+
+    # TODO:
+    #def __unicode__(self):
+    #    pass
 
 
 class FeedbackedExercise(models.Model):

@@ -3,16 +3,19 @@ smartooApp.controller('practiceController',
 
         // initial state is "waiting"
         $scope.errorMessage = null;
+        $scope.infoMessage = "Building knowledge..."
         $scope.state = "waiting";
 
         var topic = parseTopic(window.location.pathname);
 
+        // TODO: prepsat pomoci service
         $http.post('/interface/start-session', {topic: topic}).
         success(function(data, status, headers, config) {
-            console.log("success");
             console.log(data);
-            console.log(status);
-            if (data.success == false) {
+            if (data.success == true) {
+                $scope.infoMessage = "OK"
+                console.log('ok');
+            } else {
                 $scope.errorMessage = data.message;
                 $scope.state = "error";
             }
@@ -21,6 +24,9 @@ smartooApp.controller('practiceController',
             console.log("error");
             console.log(data);
             console.log(status);
+
+            $scope.errorMessage = "Server error" ;
+            $scope.state = "error";
         });
 }]);
 
