@@ -46,9 +46,8 @@ class StartSessionViewTestCase(TestCase):
             session={},
             body=dumps({'topic': 'Some_nonsense'}))
         response = start_session(fake_request)
-        #self.assertEqual(response.status_code, 200)
-        #print 'code', response.status_code
         self.assertEqual(loads(response.content)["success"], False)
+        self.assertEqual(response.status_code, 400)
         sessions = Session.objects.all()
         self.assertEqual(len(sessions), 0)
 
@@ -77,6 +76,7 @@ class BuildKnowledgeViewTestCase(TestCase):
         session = Session.objects.create_with_components(topic)
         fake_request = MockObject(session={'session_id': session.id})
         response = build_knowledge(fake_request)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(loads(response.content)["success"], False)
         knowledge_graphs = KnowledgeGraph.objects.all()
         self.assertEqual(len(knowledge_graphs), 0)
@@ -87,6 +87,7 @@ class BuildKnowledgeViewTestCase(TestCase):
         fake_request = MockObject(session={'session_id': session.id + 1})
         response = build_knowledge(fake_request)
         self.assertEqual(loads(response.content)["success"], False)
+        self.assertEqual(response.status_code, 400)
         knowledge_graphs = KnowledgeGraph.objects.all()
         self.assertEqual(len(knowledge_graphs), 0)
 

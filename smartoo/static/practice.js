@@ -1,5 +1,53 @@
+// --------------------------------------------------------------------------
+// Factoriries and servicies
+// --------------------------------------------------------------------------
+
+//smartooApp.factory('smartooFactory', function($http) {
+//    return {
+//        // TODO: ?? $q ??
+//        buildKnowledge: function() {
+//            return $http.post('/interface/start-session', {topic: topic})
+//                .then(function(result) {
+//                    console.log(result);
+//                    console.log('****************************88');
+//                    return result
+//                    //return result.data;
+//                });
+//        }
+//        // TODO: more  functions
+//    }
+//});
+smartooApp.service('smartooService', ['$http', function ($http) {
+
+    this.buildKnowledge = function(topic) {
+        return $http.post('/interface/start-session', {topic: topic})
+            .then(function(response) {
+                return response.data;
+            }, function(response) {
+                data = response.data
+
+                // make sure success is false
+                data.success = false;
+
+                // if there is no error message in the response, use "Server
+                // error")
+                if (!data.message) {
+                    data.message = "Server error";
+                }
+                return data;
+            });
+    }
+
+    // TODO: more  functions
+}]);
+
+
+// --------------------------------------------------------------------------
+//  Controllers
+// --------------------------------------------------------------------------
 smartooApp.controller('practiceController',
-    ['$scope', '$location', '$http', function($scope, $location, $http) {
+    ['$scope', '$location', '$http', 'smartooService',
+            function($scope, $location, $http, smartooService) {
 
         // initial state is "waiting"
         $scope.errorMessage = null;
@@ -8,25 +56,15 @@ smartooApp.controller('practiceController',
 
         var topic = parseTopic(window.location.pathname);
 
-        // TODO: prepsat pomoci service
-        $http.post('/interface/start-session', {topic: topic}).
-        success(function(data, status, headers, config) {
-            console.log(data);
-            if (data.success == true) {
-                $scope.infoMessage = "OK"
-                console.log('ok');
+        smartooService.buildKnowledge(topic).then(function(response) {
+            if (response.success) {
+                console.log(response);
+                $scope.infoMessage = "Creating exercises..."
+                // TODO ... create exercises
             } else {
                 $scope.errorMessage = data.message;
                 $scope.state = "error";
             }
-        }).
-        error(function(data, status, headers, config) {
-            console.log("error");
-            console.log(data);
-            console.log(status);
-
-            $scope.errorMessage = "Server error" ;
-            $scope.state = "error";
         });
 }]);
 

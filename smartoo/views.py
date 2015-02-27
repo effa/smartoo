@@ -4,6 +4,7 @@ from django.http import JsonResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
 #from common.utils.wiki import name_to_resource_uri
+from common.utils.http import BAD_REQUEST
 from knowledge.utils.terms import name_to_term, term_to_name
 from knowledge.utils.topics import is_valid_topic
 from smartoo.exceptions import SessionError
@@ -45,14 +46,16 @@ def start_session(request):
     topic_name = post_data.get('topic')
 
     if not topic_name:
-        return JsonResponse({"success": False, "message": "Misssing topic."})
+        return JsonResponse({"success": False, "message": "Request without topic."},
+            status=BAD_REQUEST)
 
     # TODO: normalizace tematu, osetretni neexistence termatu!!!, ...
     # ale to by melo nastat uz ve view practice_session
     try:
         topic = name_to_term(topic_name)
     except ValueError:
-        return JsonResponse({"success": False, "message": "Invalid topic."})
+        return JsonResponse({"success": False, "message": "Invalid topic."},
+            status=BAD_REQUEST)
 
     if is_valid_topic(topic):
         # create session and select components
@@ -64,7 +67,8 @@ def start_session(request):
     else:
         # topic doesn't exist, don't create a session
         # TODO: ? suggest "near" topics? ("Did you mean ... ?")
-        return JsonResponse({"success": False, "message": "No such topic."})
+        return JsonResponse({"success": False, "message": "No such topic."},
+            status=BAD_REQUEST)
 
 
 # NOTE: all views are in the main smartoo app, since they use Session model
@@ -78,7 +82,7 @@ def build_knowledge(request):
         session.build_knowledge()
         return JsonResponse({"success": True})
     except SessionError:
-        return JsonResponse({"success": False})
+        return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 
 def create_exercises(request):
@@ -90,7 +94,7 @@ def create_exercises(request):
         session.create_graded_exercises()
         return JsonResponse({"success": True})
     except SessionError:
-        return JsonResponse({"success": False})
+        return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 
 def next_exercise(request):
@@ -116,7 +120,7 @@ def next_exercise(request):
 
         return JsonResponse(response_data)
     except SessionError:
-        return JsonResponse({"success": False})
+        return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 
 def session_feedback(request):
