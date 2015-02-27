@@ -105,15 +105,25 @@ def next_exercise(request):
     # TODO: retrieve feedback from request post data and process it
     try:
         session = retrieve_current_session(request)
-        exercise = session.next_exercise()
 
+        # if there is feedback for the previous exercise, process it
+        if request.body:
+            post_data = json.loads(request.body)
+            feedback = post_data.get('feedback')
+            if feedback:
+                session.provide_feedback(feedback)
+
+        exercise = session.next_exercise()
         # TODO: pokud uz je konec session, vratit feedback form
         if exercise is None:
-            pass
+            return JsonResponse({"success": False, "message": "LAST EXERCISE..."})
+
+        exercise_dict = exercise.data
+        exercise_dict['pk'] = exercise.pk
 
         response_data = {
             'success': True,
-            'exercise': exercise.data
+            'exercise': exercise_dict
         }
 
         return JsonResponse(response_data)

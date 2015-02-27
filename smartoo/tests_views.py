@@ -121,7 +121,7 @@ class NextExerciseViewTestCase(TestCase):
         session = Session.objects.create_with_components(topic)
         session.build_knowledge()
         session.create_graded_exercises()
-        fake_request = MockObject(session={'session_id': session.id})
+        fake_request = MockObject(session={'session_id': session.id}, body=None)
         response = next_exercise(fake_request)
         self.assertEqual(response.status_code, 200)
         response_content = loads(response.content)

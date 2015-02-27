@@ -1,0 +1,26 @@
+<div id="exercise">
+  <div id="question">
+    {{exercise.question}}
+  </div>
+  <div id="options">
+    <button ng-repeat="option in exercise.options"
+          class="btn btn-lg btn-default option"
+          ng-disabled="exercise.answered"
+          ng-class="{
+            'btn-success': exercise.answered && option.correct,
+            'btn-danger': exercise.answered && option.selected && !option.correct}"
+          ng-click="answerSelected(option)">
+      <span>
+        {{option.text}}
+      </span>
+    </button>
+  </div>
+  <div class="pull-right">
+    <button class="btn btn-lg btn-default"
+        ng-disabled="!exercise.answered"
+        ng-click="nextExercise()">
+      Next
+    </button>
+  </div>
+  <div class="clearfix"></div>
+</div>

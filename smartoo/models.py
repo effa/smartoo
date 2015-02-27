@@ -234,7 +234,7 @@ class Session(models.Model):
         """
         graded_exercises = self.get_unused_graded_exercises()
         exercise = self.practicer.next_exercise(graded_exercises, self.feedback)
-        # return exercise (not graded exercise)
+        # type of returned object is Exercise, not GradedExercise
         return exercise
 
     def provide_feedback(self, feedback_dictionary):
@@ -244,7 +244,7 @@ class Session(models.Model):
         Args:
             feedback_dictionary: user's feedback as a dictionary
                 with following items:
-                - "exercise-pk" (int) primary key for graded exercise
+                - "pk" (int) primary key for graded exercise
                 - "answered" (bool)
                 - "correct" (bool)
                 - "invalid" (bool)
@@ -261,7 +261,8 @@ class Session(models.Model):
         """
         # get the exercise from DB
         exercise = Exercise.objects.get(
-            pk=feedback_dictionary["exercise-pk"])
+            pk=feedback_dictionary["pk"])
+        # TODO: osetrit neexistenci cviceni s timto primarnim klicem
         # store  the feedback in DB
         feedbacked_exercise = FeedbackedExercise(
             session=self,
@@ -274,9 +275,8 @@ class Session(models.Model):
         # accumulate the feedback
         self.feedback.add(feedbacked_exercise)
 
-    # TODO:
-    #def __unicode__(self):
-    #    pass
+    def __unicode__(self):
+        return '<Session pk={pk}>'.format(pk=self.pk)
 
 
 class FeedbackedExercise(models.Model):

@@ -29,6 +29,18 @@ class ExercisesCreator(Component):
         Yields:
             exercises (exercises.models.Exercise)
         """
+        # first check whether the exercises are not already built (TODO: tohle
+        # je potreba zjistovat pres specialni tabulku, jinak muzou nastat
+        # problemy)
+        exercises = Exercise.objects.filter(
+            knowledge_graph=knowledge_graph,
+            exercises_creator=self)
+        if exercises:
+            if yielding:
+                for exercise in exercises:
+                    yield exercise
+            return
+
         behavior = self.get_behavior()
         for exercise in behavior.create_exercises(knowledge_graph):
             exercise.exercises_creator = self
@@ -83,6 +95,14 @@ class ExercisesGrader(Component):
         Raises:
             IntegrityError: if the exercise is not already stored in DB
         """
+        # first check whether the exercises are not already built (TODO: tohle
+        # je potreba zjistovat pres specialni tabulku, jinak muzou nastat
+        # problemy)
+        if GradedExercise.objects.filter(
+                exercise=exercise,
+                exercises_grader=self).exists():
+            return  # nothing to do
+
         behavior = self.get_behavior()
         grades = behavior.grade_exercise(exercise)
         grades.exercise = exercise

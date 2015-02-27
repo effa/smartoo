@@ -36,8 +36,12 @@ smartooApp.service('smartooService', ['$http', function ($http) {
 
     // POST request to get new exercise
     // TODO: and send back information about done exercise
-    this.nextExercise = function() {
-        return $http.post('/interface/next-exercise')
+    this.nextExercise = function(previousExercise) {
+        // make sure previousExercise is null, not undefined
+        if (!previousExercise) {
+            previousExercise = null;
+        }
+        return $http.post('/interface/next-exercise', {feedback: previousExercise})
             .then(function(response) {
                 return response.data;
             }, function(response) {
@@ -83,7 +87,7 @@ smartooApp.controller('practiceController',
             smartooService.createExercises().then(function(response) {
                 if (response.success) {
                     // retrieve first exercise
-                    nextExercise();
+                    $scope.nextExercise();
                 } else {
                     errorState(response.message);
                 }
@@ -91,11 +95,27 @@ smartooApp.controller('practiceController',
         }
 
         // TODO: posilat zpetnou vazbu
-        function nextExercise() {
-            smartooService.nextExercise().then(function(response) {
+        $scope.nextExercise = function() {
+            // if it's not first exercise, also send a feedback for the
+            // previous exercise
+            smartooService.nextExercise($scope.exercise).then(function(response) {
                 if (response.success) {
-                    $scope.state = "exercise";
                     console.log(response.exercise);
+                    $scope.exercise = response.exercise;
+                    $scope.exercise.answered = false;
+                    $scope.exercise.invalid = false;
+                    $scope.exercise.irrelevant = false;
+
+                    // modify options (add selected and correct fields)
+                    $scope.exercise.options = [];
+                    angular.forEach(response.exercise['choices'], function(option) {
+                        $scope.exercise.options.push({
+                            text: option,
+                            selected: false,
+                            correct: option == $scope.exercise['correct-answer']
+                        });
+                    });
+                    $scope.state = "exercise";
                 } else {
                     errorState(response.message);
                 }
@@ -105,6 +125,12 @@ smartooApp.controller('practiceController',
         function errorState(message) {
             $scope.errorMessage = message;
             $scope.state = "error";
+        }
+
+        $scope.answerSelected = function(option) {
+            option.selected = true;
+            $scope.exercise.answered = true;
+            $scope.exercise.correct = option.correct;
         }
 
         // initial state is "waiting"

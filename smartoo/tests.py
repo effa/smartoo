@@ -144,7 +144,7 @@ class SessionTestCase(TestCase):
             # get and provide feedback for next exercise
             exercise = session.next_exercise()
             feedback = {
-                'exercise-pk': exercise.pk,
+                'pk': exercise.pk,
                 'answered': True,
                 'correct': True,
                 'invalid': False,

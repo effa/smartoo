@@ -38,5 +38,10 @@ class Practicer(Component):
 
         return exercise
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
     def __unicode__(self):
-        return '<Practicer {name}>'.format(name=self.name)
+        return '<Practicer {name}; parameters={parameters}>'.format(
+            name=self.behavior_name,
+            parameters=self.parameters)
