@@ -116,8 +116,6 @@ def next_exercise(request):
             'exercise': exercise.data
         }
 
-        #return render_exercise(request, exercise)
-
         return JsonResponse(response_data)
     except SessionError:
         return JsonResponse({"success": False}, status=BAD_REQUEST)
@@ -134,10 +132,10 @@ def session_feedback(request):
 #  Helper functions
 # ----------------------------------------------------------------------------
 
-def render_exercise(request, exercise):
-    """Renders exercise according to exercise type (multichoice etc.)
-    """
-    return render(request, 'practice/multichoice-question.html', exercise)
+#def render_exercise(request, exercise):
+#    """Renders exercise according to exercise type (multichoice etc.)
+#    """
+#    return render(request, 'practice/multichoice-question.html', exercise)
 
 
 def retrieve_current_session(request):

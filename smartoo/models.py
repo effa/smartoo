@@ -220,8 +220,8 @@ class Session(models.Model):
         all_exercises = self.get_graded_exercises()
         # discard exercises which were already used
         # NOTE that used_exercises are not graded ones
-        used_exercises = self.get_feedbacked_exercises()\
-            .values_list('exercise', flat=True)
+        used_exercises = self.get_feedbacked_exercises()
+        used_exercises = used_exercises.values_list('exercise', flat=True)
         unused_exercises = all_exercises.exclude(exercise__pk__in=used_exercises)
         return list(unused_exercises)
 
