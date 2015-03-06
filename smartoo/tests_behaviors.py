@@ -21,7 +21,7 @@ SKIP = True
 
 
 class ComponentsTestCase(TestCase):
-    fixtures = ['lincoln-components-vertical-global_knowledge.xml']
+    fixtures = ['lincoln-components-article-global_knowledge.xml']
 
     def setUp(self):
         self.topic_uri = 'http://dbpedia.org/resource/Abraham_Lincoln'

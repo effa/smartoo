@@ -5,6 +5,7 @@ Module of utilities concerning Wikipedia
 """
 
 
+# NOTE: DEPRECATED -- use knowledge.utils.terms.term_to_name instead
 def uri_to_name(uri):
     """
     Transforms URI (of a resource or an article) to the correspoding name.

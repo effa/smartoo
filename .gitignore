@@ -9,6 +9,7 @@ data/
 questions.txt
 notes.txt
 TODO
+experiments/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

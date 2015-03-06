@@ -5,11 +5,18 @@ from django.db import models
 from django.utils.functional import cached_property
 from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
-from knowledge import Article
+from common.fields import DictField
 from knowledge.fields import GraphField, TermField
 from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, TERM
+from knowledge.utils.terms import terms_trie_from_term_labels, name_to_term
+from knowledge.utils.text import parse_text
 from rdflib import Graph, URIRef
 from collections import defaultdict
+from nltk import ParentedTree
+
+
+import sys
+sys.setrecursionlimit(80)
 
 
 class KnowledgeBuilder(Component):
@@ -45,12 +52,10 @@ class KnowledgeBuilder(Component):
         behavior = self.get_behavior()
 
         try:
-            vertical = Vertical.objects.get(topic=topic)
+            article = Article.objects.get(topic=topic)
         except ObjectDoesNotExist:
-            raise ValueError('Invalid topic (without vertical): {topic}'
+            raise ValueError('Invalid topic: {topic}'
                 .format(topic=unicode(topic)))
-
-        article = Article(vertical)
 
         knowledge_graph = behavior.build_knowledge_graph(article)
         knowledge_graph.knowledge_builder = self
@@ -70,21 +75,152 @@ class KnowledgeBuilder(Component):
 #  Corpora Related
 # ----------------------------------------------------------------------------
 
-class Vertical(models.Model):
+class Article(models.Model):
     """
-    Model for verticals of articles on the English Wikipedia.
-    Corresponds to topics which can be practiced.
+    Model of article on the English Wikipedia.
+
+    An article is represented as a list of sentences,
+    each sentence is represented as a tree (nltk.Tree),
+    where internal nodes are chunks (e.g. named entities)
+    and leaves are tokens, stored as a tuple (word, pos-tag).
+
+    Attributes:
+    _sentences: list of sentences in the article (each sentence is a tree)
+    #_terms: dictionary mapping terms to their occurrences in the article
+    _terms: set of terms which are in the article
+
+    Each sentence is a ParentedTree, where a node is represented as a list of
+    descenants with some additional attributes, such as label (e.g. "S", "VBD",
+    "DT", "TERM", "DATE", "PERSON") and (optional) term (URIRef) or literal.
+    Example:
+
+    (S
+        (PERSON
+            (NP Abraham/NP/Abraham-n)
+            (NP Lincoln/NP/Lincoln-n)
+            .term=URIRef('http://dbpedia.org/resource/Abraham_Lincoln'))
+        (VBD was/VBD/be-v)
+        (DT the/DT/the-x)
+        (TERM
+            (CD 16/CD/16-x)
+            (NN th/NN/th-n)
+            (NN president/NN/president-n)
+            (IN of/IN/of-i)
+            (DT the/DT/the-x)
+            (NP United/NP/United-n)
+            (NPS States/NPS/States-n)
+            .term=URIRef('http://dbpedia.org/resource/List_of_USA_presidents'))
+        (SENT ./SENT/.-x))
+
+    Instead of term attribute, the can also be literal, e.g:
+        .literal=Literal('1809-02-12',datatype=XSD.date)},
     """
     # URI of the topic
     # NOTE that it can be different from article URL (e.g.
     # topic=http://dbpedia.org/resource/Abraham_Lincoln
     # but article_url=http://en.wikipedia.org/wiki/Abraham_Lincoln)
+    # TODO: if article URL is needed as well, than make an attribute for it
     topic = TermField(unique=True)
 
-    # TODO: if article URL is needed as well, than make an attribute for it
+    # article content will be stored directly in relational DB encoded in JSON
+    content = DictField(default=dict)
 
-    # vertical for the topic will be stored directly in our relational DB
-    content = models.TextField()
+    def save(self, *args, **kwargs):
+        """
+        Save modification: if it hasn't been stored already
+        and content is not set, find the content using Wikipedia API
+        """
+        if not self.pk and not self.content:
+            # TODO: find article on Wiki and process it to vertical
+            print 'TODO: Wikipedia access !!!!!!!!!!!!!!!!!!!!'
+            self.get_content_from_wikipedia()
+
+        super(Article, self).save(*args, **kwargs)
+
+    def get_content_from_wikipedia(self):
+        """
+        Uses Wikipedia api to retrieve content for topic of the article
+        TODO: vyhodit vyjimku, pokud se to nepodari (clanek neexistuje)
+        """
+        # topic has to be set and content not
+        assert self.topic is not None
+        assert not self.content
+
+        print 'simulate wikipedia api .....'
+        text = 'Abraham Lincoln was a president of the USA. He led the USA through its Civil war.'
+        links = ['Abraham Lincoln', 'USA', 'Civil war']
+        self.create_content_from_text(text, links)
+
+    # TODO: da se to urcite udelat lip (efektivneji, prehledneji), v nltk
+    # je primo nejaka prace s texty jako soubory vet, nebo dokonce i
+    # korpusy (i oznackovanymi korpusy!)
+    def create_content_from_text(self, text, links=[]):
+        """
+        Parse text, infere terms occurences (terms are given by :links: list),
+        creates self.content (= string which encodes tree structure of
+        sentences.
+        """
+        # vytvoreni TermsTrie ze seznamu odkazu
+        terms_trie = terms_trie_from_term_labels(links)
+
+        # TODO: zpracuj vzdy 1 vetu a uloz oddelovac
+        sentences = parse_text(text, terms_trie)
+
+        self.content = {'sentences': [{'sentence': unicode(s), 'terms': t}
+            for s, t in sentences]}
+
+    @cached_property
+    def sentences(self):
+        """
+        List of sentences in the article.
+        Each sentence is represented as a tree.
+        """
+        return self._parse_terms_and_sentences(return_sentences=True)
+
+    @cached_property
+    def terms_positions(self):
+        """
+        Dictionary mapping terms to their positions in sentences
+        """
+        return self._parse_terms_and_sentences(return_terms=True)
+
+    def _parse_terms_and_sentences(self, return_terms=False, return_sentences=False):
+        """
+        Parses sentences and terms from content (in json).
+        """
+        # content must be set before
+        assert self.content is not None
+
+        if 'sentences' not in self.content:
+            return []
+
+        # transform text encoded content to list of sentences
+        sentences = []
+        terms_positions = defaultdict(list)
+        sentence_records = self.content['sentences']
+        for sentence_record in sentence_records:
+            sentence = ParentedTree.fromstring(sentence_record['sentence'])
+            terms = sentence_record['terms']
+
+            term_index = 0
+            for node in sentence:
+                if node.label() == 'TERM':
+                    term = name_to_term(terms[term_index])
+                    node.term = term
+                    terms_positions[term].append(node)
+                    term_index += 1
+
+            sentences.append(sentence)
+
+        # set both self.sentences and self.terms_positions
+        self.terms_positions = terms_positions
+        self.sentences = sentences
+        if return_terms and return_sentences:
+            return terms_positions, sentences
+        elif return_terms:
+            return terms_positions
+        elif return_sentences:
+            return sentences
 
     def get_name(self):
         """
@@ -92,11 +228,23 @@ class Vertical(models.Model):
         """
         return uri_to_name(self.topic)
 
+    def get_all_terms(self):
+        """
+        Returns set of all terms in the article.
+        """
+        return set(self.terms_positions.keys())
+
+    def get_sentences(self):
+        """
+        Returns list of sentences in the article.
+        """
+        return self.sentences
+
     def __str__(self):
         return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        return '<Vertical topic="{topic}">'.format(topic=self.topic)
+        return '<Article: {name}>'.format(name=self.get_name)
 
 
 # ----------------------------------------------------------------------------
@@ -168,7 +316,7 @@ class KnowledgeGraph(models.Model):
         """
         # at first find all related terms
         terms = article.get_all_terms()
-        topic = article.get_topic()
+        topic = article.topic
         global_knowledge = GlobalKnowledge()
         # online=False is just to make sure test don't use public endpoint,
         # all data should be in fixtures

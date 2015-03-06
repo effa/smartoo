@@ -13,10 +13,14 @@ from smartoo.models import Session
 from smartoo.views import start_session, build_knowledge, create_exercises, next_exercise
 
 from json import loads, dumps
+from unittest import skipIf
+
+# flag: whether or not skip test which connects to online public endpoint
+SKIP_ONLINE = True
 
 
 class StartSessionViewTestCase(TestCase):
-    fixtures = ['fake-components-vertical.xml']
+    fixtures = ['fake-components-article.xml']
 
     def setUp(self):
         pass
@@ -39,6 +43,7 @@ class StartSessionViewTestCase(TestCase):
         session = sessions[0]
         self.assertEqual(session.topic, TERM['Abraham_Lincoln'])
 
+    @skipIf(SKIP_ONLINE, 'connection to Wikipedia API')
     def test_start_session_unsuccessfully(self):
         #response = self.client.post('/interface/start-session',
         #    {'topic': 'Some_nonsense_definitely_not_in_Wiki'})
@@ -53,7 +58,7 @@ class StartSessionViewTestCase(TestCase):
 
 
 class BuildKnowledgeViewTestCase(TestCase):
-    fixtures = ['fake-components-vertical.xml']
+    fixtures = ['fake-components-article.xml']
 
     def test_build_knowledge(self):
         #response = self.client.post('/interface/build-knowledge')
@@ -93,7 +98,7 @@ class BuildKnowledgeViewTestCase(TestCase):
 
 
 class CreateExercisesViewTestCase(TestCase):
-    fixtures = ['fake-components-vertical.xml']
+    fixtures = ['fake-components-article.xml']
 
     def test_create_exercises(self):
         topic = TERM['Abraham_Lincoln']
@@ -114,7 +119,7 @@ class CreateExercisesViewTestCase(TestCase):
 
 
 class NextExerciseViewTestCase(TestCase):
-    fixtures = ['fake-components-vertical.xml']
+    fixtures = ['fake-components-article.xml']
 
     def test_next_exercise(self):
         topic = TERM['Abraham_Lincoln']

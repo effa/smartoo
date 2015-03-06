@@ -1,5 +1,5 @@
 from django.test import TestCase
-from knowledge.models import Vertical, KnowledgeGraph, KnowledgeBuilder
+from knowledge.models import Article, KnowledgeGraph, KnowledgeBuilder
 from knowledge.namespaces import TERM
 from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
@@ -57,11 +57,11 @@ class AccumulativeFeedbackTestCase(TestCase):
 
 class SessionTestCase(TestCase):
     def setUp(self):
-        # create topic uri and vertical
+        # create topic uri and article
         self.topic = TERM['Pan_Tau']
-        Vertical.objects.create(
+        Article.objects.create(
             topic=self.topic,
-            content='test')
+            content='[]')
         # create fake components in the DB
         KnowledgeBuilder.objects.create(
             behavior_name='fake',

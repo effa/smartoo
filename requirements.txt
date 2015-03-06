@@ -1,10 +1,14 @@
 Django==1.7.3
 SPARQLWrapper==1.6.4
 argparse==1.2.1
+beautifulsoup4==4.3.2
 html5lib==0.999
 isodate==0.5.1
 nltk==3.0.1
+numpy==1.9.2
 pyparsing==2.0.3
 rdflib==4.1.2
+requests==2.5.3
 six==1.9.0
+wikipedia==1.4.0
 wsgiref==0.1.2

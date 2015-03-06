@@ -1,2 +1,1 @@
-from article import Article
 from knowledge_builder_behavior import KnowledgeBuilderBehavior

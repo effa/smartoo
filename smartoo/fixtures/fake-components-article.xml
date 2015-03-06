@@ -16,12 +16,11 @@
     <field type="CharField" name="behavior_name">fake</field>
     <field type="TextField" name="parameters">{}</field>
   </object>
-  <object pk="1" model="knowledge.Vertical">
+  <object pk="1" model="knowledge.Article">
     <field type="CharField" name="topic">Abraham_Lincoln</field>
     <field type="TextField" name="content"><![CDATA[
-<doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln" title="Abraham Lincoln">
-  fake vertical
-</doc>]]>
+      TODO....
+    ]]>
     </field>
   </object>
 </django-objects>
