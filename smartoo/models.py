@@ -2,12 +2,13 @@ import datetime
 from django.db import models
 from django.db import IntegrityError
 from knowledge.fields import TermField
-from knowledge.models import KnowledgeGraph, KnowledgeBuilder
+from knowledge.models import KnowledgeGraph, KnowledgeBuilder, Article
 from exercises.models import ExercisesCreator, Exercise
 from exercises.models import ExercisesGrader, GradedExercise
 from practice.models import Practicer
 from smartoo import ComponentsSelector
 from smartoo.exceptions import SessionError
+from wikipedia.exceptions import WikipediaException
 
 
 #class AccumulativeFeedbackManager(models.Manager):
@@ -106,7 +107,7 @@ class Session(models.Model):
     """
     Model for one practice session.
     """
-    # topic
+    # topic and article
     topic = TermField()
 
     # components
@@ -137,6 +138,13 @@ class Session(models.Model):
         # automatically set start field on creation
         if self.id is None:
             self.start = datetime.datetime.now()
+
+        # create article if it wasn't already
+        try:
+            Article.objects.get_or_create(topic=self.topic)
+        except WikipediaException:
+            raise ValueError('Invalid topic: {topic}'
+                .format(topic=unicode(self.topic)))
 
         # create feedback if it wasn't already
         if self.feedback_id is None:

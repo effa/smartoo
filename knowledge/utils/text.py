@@ -5,6 +5,7 @@ Terms related utilities
 from __future__ import unicode_literals
 #from knowledge.namespaces import TERM
 from nltk import ParentedTree, sent_tokenize, word_tokenize, pos_tag
+import re
 
 
 def parse_text(text, terms_trie):
@@ -13,6 +14,7 @@ def parse_text(text, terms_trie):
     and return list of parsed sentences (each parse sentence consists of
     a tree and list of terms).
     """
+    text = preporcess_article_text(text)
     sentences = sent_tokenize(text)
     parsed_sentences = []
     for sentence in sentences:
@@ -20,6 +22,36 @@ def parse_text(text, terms_trie):
         parsed_sentence = parse_sentence(sentence, terms_trie)
         parsed_sentences.append(parsed_sentence)
     return parsed_sentences
+
+
+def preporcess_article_text(text):
+    """
+    Does some preprocessing on the text of a Wikipedia article,
+    e.g. removes References, Notes and See also sections.
+    """
+    BORING_SECTION = re.compile(r"""
+        ^\s*
+        ==  # section markup
+        \s*
+        (References | See\ also | External\ links | Notes | Bibliography)
+        \s*
+        ==
+        """, re.VERBOSE)
+
+    text_lines = []
+
+    for line in text.split('\n'):
+        if BORING_SECTION.match(line):
+            # after first boring section, there is no more usable sentences
+            break
+
+        # skip section titles
+        if line.startswith('=='):
+            continue
+
+        text_lines.append(line)
+
+    return '\n'.join(text_lines)
 
 
 def parse_sentence(sentence, terms_trie):

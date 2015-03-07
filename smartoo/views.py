@@ -6,7 +6,7 @@ from django.shortcuts import render
 #from common.utils.wiki import name_to_resource_uri
 from common.utils.http import BAD_REQUEST
 from knowledge.utils.terms import name_to_term, term_to_name
-from knowledge.utils.topics import is_valid_topic
+#from knowledge.utils.topics import is_valid_topic
 from smartoo.exceptions import SessionError
 from smartoo.models import Session
 import json
@@ -57,16 +57,15 @@ def start_session(request):
         return JsonResponse({"success": False, "message": "Invalid topic."},
             status=BAD_REQUEST)
 
-    if is_valid_topic(topic):
+    try:
         # create session and select components
-        # TODO: i nasledujici operace muze selhat, osetrit...
         session = Session.objects.create_with_components(topic=topic)
         # remember the session id
         request.session['session_id'] = session.id
         return JsonResponse({"success": True})
-    else:
+    except ValueError:
+        # TODO: specialni zpracovani napr. DisambiguationError
         # topic doesn't exist, don't create a session
-        # TODO: ? suggest "near" topics? ("Did you mean ... ?")
         return JsonResponse({"success": False, "message": "No such topic."},
             status=BAD_REQUEST)
 

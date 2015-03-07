@@ -47,7 +47,7 @@ class StartSessionViewTestCase(TestCase):
         #    {'topic': 'Some_nonsense_definitely_not_in_Wiki'})
         fake_request = MockObject(
             session={},
-            body=dumps({'topic': 'Some_nonsense'}))
+            body=dumps({'topic': 'sdfslfjalkfjsfl'}))
         response = start_session(fake_request)
         self.assertEqual(loads(response.content)["success"], False)
         self.assertEqual(response.status_code, 400)
@@ -74,15 +74,17 @@ class BuildKnowledgeViewTestCase(TestCase):
         knowledge_graph = knowledge_graphs[0]
         self.assertEqual(knowledge_graph.topic, topic)
 
-    def test_build_knowledge_invalid_term(self):
-        topic = TERM['Some_nonsense']
-        session = Session.objects.create_with_components(topic)
-        fake_request = MockObject(session={'session_id': session.id})
-        response = build_knowledge(fake_request)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(loads(response.content)["success"], False)
-        knowledge_graphs = KnowledgeGraph.objects.all()
-        self.assertEqual(len(knowledge_graphs), 0)
+    # zakomentovano, protoze aktualne (spravne) vyhodi vyjimku jiz snaha
+    # o vytvoreni session
+    #def test_build_knowledge_invalid_term(self):
+        #topic = TERM['aflsjdflafasfjslfk']
+        #session = Session.objects.create_with_components(topic)
+        #fake_request = MockObject(session={'session_id': session.id})
+        #response = build_knowledge(fake_request)
+        #self.assertEqual(response.status_code, 400)
+        #self.assertEqual(loads(response.content)["success"], False)
+        #knowledge_graphs = KnowledgeGraph.objects.all()
+        #self.assertEqual(len(knowledge_graphs), 0)
 
     def test_build_knowledge_invalid_session_id(self):
         topic = TERM['Abraham_Lincoln']

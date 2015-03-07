@@ -9,15 +9,12 @@ from common.fields import DictField
 from common.settings import ONLINE_ENABLED
 from knowledge.fields import GraphField, TermField
 from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, TERM
-from knowledge.utils.terms import terms_trie_from_term_labels, name_to_term
+from knowledge.utils.terms import terms_trie_from_term_labels, name_to_term, term_to_name
 from knowledge.utils.text import parse_text
 from rdflib import Graph, URIRef
 from collections import defaultdict
 from nltk import ParentedTree
-
-
-import sys
-sys.setrecursionlimit(80)
+import wikipedia
 
 
 class KnowledgeBuilder(Component):
@@ -135,9 +132,7 @@ class Article(models.Model):
         and content is not set, find the content using Wikipedia API
         """
         if not self.pk and not self.content:
-            # TODO: find article on Wiki and process it to vertical
-            assert ONLINE_ENABLED
-            print 'TODO: Wikipedia access !!!!!!!!!!!!!!!!!!!!'
+            # find article on Wiki and process it to vertical
             self.get_content_from_wikipedia()
 
         super(Article, self).save(*args, **kwargs)
@@ -146,14 +141,33 @@ class Article(models.Model):
         """
         Uses Wikipedia api to retrieve content for topic of the article
         TODO: vyhodit vyjimku, pokud se to nepodari (clanek neexistuje)
+
+        Raises:
+            WikipediaException (see Wikipedia module docs for details)
         """
-        # topic has to be set and content not
+        # topic has to be set, content not and online access hat to be enabled
         assert self.topic is not None
         assert not self.content
+        assert ONLINE_ENABLED
+        # TODO: log 'Wikipedia access'
 
-        print 'simulate wikipedia api .....'
-        text = 'Abraham Lincoln was a president of the USA. He led the USA through its Civil war.'
-        links = ['Abraham Lincoln', 'USA', 'Civil war']
+        #print 'simulate wikipedia api .....'
+        #text = 'Abraham Lincoln was a president of the USA. He led the USA through its Civil war.'
+        #links = ['Abraham Lincoln', 'USA', 'Civil war']
+
+        topic_name = term_to_name(self.topic)
+
+        wiki_page = wikipedia.page(topic_name)
+
+        text = wiki_page.content
+        # Proble je, ze seznam odkazu nebude uplny, pokud jich je hodne :-(
+        # viz https://github.com/goldsmith/Wikipedia/issues/71
+        # patch vysvetlen tady: https://github.com/goldsmith/Wikipedia/pull/80
+        # TODO: opravit chybu ve Wikipedia modulu
+        links = wiki_page.links
+
+        # make sure title is in the links
+        links.append(topic_name)
         self.create_content_from_text(text, links)
 
     # TODO: da se to urcite udelat lip (efektivneji, prehledneji), v nltk
@@ -168,7 +182,6 @@ class Article(models.Model):
         # vytvoreni TermsTrie ze seznamu odkazu
         terms_trie = terms_trie_from_term_labels(links)
 
-        # TODO: zpracuj vzdy 1 vetu a uloz oddelovac
         sentences = parse_text(text, terms_trie)
 
         self.content = {'sentences': [{'sentence': unicode(s), 'terms': t}
