@@ -6,6 +6,7 @@ from django.utils.functional import cached_property
 from abstract_component.models import Component
 from common.utils.wiki import uri_to_name
 from common.fields import DictField
+from common.settings import ONLINE_ENABLED
 from knowledge.fields import GraphField, TermField
 from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, TERM
 from knowledge.utils.terms import terms_trie_from_term_labels, name_to_term
@@ -125,6 +126,9 @@ class Article(models.Model):
     # article content will be stored directly in relational DB encoded in JSON
     content = DictField(default=dict)
 
+    # constant for an empty content
+    EMPTY_CONTENT = '{"sentences": []}'
+
     def save(self, *args, **kwargs):
         """
         Save modification: if it hasn't been stored already
@@ -132,6 +136,7 @@ class Article(models.Model):
         """
         if not self.pk and not self.content:
             # TODO: find article on Wiki and process it to vertical
+            assert ONLINE_ENABLED
             print 'TODO: Wikipedia access !!!!!!!!!!!!!!!!!!!!'
             self.get_content_from_wikipedia()
 
@@ -318,8 +323,6 @@ class KnowledgeGraph(models.Model):
         terms = article.get_all_terms()
         topic = article.topic
         global_knowledge = GlobalKnowledge()
-        # online=False is just to make sure test don't use public endpoint,
-        # all data should be in fixtures
         primary_graph = global_knowledge.get_graph(topic, online=online)
         if primary_graph:
             terms.update(primary_graph.all_terms)
@@ -529,10 +532,12 @@ class GlobalKnowledge(object):
             if not online:
                 return None
 
+            assert ONLINE_ENABLED
+
             # use public endpoint to retrieve the graph
             graph = Graph()
 
-            print '(online!) k/models.py,L369, term:', term
+            # TODO: log '(online!) k/models.py,L369, term:', term
             graph.parse(term)
             # TODO: osetrit neexistenci grafu na danem zdroji
             # except HTTPError

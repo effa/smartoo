@@ -61,7 +61,7 @@ class SessionTestCase(TestCase):
         self.topic = TERM['Pan_Tau']
         Article.objects.create(
             topic=self.topic,
-            content='[]')
+            content=Article.EMPTY_CONTENT)
         # create fake components in the DB
         KnowledgeBuilder.objects.create(
             behavior_name='fake',

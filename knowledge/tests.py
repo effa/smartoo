@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 #from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
+from common.settings import SKIP_ONLINE_TESTS
 from knowledge.models import KnowledgeBuilder, Article
 from knowledge.models import KnowledgeGraph, GlobalKnowledge
 from knowledge.namespaces import RDF, RDFS, ONTOLOGY, SMARTOO, TERM
@@ -10,8 +11,6 @@ from knowledge.namespaces import RDF, RDFS, ONTOLOGY, SMARTOO, TERM
 from rdflib import Graph, Literal, Namespace, URIRef
 from unittest import skipIf
 
-# flag: whether or not skip test which connects to online public endpoint
-SKIP_ONLINE = True
 
 #TODO: rozdelit do vice souboru (podbalik pro testy)
 
@@ -32,8 +31,9 @@ class TermTestCase(TestCase):
 
 class ArticleWithoutFixtureTestCase(TestCase):
     def setUp(self):
-        #Article.objects.create(topic=TERM['Pan_Tau'], content='*')
-        Article.objects.create(topic=TERM['Pan_Tau'])
+        Article.objects.create(
+            topic=TERM['Pan_Tau'],
+            content=Article.EMPTY_CONTENT)
 
     def test_article_retrieval(self):
         #a = Article.objects.first()
@@ -196,11 +196,10 @@ class KnowledgeGraphTestCase(TestCase):
         article = Article.objects.get(topic=topic)
         knowledge_graph = KnowledgeGraph(topic=topic)
         knowledge_graph.add_related_global_knowledge(article, online=False)
-        return
         #print knowledge_graph
-        self.assertEqual(len(knowledge_graph.graph), 774)
-        # there are 29 terms in article + Lincoln graph
-        self.assertEqual(len(set(knowledge_graph.get_subjects())), 29)
+        self.assertEqual(len(knowledge_graph.graph), 762)
+        # there are 28 terms in article + Lincoln graph
+        self.assertEqual(len(set(knowledge_graph.get_subjects())), 28)
         # test few triples in the graph
         self.assertIn(ONTOLOGY['Person'],
             knowledge_graph.types(TERM['Abraham_Lincoln']))
@@ -310,7 +309,7 @@ class GlobalKnowledgeEmptyDBTestCase(TestCase):
         self.assertEqual(self.global_knowledge.knowledge_builder,
             global_knowledge2.knowledge_builder)
 
-    @skipIf(SKIP_ONLINE, 'connection to DBpedia public endpoint')
+    @skipIf(SKIP_ONLINE_TESTS, 'connection to DBpedia public endpoint')
     def test_get_graph(self):
         term = TERM['Henry_VIII_of_England']
         knowledge_graph = self.global_knowledge.get_graph(term)

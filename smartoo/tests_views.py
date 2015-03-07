@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 from django.test import TestCase
 
 from common.utils.mock import MockObject
+from common.settings import SKIP_ONLINE_TESTS
 from knowledge.namespaces import TERM
 from knowledge.models import KnowledgeGraph
 from exercises.models import Exercise, GradedExercise
@@ -14,9 +15,6 @@ from smartoo.views import start_session, build_knowledge, create_exercises, next
 
 from json import loads, dumps
 from unittest import skipIf
-
-# flag: whether or not skip test which connects to online public endpoint
-SKIP_ONLINE = True
 
 
 class StartSessionViewTestCase(TestCase):
@@ -43,7 +41,7 @@ class StartSessionViewTestCase(TestCase):
         session = sessions[0]
         self.assertEqual(session.topic, TERM['Abraham_Lincoln'])
 
-    @skipIf(SKIP_ONLINE, 'connection to Wikipedia API')
+    @skipIf(SKIP_ONLINE_TESTS, 'connection to Wikipedia API')
     def test_start_session_unsuccessfully(self):
         #response = self.client.post('/interface/start-session',
         #    {'topic': 'Some_nonsense_definitely_not_in_Wiki'})
