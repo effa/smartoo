@@ -30,12 +30,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    # django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third party
+    'django_extensions',
+
+    # my apps
     'common',
     'abstract_component',
     'knowledge',
@@ -105,3 +111,9 @@ CACHES = {
         #'LOCATION': 'unique-snowflake'
     }
 }
+
+
+# ===== django_extensions settings =====
+
+# Always use IPython for shell_plus
+SHELL_PLUS = "ipython"

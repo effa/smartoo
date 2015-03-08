@@ -1,0 +1,613 @@
+digraph model_graph {
+  // Dotfile by Django-Extensions graph_models
+  // Created: 2015-03-08 20:47
+  // Cli Options: abstract_component knowledge exercises practice smartoo -g
+
+  fontname = "Helvetica"
+  fontsize = 8
+  splines  = true
+
+  node [
+    fontname = "Helvetica"
+    fontsize = 8
+    shape = "plaintext"
+  ]
+
+  edge [
+    fontname = "Helvetica"
+    fontsize = 8
+  ]
+
+  // Labels
+  subgraph cluster_knowledge_models {
+    label=<
+          <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+          <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER">
+          <FONT FACE="Helvetica Bold" COLOR="Black" POINT-SIZE="12">
+          knowledge
+          </FONT>
+          </TD></TR>
+          </TABLE>
+          >
+    color=olivedrab4
+    style="rounded"
+  
+    abstract_component_models_Component [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      Component
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">behavior_name</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">CharField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">parameters</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">DictField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    knowledge_models_KnowledgeBuilder [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      KnowledgeBuilder<BR/>&lt;<FONT FACE="Helvetica Italic">Component</FONT>&gt;
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Italic">behavior_name</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Italic">CharField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Italic">parameters</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Italic">DictField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    knowledge_models_Article [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      Article
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">content</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">DictField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">topic</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">TermField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    knowledge_models_KnowledgeGraph [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      KnowledgeGraph
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">knowledge_builder</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">graph</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">GraphField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">topic</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">TermField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+
+  }
+  subgraph cluster_exercises_models {
+    label=<
+          <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+          <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER">
+          <FONT FACE="Helvetica Bold" COLOR="Black" POINT-SIZE="12">
+          exercises
+          </FONT>
+          </TD></TR>
+          </TABLE>
+          >
+    color=olivedrab4
+    style="rounded"
+  
+    abstract_component_models_Component [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      Component
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">behavior_name</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">CharField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">parameters</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">DictField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    exercises_models_ExercisesCreator [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      ExercisesCreator<BR/>&lt;<FONT FACE="Helvetica Italic">Component</FONT>&gt;
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Italic">behavior_name</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Italic">CharField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Italic">parameters</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Italic">DictField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    exercises_models_ExercisesGrader [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      ExercisesGrader<BR/>&lt;<FONT FACE="Helvetica Italic">Component</FONT>&gt;
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Italic">behavior_name</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Italic">CharField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Italic">parameters</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Italic">DictField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    exercises_models_Exercise [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      Exercise
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">exercises_creator</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">knowledge_graph</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">data</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">DictField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    exercises_models_GradedExercise [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      GradedExercise
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">exercise</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">exercises_grader</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">correctness</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">FloatField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">difficulty</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">FloatField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">relevance</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">FloatField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+
+  }
+  subgraph cluster_practice_models {
+    label=<
+          <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+          <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER">
+          <FONT FACE="Helvetica Bold" COLOR="Black" POINT-SIZE="12">
+          practice
+          </FONT>
+          </TD></TR>
+          </TABLE>
+          >
+    color=olivedrab4
+    style="rounded"
+  
+    abstract_component_models_Component [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      Component
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">behavior_name</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">CharField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">parameters</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">DictField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    practice_models_Practicer [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      Practicer<BR/>&lt;<FONT FACE="Helvetica Italic">Component</FONT>&gt;
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Italic">behavior_name</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Italic">CharField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Italic">parameters</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Italic">DictField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+
+  }
+  subgraph cluster_smartoo_models {
+    label=<
+          <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+          <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER">
+          <FONT FACE="Helvetica Bold" COLOR="Black" POINT-SIZE="12">
+          smartoo
+          </FONT>
+          </TD></TR>
+          </TABLE>
+          >
+    color=olivedrab4
+    style="rounded"
+  
+    smartoo_models_AccumulativeFeedback [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      AccumulativeFeedback
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">correct_count</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">SmallIntegerField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">invalid_count</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">SmallIntegerField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">irrelevant_count</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">SmallIntegerField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">unanswered_count</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">SmallIntegerField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">wrong_count</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">SmallIntegerField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    smartoo_models_Session [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      Session
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">exercises_creator</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">exercises_grader</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">feedback</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">OneToOneField (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">knowledge_builder</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">practicer</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">finnished</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">BooleanField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">start</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">DateTimeField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica ">topic</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica ">TermField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+  
+    smartoo_models_FeedbackedExercise [label=<
+      <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="olivedrab4">
+      <FONT FACE="Helvetica Bold" COLOR="white">
+      FeedbackedExercise
+      </FONT></TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">id</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">AutoField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">exercise</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Helvetica Bold">session</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Helvetica Bold">ForeignKey (id)</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">answered</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">BooleanField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">correct</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">BooleanField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">invalid</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">BooleanField</FONT>
+      </TD></TR>
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">irrelevant</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT COLOR="#7B7B7B" FACE="Helvetica ">BooleanField</FONT>
+      </TD></TR>
+    
+      </TABLE>
+      >]
+
+  }
+
+
+  // Relations
+
+  knowledge_models_KnowledgeBuilder -> abstract_component_models_Component
+  [label="abstract\ninheritance"] [arrowhead=empty, arrowtail=none, dir=both];
+
+  knowledge_models_KnowledgeGraph -> knowledge_models_KnowledgeBuilder
+  [label="knowledge_builder (knowledgegraph)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  exercises_models_ExercisesCreator -> abstract_component_models_Component
+  [label="abstract\ninheritance"] [arrowhead=empty, arrowtail=none, dir=both];
+
+  exercises_models_ExercisesGrader -> abstract_component_models_Component
+  [label="abstract\ninheritance"] [arrowhead=empty, arrowtail=none, dir=both];
+
+  exercises_models_Exercise -> knowledge_models_KnowledgeGraph
+  [label="knowledge_graph (exercise)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  exercises_models_Exercise -> exercises_models_ExercisesCreator
+  [label="exercises_creator (exercise)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  exercises_models_GradedExercise -> exercises_models_Exercise
+  [label="exercise (gradedexercise)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  exercises_models_GradedExercise -> exercises_models_ExercisesGrader
+  [label="exercises_grader (gradedexercise)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  practice_models_Practicer -> abstract_component_models_Component
+  [label="abstract\ninheritance"] [arrowhead=empty, arrowtail=none, dir=both];
+
+  smartoo_models_Session -> knowledge_models_KnowledgeBuilder
+  [label="knowledge_builder (session)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  smartoo_models_Session -> exercises_models_ExercisesCreator
+  [label="exercises_creator (session)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  smartoo_models_Session -> exercises_models_ExercisesGrader
+  [label="exercises_grader (session)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  smartoo_models_Session -> practice_models_Practicer
+  [label="practicer (session)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  smartoo_models_Session -> smartoo_models_AccumulativeFeedback
+  [label="feedback (session)"] [arrowhead=none, arrowtail=none, dir=both];
+
+  smartoo_models_FeedbackedExercise -> smartoo_models_Session
+  [label="session (feedbackedexercise)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  smartoo_models_FeedbackedExercise -> exercises_models_Exercise
+  [label="exercise (feedbackedexercise)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+}
+
