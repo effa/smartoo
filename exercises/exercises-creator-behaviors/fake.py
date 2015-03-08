@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from exercises import ExercisesCreatorBehavior
 from exercises.models import Exercise
 

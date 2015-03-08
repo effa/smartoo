@@ -25,6 +25,7 @@ class GraphField(models.TextField):
         # deserialize string
         graph = Graph()
         graph.parse(data=value, format=RDF_SERIALIZATION_FORMAT)
+
         return graph
 
     def get_db_prep_save(self, value, *args, **kwargs):

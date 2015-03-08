@@ -10,6 +10,7 @@ from django.test import TestCase
 
 from unittest import skipIf
 
+from knowledge.namespaces import TERM
 from knowledge.models import KnowledgeBuilder
 from exercises.models import ExercisesCreator
 from exercises.models import ExercisesGrader
@@ -17,15 +18,16 @@ from practice.models import Practicer
 from smartoo.models import Session
 
 # skip flag: whether to execute these special tests or not
-SKIP = True
+SKIP = False
 
 
 class ComponentsTestCase(TestCase):
-    fixtures = ['lincoln-components-article-global_knowledge.xml']
+    fixtures = ['initial-fixture.xml']
 
     def setUp(self):
-        self.topic_uri = 'http://dbpedia.org/resource/Abraham_Lincoln'
-        self.session = Session(topic_uri=self.topic_uri)
+        self.topic = TERM['Abraham_Lincoln']
+        #self.session = Session.objects.create_with_components(self.topic)
+        self.session = Session(topic=self.topic)
         # ------------------------------------------------------------------
         # components to test
         # ------------------------------------------------------------------
@@ -33,7 +35,7 @@ class ComponentsTestCase(TestCase):
             behavior_name='simple',
             parameters={})
         self.session.exercises_creator = ExercisesCreator.objects.get(
-            behavior_name='quasi',
+            behavior_name='simple',
             parameters={})
         self.session.exercises_grader = ExercisesGrader.objects.get(
             behavior_name='fake',

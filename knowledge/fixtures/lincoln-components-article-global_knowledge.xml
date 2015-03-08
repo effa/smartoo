@@ -8,12 +8,8 @@
     <field type="CharField" name="behavior_name">fake</field>
     <field type="TextField" name="parameters">{}</field>
   </object>
-  <object pk="3" model="knowledge.knowledgebuilder">
-    <field type="CharField" name="behavior_name">simple</field>
-    <field type="TextField" name="parameters">{}</field>
-  </object>
   <object pk="1" model="exercises.exercisescreator">
-    <field type="CharField" name="behavior_name">quasi</field>
+    <field type="CharField" name="behavior_name">fake</field>
     <field type="TextField" name="parameters">{}</field>
   </object>
   <object pk="1" model="exercises.exercisesgrader">

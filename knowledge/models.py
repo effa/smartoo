@@ -262,7 +262,7 @@ class Article(models.Model):
         return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        return '<Article: {name}>'.format(name=self.get_name)
+        return '<Article: {name}>'.format(name=self.get_name())
 
 
 # ----------------------------------------------------------------------------

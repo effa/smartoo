@@ -6,14 +6,14 @@ from rdflib import Literal, BNode
 
 
 """
-Simple Knowledge Builder Behavior
+Quasi Knowledge Builder Behavior
 -------------------------------
 
-Rule based....
+Creates (pseudo)facts about sentences with terms.
 """
 
 
-class Simple(KnowledgeBuilderBehavior):
+class Quasi(KnowledgeBuilderBehavior):
 
     def build_knowledge_graph(self, article):
         knowledge_graph = KnowledgeGraph()

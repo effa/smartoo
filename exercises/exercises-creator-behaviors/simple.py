@@ -5,15 +5,15 @@ from exercises.models import Exercise
 from exercises.utils.distractors import generate_similar_terms
 from exercises.utils.distractors import create_choice_list
 
+"""
+Simple Exercises Creator Behavior
+--------------------------------
 
-class Quasi(ExercisesCreatorBehavior):
-    """
-    Quasi Exercises Creator Behavior
-    --------------------------------
+TODO: description
+"""
 
-    Uses quasi-facts (i.e. facts which encodes a single exercise and are
-    useless for anything else).
-    """
+
+class Simple(ExercisesCreatorBehavior):
 
     def create_exercises(self, knowledge_graph):
         #print knowledge_graph
@@ -29,6 +29,7 @@ class Quasi(ExercisesCreatorBehavior):
 
         terms_in_sentence = knowledge_graph.query(TERM_IN_SENTENCE_QUERY)
         for before, term, after in terms_in_sentence:
+
             distractors = generate_similar_terms(term, knowledge_graph)
             choices, correct_answer_label = create_choice_list(
                 correct=term,

@@ -1,3 +1,5 @@
+# encoding=utf-8
+
 """
 Terms related utilities
 """
@@ -31,11 +33,12 @@ def preporcess_article_text(text):
     """
     BORING_SECTION = re.compile(r"""
         ^\s*
-        ==  # section markup
+        =+  # section markup
         \s*
+        §?  # there might be this paragraph sign
         (References | See\ also | External\ links | Notes | Bibliography)
         \s*
-        ==
+        =+
         """, re.VERBOSE)
 
     text_lines = []

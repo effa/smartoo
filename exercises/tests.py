@@ -28,7 +28,7 @@ class ExercisesCreatorTestCase(TestCase):
             self.assertIsInstance(exercise, Exercise)
             self.assertIsInstance(exercise.data, dict)
             self.assertTrue('question' in exercise.data)
-            self.assertIsInstance(exercise.data['question'], str)
+            self.assertIsInstance(exercise.data['question'], basestring)
             exercises_count += 1
         # check that nonzerou number of exercises was yielded
         self.assertGreater(exercises_count, 0)
