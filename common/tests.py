@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.test import TestCase
-from common.utils.nlp import join_words
+from common.utils.nlp import join_words, is_contextfree, sentence_to_tree
 from common.utils.wiki import uri_to_name
 
 
@@ -59,3 +59,10 @@ class NlpUtilsTestCase(TestCase):
             (['18', 'things', 'vs', '.', '17', 'th'], '18 things vs. 17th'),
         ]:
             self.assertEqual(join_words(words), sentence)
+
+    def test_contextfree(self):
+        self.assertEqual(is_contextfree(sentence_to_tree('Abraham Lincoln was the 16th president of USA.')), True)
+        self.assertEqual(is_contextfree(sentence_to_tree('Too short.')), False)
+        self.assertEqual(is_contextfree(sentence_to_tree('Question question question question question?')), False)
+        self.assertEqual(is_contextfree(sentence_to_tree('His primary goal was to reunite the nation.')), False)
+        self.assertEqual(is_contextfree(sentence_to_tree('He preserved the Union and abolished slavery.')), False)
