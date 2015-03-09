@@ -1,15 +1,9 @@
-"""
-Knowledge utilities tests
-"""
-
 from __future__ import unicode_literals
 from django.test import TestCase
 from knowledge.models import KnowledgeGraph
 from knowledge.namespaces import RDFS, TERM, XSD, DC, ONTOLOGY
 #from knowledge.utils.sparql import label
 from rdflib import Literal
-
-# TODO: testy presunout o uroven vyse
 
 
 class SparqlTestCase(TestCase):
