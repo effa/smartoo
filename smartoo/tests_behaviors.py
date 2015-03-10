@@ -32,13 +32,13 @@ class ComponentsTestCase(TestCase):
         # components to test
         # ------------------------------------------------------------------
         self.session.knowledge_builder = KnowledgeBuilder.objects.get(
-            behavior_name='simple',
+            behavior_name='quasi',
             parameters={})
         self.session.exercises_creator = ExercisesCreator.objects.get(
-            behavior_name='simple',
+            behavior_name='quasi',
             parameters={})
         self.session.exercises_grader = ExercisesGrader.objects.get(
-            behavior_name='fake',
+            behavior_name='simple',
             parameters={})
         self.session.practicer = Practicer.objects.get(
             behavior_name='fake',
@@ -48,7 +48,7 @@ class ComponentsTestCase(TestCase):
 
     @skipIf(SKIP, "special components behavior test")
     def test_components(self):
-        # there will whatever I want to test right now
+        # NOTE: there will whatever I want to test right now
 
         # knowledge building
         self.session.build_knowledge()

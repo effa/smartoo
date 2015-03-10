@@ -10,15 +10,22 @@ from random import sample, shuffle
 
 # some terms to use if there is not enough of them in the article context
 TERMS_OF_TYPE = {
-    ONTOLOGY['Person']: [
+    ONTOLOGY['Agent']: [
         TERM['Popeye_the_Sailor_Man'],
         TERM['Asterix'],
         TERM['Meta-Meta-Genie']],
     ONTOLOGY['Event']: [
         TERM['the_Battle_of_Pallet_Town'],
         TERM['race_between_Achilles_and_a_tortoise'],
-        TERM['the_Clone_Wars']]
-    # TODO ...
+        TERM['the_Clone_Wars']],
+    ONTOLOGY['Place']: [
+        TERM['Pallet_Town'],
+        TERM['Tumbolia'],
+        TERM['Statue_of_Achilles_in_Hyde_Park']],
+    ONTOLOGY['Species']: [
+        TERM['Pikachu'],
+        TERM['Goldfish'],
+        TERM['Penguin_with_glasses']]
 }
 
 
@@ -88,18 +95,17 @@ def generate_similar_terms(term, knowledge_graph, number=3):
 #   return selected
 
 
-def create_choice_list(correct, distractors, knowledge_graph):
+def create_choice_list(choices, knowledge_graph):
     """
-    Merges correct answer with distractors, search for labels
-    and shuffle/order them.
+    Search for labels of choices and shuffle/order them.
 
     Args:
+        choices: list of terms
+        knowledge_graph: context (knowledge.models.KnowledgeGraph)
     Returns:
         (list of choices labels, correct answer labels)
     """
-    correct_answer_label = knowledge_graph.label(correct)
-    choices = [knowledge_graph.label(d) for d in distractors]\
-        + [correct_answer_label]
+    choices = [knowledge_graph.label(c) for c in choices]
     shuffle(choices)
     # TODO: special treatment for numbers
-    return choices, correct_answer_label
+    return choices

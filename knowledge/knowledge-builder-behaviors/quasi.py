@@ -62,14 +62,5 @@ class Quasi(KnowledgeBuilderBehavior):
                 quasifact,
                 SMARTOO['part-after-term'],
                 Literal(join_words(after_term))))
-            # info about the term - added through add_related_global_knowledge
-            #knowledge_graph.add((
-            #    term,
-            #    RDF['type'],
-            #    SMARTOO['term']))
-            #knowledge_graph.add((
-            #    term,
-            #    RDFS['label'],
-            #    Literal(term_text)))
 
         return knowledge_graph

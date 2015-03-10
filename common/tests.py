@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.test import TestCase
+from common.utils.metrics import cosine_similarity
 from common.utils.nlp import join_words, is_contextfree, sentence_to_tree
 from common.utils.wiki import uri_to_name
 
@@ -66,3 +67,15 @@ class NlpUtilsTestCase(TestCase):
         self.assertEqual(is_contextfree(sentence_to_tree('Question question question question question?')), False)
         self.assertEqual(is_contextfree(sentence_to_tree('His primary goal was to reunite the nation.')), False)
         self.assertEqual(is_contextfree(sentence_to_tree('He preserved the Union and abolished slavery.')), False)
+
+
+class MetricsUtilsTestCase(TestCase):
+
+    def test_cosine_similarity(self):
+        doc1 = {'a': 4, 'b': 3}
+        doc2 = {'a': 4}
+        self.assertAlmostEqual(cosine_similarity(doc1, doc2), 0.8)
+
+        doc1 = {'a': 2, 'b': 1, 'c': 3}
+        doc2 = {'b': 1, 'c': 3, 'd': 5}
+        self.assertAlmostEqual(cosine_similarity(doc1, doc2), 0.45175395145262565)

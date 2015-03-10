@@ -3,6 +3,7 @@ from django.db import models
 from abstract_component.models import Component
 from common.fields import DictField
 from knowledge.models import KnowledgeGraph
+from knowledge.utils.terms import name_to_term
 
 
 # ---------------------------------------------------------------------------
@@ -141,7 +142,20 @@ class Exercise(models.Model):
     # NOTE: To make things simplier, I will leave the exercise itself
     # completely semantitc-free and provide semantic metadata separatedly, so
     # that the graders have some data to use for grading.
-    # TODO: specify the semantic metadata
+    # Semantic info:
+    # - term-pairs: list of pairs of terms which needs to be distinguished in
+    #               order to correctly solve the exercise
+    semantics = DictField(default=dict)
+
+    def get_term_pairs(self):
+        """
+        Returns list of pairs of terms which needs to be distinguished in order
+        to solve the exercise.
+        """
+        pairs = []
+        for name1, name2 in self.semantics['term-pairs']:
+            pairs.append((name_to_term(name1), name_to_term(name2)))
+        return pairs
 
     def __unicode__(self):
         return '<Exercise {data}>'.format(data=self.data)

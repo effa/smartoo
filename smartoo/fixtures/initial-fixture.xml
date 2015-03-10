@@ -5,15 +5,15 @@
     <field type="DictField" name="parameters">{}</field>
   </object>
   <object pk="2" model="knowledge.knowledgebuilder">
-    <field type="CharField" name="behavior_name">simple</field>
+    <field type="CharField" name="behavior_name">quasi</field>
     <field type="DictField" name="parameters">{}</field>
   </object>
   <object pk="1" model="exercises.exercisescreator">
-    <field type="CharField" name="behavior_name">simple</field>
+    <field type="CharField" name="behavior_name">quasi</field>
     <field type="DictField" name="parameters">{}</field>
   </object>
   <object pk="1" model="exercises.exercisesgrader">
-    <field type="CharField" name="behavior_name">fake</field>
+    <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{}</field>
   </object>
   <object pk="1" model="practice.practicer">

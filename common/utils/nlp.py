@@ -65,6 +65,7 @@ def contextfree_sentences(article):
     for sentence in article.get_sentences():
         if is_contextfree(sentence):
             contextfree_sentences.append(sentence)
+    return contextfree_sentences
 
 
 def join_words(words):

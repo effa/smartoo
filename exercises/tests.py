@@ -100,6 +100,5 @@ class DistractorsUtilsTestCase(TestCase):
         # it should also work without havin some terms in the graph (using
         # label fallback)
         #knowledge_graph.add((elizabeth, LABEL, Literal('Elizabeth of York')))
-        choices, correct = create_choice_list(henry, [edward, elizabeth], knowledge_graph)
+        choices = create_choice_list([henry, edward, elizabeth], knowledge_graph)
         self.assertEqual(sorted(choices), ['Edward VI', 'Elizabeth of York', 'Henry VIII'])
-        self.assertEqual(correct, 'Henry VIII')

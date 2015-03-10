@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 from abstract_component.models import Component
+from common.utils.metrics import euclidian_length
 from common.utils.wiki import uri_to_name
 from common.fields import DictField
 from common.settings import ONLINE_ENABLED
@@ -202,6 +203,13 @@ class Article(models.Model):
         """
         return self._parse_terms_and_sentences(return_terms=True)
 
+    @cached_property
+    def euclidian_length(self):
+        """
+        Euclidian length of the article (only terms are counted).
+        """
+        return euclidian_length(self.terms_positions)
+
     def _parse_terms_and_sentences(self, return_terms=False, return_sentences=False):
         """
         Parses sentences and terms from content (in json).
@@ -251,6 +259,12 @@ class Article(models.Model):
         Returns set of all terms in the article.
         """
         return set(self.terms_positions.keys())
+
+    def get_term_positions(self, term):
+        """
+        Returns list of positions of :term: in the sentences
+        """
+        return self.terms_positions[term]
 
     def get_sentences(self):
         """

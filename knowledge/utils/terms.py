@@ -38,3 +38,13 @@ def terms_trie_from_term_labels(labels):
         canonical_form = word_tokenize(label)
         terms_trie.add(label, canonical_form)
     return terms_trie
+
+
+def create_term_pairs_1toN(leading_term, other_terms):
+    """
+    Creates list of term *names* of :leading_term: with each of :other_terms:
+    """
+    pairs = []
+    for other_term in other_terms:
+        pairs.append((term_to_name(leading_term), term_to_name(other_term)))
+    return pairs

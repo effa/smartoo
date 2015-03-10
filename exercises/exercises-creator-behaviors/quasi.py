@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from knowledge.utils.sparql import prepared_query
+from knowledge.utils.terms import create_term_pairs_1toN
 from exercises import ExercisesCreatorBehavior
 from exercises.models import Exercise
 from exercises.utils.distractors import generate_similar_terms
@@ -30,16 +31,18 @@ class Quasi(ExercisesCreatorBehavior):
         terms_in_sentence = knowledge_graph.query(TERM_IN_SENTENCE_QUERY)
         for before, term, after in terms_in_sentence:
             distractors = generate_similar_terms(term, knowledge_graph)
-            choices, correct_answer_label = create_choice_list(
-                correct=term,
-                distractors=distractors,
+            choices = distractors + [term]
+            choices_labels = create_choice_list(
+                choices=choices,
                 knowledge_graph=knowledge_graph)
-            #correct_answer_label = knowledge_graph.label(term)
+            correct_answer_label = knowledge_graph.label(term)
             exercise = Exercise(data={
                 'question': '{before} _______ {after}'.format(
                     before=unicode(before),
                     after=unicode(after)),
-                'choices': choices,
+                'choices': choices_labels,
                 'correct-answer': correct_answer_label
+            }, semantics={
+                'term-pairs': create_term_pairs_1toN(term, distractors)
             })
             yield exercise
