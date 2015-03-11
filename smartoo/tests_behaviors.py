@@ -14,6 +14,7 @@ from knowledge.namespaces import TERM
 from knowledge.models import KnowledgeBuilder
 from exercises.models import ExercisesCreator
 from exercises.models import ExercisesGrader
+from exercises.models import GradedExercise, Exercise
 from practice.models import Practicer
 from smartoo.models import Session
 
@@ -41,7 +42,7 @@ class ComponentsTestCase(TestCase):
             behavior_name='simple',
             parameters={})
         self.session.practicer = Practicer.objects.get(
-            behavior_name='fake',
+            behavior_name='simple',
             parameters={})
         # ------------------------------------------------------------------
         self.session.save()
@@ -55,7 +56,36 @@ class ComponentsTestCase(TestCase):
         #print self.session.get_knowledge_graph()
 
         # exercises creating
-        self.session.create_graded_exercises()
-        print '***'
-        for exercise in self.session.get_graded_exercises():
-            print exercise
+        #self.session.create_graded_exercises()
+        #print '***'
+        #for exercise in self.session.get_graded_exercises():
+        #    print exercise
+
+        # fake exercises (to test pracicing only)
+        GradedExercise.objects.create(
+            exercise=Exercise.objects.create(data='B',
+                knowledge_graph=self.session.get_knowledge_graph(),
+                exercises_creator=self.session.exercises_creator),
+            exercises_grader=self.session.exercises_grader,
+            difficulty=0.5,
+            correctness=0.5,
+            relevance=0.2)
+        GradedExercise.objects.create(
+            exercise=Exercise.objects.create(data='A',
+                knowledge_graph=self.session.get_knowledge_graph(),
+                exercises_creator=self.session.exercises_creator),
+            exercises_grader=self.session.exercises_grader,
+            difficulty=0.5,
+            correctness=0.5,
+            relevance=0.4)
+
+        # practicing
+        exercise = self.session.next_exercise()
+        print exercise
+        self.session.provide_feedback({
+            'pk': exercise.pk,
+            'answered': True,
+            'correct': True,
+            'invalid': False,
+            'irrelevant': False
+        })

@@ -17,7 +17,7 @@
     <field type="DictField" name="parameters">{}</field>
   </object>
   <object pk="1" model="practice.practicer">
-    <field type="CharField" name="behavior_name">fake</field>
+    <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{}</field>
   </object>
   <object pk="1" model="knowledge.Article">
