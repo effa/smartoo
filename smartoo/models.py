@@ -68,6 +68,24 @@ class AccumulativeFeedback(models.Model):
         # store the updated accumulative feedback to DB
         self.save()
 
+    def get_all_answered_count(self):
+        """
+        Returns number of all answered questions.
+        """
+        return self.correct_count + self.wrong_count
+
+    def get_correct_ratio(self):
+        """
+        Returns ratio of the number of correctly answered questions to
+        the number of all answered question. If no questions was answered
+        already returns 0.5
+        """
+        all_count = self.get_all_answered_count()
+        if all_count > 0:
+            return float(self.correct_count) / all_count
+        else:
+            return 0.5
+
 
 # NOTE: Due to migrations serializations issues (and Python 2), this method for
 # creating empty feedback has to be in the main body of the module. It can't be

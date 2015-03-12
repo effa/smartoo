@@ -15,8 +15,8 @@ class Component(models.Model):
     # parameters: json dict
     parameters = DictField()
 
-    ## flag for enabling this component (useful for testing and production)
-    #enabled = models.BooleanField(default=True)
+    # flag for enabling this component (useful for testing and production)
+    enabled = models.BooleanField(default=True)
 
     # NOTE: We store parameters in json (dictionary), because it's more
     # flexible than relational table of parameters and we don't need fast

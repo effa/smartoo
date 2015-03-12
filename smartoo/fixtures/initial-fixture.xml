@@ -3,6 +3,7 @@
   <object pk="1" model="knowledge.knowledgebuilder">
     <field type="CharField" name="behavior_name">global-knowledge</field>
     <field type="DictField" name="parameters">{}</field>
+    <field type="BooleanField" name="enabled">False</field>
   </object>
   <object pk="2" model="knowledge.knowledgebuilder">
     <field type="CharField" name="behavior_name">quasi</field>
@@ -18,7 +19,11 @@
   </object>
   <object pk="1" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
-    <field type="DictField" name="parameters">{}</field>
+    <field type="DictField" name="parameters">{
+      "target-success": 0.75,
+      "relevance-weight": 1.0,
+      "difficulty-weight": 1.0}
+    </field>
   </object>
   <object pk="1" model="knowledge.Article">
     <field type="CharField" name="topic">Abraham_Lincoln</field>

@@ -19,7 +19,7 @@ from practice.models import Practicer
 from smartoo.models import Session
 
 # skip flag: whether to execute these special tests or not
-SKIP = False
+SKIP = True
 
 
 class ComponentsTestCase(TestCase):
@@ -42,8 +42,7 @@ class ComponentsTestCase(TestCase):
             behavior_name='simple',
             parameters={})
         self.session.practicer = Practicer.objects.get(
-            behavior_name='simple',
-            parameters={})
+            behavior_name='simple')
         # ------------------------------------------------------------------
         self.session.save()
 
@@ -56,10 +55,20 @@ class ComponentsTestCase(TestCase):
         #print self.session.get_knowledge_graph()
 
         # exercises creating
-        #self.session.create_graded_exercises()
+        self.session.create_graded_exercises()
         #print '***'
-        #for exercise in self.session.get_graded_exercises():
-        #    print exercise
+        for exercise in self.session.get_graded_exercises():
+            print exercise
+            raw_input()
+
+        print '-' * 80, '\n', 'practicing:'
+        exercise = self.session.next_exercise()
+        print exercise
+
+    @skipIf(True, "special components behavior test")
+    def test_practicing_only(self):
+        # knowledge building
+        self.session.build_knowledge()
 
         # fake exercises (to test pracicing only)
         GradedExercise.objects.create(
@@ -67,9 +76,19 @@ class ComponentsTestCase(TestCase):
                 knowledge_graph=self.session.get_knowledge_graph(),
                 exercises_creator=self.session.exercises_creator),
             exercises_grader=self.session.exercises_grader,
+            difficulty=0.55,
+            correctness=0.5,
+            relevance=0.2)
+
+        GradedExercise.objects.create(
+            exercise=Exercise.objects.create(data='C',
+                knowledge_graph=self.session.get_knowledge_graph(),
+                exercises_creator=self.session.exercises_creator),
+            exercises_grader=self.session.exercises_grader,
             difficulty=0.5,
             correctness=0.5,
             relevance=0.2)
+
         GradedExercise.objects.create(
             exercise=Exercise.objects.create(data='A',
                 knowledge_graph=self.session.get_knowledge_graph(),
@@ -82,10 +101,25 @@ class ComponentsTestCase(TestCase):
         # practicing
         exercise = self.session.next_exercise()
         print exercise
+
         self.session.provide_feedback({
             'pk': exercise.pk,
             'answered': True,
-            'correct': True,
+            'correct': False,
             'invalid': False,
             'irrelevant': False
         })
+
+        exercise = self.session.next_exercise()
+        print exercise
+
+        self.session.provide_feedback({
+            'pk': exercise.pk,
+            'answered': True,
+            'correct': False,
+            'invalid': False,
+            'irrelevant': False
+        })
+
+        exercise = self.session.next_exercise()
+        print exercise

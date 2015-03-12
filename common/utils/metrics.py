@@ -1,4 +1,8 @@
-from math import sqrt
+from math import sqrt, exp
+
+
+def sigmoid(x):
+    return 1 / (1 + exp(-x))
 
 
 # ----------------------------------------------------------------------------

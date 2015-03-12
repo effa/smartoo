@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 from abstract_component.models import Component
-from common.utils.metrics import euclidian_length
+from common.utils.metrics import euclidian_length, sigmoid
 from common.utils.wiki import uri_to_name
 from common.fields import DictField
 from common.settings import ONLINE_ENABLED
@@ -444,12 +444,12 @@ class KnowledgeGraph(models.Model):
         term1_types = self.types(term1)
         term2_types = self.types(term2)
         common_types = term1_types & term2_types
-        # all terms should have at least one type (smartoo:term), but if not,
-        # just return 0
-        if not common_types:
-            return 0.0
+        # don't count smartoo:term and dbpedia:Thing as common types
+        common_types_count = len(common_types)
+
         # normalization -> number between 0 and 1
-        similarity = 1 - (1.0 / len(common_types))
+        # NOTE: devide common_types_count to make the function increse slower
+        similarity = 2.0 * (sigmoid(common_types_count / 2.0) - 0.5)
         return similarity
 
     @cached_property

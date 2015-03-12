@@ -44,6 +44,11 @@ def is_contextfree(sentence):
         if node.label() in FORBIDDEN_POS_TAGS:
             return False
 
+    FORBIDDEN_WORDS = {':'}
+    for word in sentence.leaves():
+        if word in FORBIDDEN_WORDS:
+            return False
+
     return True
 
 
