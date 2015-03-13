@@ -54,6 +54,72 @@ class AccumulativeFeedbackTestCase(TestCase):
         self.assertEqual(feedback.invalid_count, 1)
         self.assertEqual(feedback.irrelevant_count, 1)
 
+    def test_get_calculated_counts(self):
+        feedback = AccumulativeFeedback.objects.create()
+        self.assertEqual(feedback.get_all_answered_count(), 0)
+        self.assertEqual(feedback.get_all_questions_count(), 0)
+        self.assertEqual(feedback.get_good_questions_count(), 0)
+        self.assertAlmostEqual(feedback.get_correct_ratio(), 0.5)
+
+        feedback.add(FeedbackedExercise(
+            answered=True,
+            correct=True,
+            invalid=False,
+            irrelevant=True))
+
+        self.assertEqual(feedback.get_all_answered_count(), 1)
+        self.assertEqual(feedback.get_all_questions_count(), 1)
+        self.assertEqual(feedback.get_good_questions_count(), 0)
+        self.assertAlmostEqual(feedback.get_correct_ratio(), 1.0)
+
+        feedback.add(FeedbackedExercise(
+            answered=True,
+            correct=False,
+            invalid=False,
+            irrelevant=False))
+
+        self.assertEqual(feedback.get_all_answered_count(), 2)
+        self.assertEqual(feedback.get_all_questions_count(), 2)
+        self.assertEqual(feedback.get_good_questions_count(), 1)
+        self.assertAlmostEqual(feedback.get_correct_ratio(), 0.5)
+
+        feedback.add(FeedbackedExercise(
+            answered=False,
+            correct=False,
+            invalid=False,
+            irrelevant=True))
+
+        self.assertEqual(feedback.get_all_answered_count(), 2)
+        self.assertEqual(feedback.get_all_questions_count(), 3)
+        self.assertEqual(feedback.get_good_questions_count(), 1)
+        self.assertAlmostEqual(feedback.get_correct_ratio(), 0.5)
+
+    def test_get_performance(self):
+        feedback = AccumulativeFeedback.objects.create()
+        self.assertAlmostEqual(feedback.get_performance(), 0.5)
+
+        feedback.add(FeedbackedExercise(
+            answered=False,
+            correct=False,
+            invalid=False,
+            irrelevant=True))
+
+        self.assertAlmostEqual(feedback.get_performance(), 2.5 / 6)
+
+        feedback.add(FeedbackedExercise(
+            answered=True,
+            correct=False,
+            invalid=False,
+            irrelevant=False))
+
+        self.assertAlmostEqual(feedback.get_performance(), 3.5 / 7)
+
+        feedback.final_rating = 1.0
+        self.assertAlmostEqual(feedback.get_performance(), 6.0 / 7)
+
+        feedback.final_rating = 0.0
+        self.assertAlmostEqual(feedback.get_performance(), 1.0 / 7)
+
 
 class SessionTestCase(TestCase):
     def setUp(self):

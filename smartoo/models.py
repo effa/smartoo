@@ -29,21 +29,23 @@ class AccumulativeFeedback(models.Model):
     """
     Model for storing feedback for the whole session.
     """
+
+    # numbers of correctly answered, wrongly answered and unanswered questions
     correct_count = models.SmallIntegerField(default=0)
     wrong_count = models.SmallIntegerField(default=0)
     unanswered_count = models.SmallIntegerField(default=0)
+
     #mean_time = models.IntegerField(null=True, default=None)  # in ms
+
+    # numbers of invalid and irrelevant questions
     invalid_count = models.SmallIntegerField(default=0)
     irrelevant_count = models.SmallIntegerField(default=0)
-    # TODO: user_grade: uzivatelske hodnoceni na zaver, neco ve stylu Desny,
-    # Prumer, OK (mozna jako realne cislo - kliknuti na osu)
 
-    # the feedback will be trasform into a single real number (0, 1)
-    # TODO: get_quality: pokud jeste nebylo nastaveno, tak se spocita a ulozi
-    # (po zacatek by stacilo to pokazde pocitat znova)
-    #quality = models.FloatField(null=True, default=None)
+    # final user rating (bad=0, so-so=0.5, good=1)
+    final_rating = models.FloatField(default=0.5)
 
-    # + details (later) ...
+    # how much weight to put on the final rating vs. a single question rating
+    FINAL_RATING_WEIGHT = 5.0
 
     # manager:
     #objects = AccumulativeFeedbackManager()
@@ -74,6 +76,12 @@ class AccumulativeFeedback(models.Model):
         """
         return self.correct_count + self.wrong_count
 
+    def get_all_questions_count(self):
+        """
+        Returns number of all questions.
+        """
+        return self.correct_count + self.wrong_count + self.unanswered_count
+
     def get_correct_ratio(self):
         """
         Returns ratio of the number of correctly answered questions to
@@ -86,6 +94,23 @@ class AccumulativeFeedback(models.Model):
         else:
             return 0.5
 
+    def get_good_questions_count(self):
+        """
+        Returns number of all questions which were not marked as invalid or
+        irrelevant.
+        """
+        return self.get_all_questions_count()\
+            - self.irrelevant_count\
+            - self.invalid_count
+
+    def get_performance(self):
+        """
+        Returns overall performance of the session.
+        """
+        all_plus = self.get_all_questions_count() + self.FINAL_RATING_WEIGHT
+        good_plus = self.get_good_questions_count() + self.FINAL_RATING_WEIGHT * self.final_rating
+        performance = float(good_plus) / all_plus
+        return performance
 
 # NOTE: Due to migrations serializations issues (and Python 2), this method for
 # creating empty feedback has to be in the main body of the module. It can't be
