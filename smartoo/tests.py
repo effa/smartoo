@@ -5,6 +5,7 @@ from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
 from practice.models import Practicer
 from smartoo.models import Session, AccumulativeFeedback, FeedbackedExercise
+from smartoo.exceptions import SmartooError
 
 
 class AccumulativeFeedbackTestCase(TestCase):
@@ -151,6 +152,12 @@ class SessionTestCase(TestCase):
         self.assertIsInstance(session.exercises_grader, ExercisesGrader)
         self.assertIsInstance(session.practicer, Practicer)
         self.assertEqual(session.finnished, False)
+
+    def test_select_components(self):
+        # test that session do not select disabled component
+        ExercisesGrader.objects.all().update(enabled=False)
+        with self.assertRaises(SmartooError):
+            Session.objects.create_with_components(self.topic)
 
     def test_build_knowledge(self):
         session = Session.objects.create_with_components(self.topic)

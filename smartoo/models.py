@@ -203,7 +203,7 @@ class Session(models.Model):
         Selects components for this session.
         """
         # TODO: vyhodit vhodnou vyjimku, pokud uz jsou vybrany
-        selector = ComponentsSelector()
+        selector = ComponentsSelector(session_manager=Session.objects)
         (self.knowledge_builder, self.exercises_creator, self.exercises_grader,
             self.practicer) = selector.select_components()
 
@@ -326,8 +326,16 @@ class Session(models.Model):
         # accumulate the feedback
         self.feedback.add(feedbacked_exercise)
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
     def __unicode__(self):
-        return '<Session pk={pk}>'.format(pk=self.pk)
+        return '<Session pk={pk}; components=({kb},{ec},{eg},{pr})>'.format(
+            pk=self.pk,
+            kb=self.knowledge_builder.pk,
+            ec=self.exercises_creator.pk,
+            eg=self.exercises_grader.pk,
+            pr=self.practicer.pk)
 
 
 class FeedbackedExercise(models.Model):

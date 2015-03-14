@@ -46,7 +46,7 @@ class ComponentsTestCase(TestCase):
         # ------------------------------------------------------------------
         self.session.save()
 
-    @skipIf(SKIP, "special components behavior test")
+    @skipIf(True or SKIP, "special components behavior test")
     def test_components(self):
         # NOTE: there will whatever I want to test right now
 
@@ -65,7 +65,7 @@ class ComponentsTestCase(TestCase):
         exercise = self.session.next_exercise()
         print exercise
 
-    @skipIf(True, "special components behavior test")
+    @skipIf(True or SKIP, "special components behavior test")
     def test_practicing_only(self):
         # knowledge building
         self.session.build_knowledge()
@@ -123,3 +123,16 @@ class ComponentsTestCase(TestCase):
 
         exercise = self.session.next_exercise()
         print exercise
+
+
+class ComponentsSelectorTestCase(TestCase):
+    fixtures = ['session-history.xml']
+
+    def setUp(self):
+        self.topic = TERM['Abraham_Lincoln']
+
+    @skipIf(True and SKIP, "special components selecting test")
+    def test_selector(self):
+        session = Session.objects.create_with_components(self.topic)
+        self.assertIsNotNone(session)
+        print session

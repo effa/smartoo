@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <!--
+  =======================================================================
+    components
+  =======================================================================
+  -->
+  <object pk="0" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">global-knowledge</field>
+    <field type="DictField" name="parameters">{}</field>
+    <field type="BooleanField" name="enabled">False</field>
+  </object>
+  <object pk="1" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">kb1</field>
+    <field type="DictField" name="parameters">{}</field>
+  </object>
+  <!-- kb2 will have much better results than kb1 -->
+  <object pk="2" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">kb2</field>
+    <field type="DictField" name="parameters">{}</field>
+  </object>
+
+  <object pk="1" model="exercises.exercisescreator">
+    <field type="CharField" name="behavior_name">ec1</field>
+    <field type="DictField" name="parameters">{}</field>
+  </object>
+  <object pk="2" model="exercises.exercisescreator">
+    <field type="CharField" name="behavior_name">ec2</field>
+    <field type="DictField" name="parameters">{}</field>
+  </object>
+
+  <object pk="1" model="exercises.exercisesgrader">
+    <field type="CharField" name="behavior_name">eg1</field>
+    <field type="DictField" name="parameters">{}</field>
+  </object>
+  <object pk="1" model="practice.practicer">
+    <field type="CharField" name="behavior_name">pr1</field>
+    <field type="DictField" name="parameters">{}</field>
+  </object>
+
+  <!--
+  =======================================================================
+    Fake article
+  =======================================================================
+  -->
+  <object pk="1" model="knowledge.Article">
+    <field type="CharField" name="topic">Abraham_Lincoln</field>
+    <field type="TextField" name="content"><![CDATA[
+      ...
+    ]]>
+    </field>
+  </object>
+
+  <!--
+  =======================================================================
+    Sessions
+  =======================================================================
+  -->
+  <object pk="11" model="smartoo.session">
+    <field type="CharField" name="topic">xxx</field>
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field to="exercises.exercisescreator" name="exercises_creator" rel="ManyToOneRel">1</field>
+    <field to="exercises.exercisesgrader" name="exercises_grader" rel="ManyToOneRel">1</field>
+    <field to="practice.practicer" name="practicer" rel="ManyToOneRel">1</field>
+    <field to="smartoo.accumulativefeedback" name="feedback" rel="OneToOneRel">11</field>
+    <field type="DateTimeField" name="start">2015-02-27T18:58:00.399442</field>
+    <field type="BooleanField" name="finnished">True</field>
+  </object>
+  <object pk="11" model="smartoo.accumulativefeedback">
+    <field type="SmallIntegerField" name="correct_count">10</field>
+    <field type="SmallIntegerField" name="invalid_count">10</field>
+    <field type="FloatField" name="final_rating">0.0</field>
+  </object>
+
+  <object pk="12" model="smartoo.session">
+    <field type="CharField" name="topic">xxx</field>
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field to="exercises.exercisescreator" name="exercises_creator" rel="ManyToOneRel">1</field>
+    <field to="exercises.exercisesgrader" name="exercises_grader" rel="ManyToOneRel">1</field>
+    <field to="practice.practicer" name="practicer" rel="ManyToOneRel">1</field>
+    <field to="smartoo.accumulativefeedback" name="feedback" rel="OneToOneRel">12</field>
+    <field type="DateTimeField" name="start">2015-02-27T18:58:00.399442</field>
+    <field type="BooleanField" name="finnished">True</field>
+  </object>
+  <object pk="12" model="smartoo.accumulativefeedback">
+    <field type="SmallIntegerField" name="correct_count">10</field>
+    <field type="SmallIntegerField" name="invalid_count">4</field>
+    <field type="FloatField" name="final_rating">0.5</field>
+  </object>
+
+  <object pk="21" model="smartoo.session">
+    <field type="CharField" name="topic">xxx</field>
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">2</field>
+    <field to="exercises.exercisescreator" name="exercises_creator" rel="ManyToOneRel">1</field>
+    <field to="exercises.exercisesgrader" name="exercises_grader" rel="ManyToOneRel">1</field>
+    <field to="practice.practicer" name="practicer" rel="ManyToOneRel">1</field>
+    <field to="smartoo.accumulativefeedback" name="feedback" rel="OneToOneRel">21</field>
+    <field type="DateTimeField" name="start">2015-02-27T18:58:00.399442</field>
+    <field type="BooleanField" name="finnished">True</field>
+  </object>
+  <object pk="21" model="smartoo.accumulativefeedback">
+    <field type="SmallIntegerField" name="correct_count">10</field>
+    <field type="SmallIntegerField" name="invalid_count">1</field>
+    <field type="FloatField" name="final_rating">1.0</field>
+  </object>
+
+  <object pk="31" model="smartoo.session">
+    <field type="CharField" name="topic">xxx</field>
+    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
+    <field to="exercises.exercisescreator" name="exercises_creator" rel="ManyToOneRel">2</field>
+    <field to="exercises.exercisesgrader" name="exercises_grader" rel="ManyToOneRel">1</field>
+    <field to="practice.practicer" name="practicer" rel="ManyToOneRel">1</field>
+    <field to="smartoo.accumulativefeedback" name="feedback" rel="OneToOneRel">31</field>
+    <field type="DateTimeField" name="start">2015-02-27T18:58:00.399442</field>
+    <field type="BooleanField" name="finnished">True</field>
+  </object>
+  <object pk="31" model="smartoo.accumulativefeedback">
+    <field type="SmallIntegerField" name="correct_count">10</field>
+    <field type="SmallIntegerField" name="invalid_count">0</field>
+    <field type="FloatField" name="final_rating">1.0</field>
+  </object>
+
+</django-objects>
