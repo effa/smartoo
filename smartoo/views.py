@@ -3,7 +3,8 @@ from django.http import JsonResponse
 #from django.http import HttpResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
-#from common.utils.wiki import name_to_resource_uri
+
+from common.utils.wiki import term_to_wiki_uri
 from common.utils.http import BAD_REQUEST
 from knowledge.utils.terms import name_to_term, term_to_name
 #from knowledge.utils.topics import is_valid_topic
@@ -26,7 +27,8 @@ def practice_session(request, topic_name):
     Returns base HTML page for the practice session.
     """
     return render(request, 'smartoo/practice.html', {
-        'topic': term_to_name(topic_name)})
+        'topic': term_to_name(topic_name),
+        'topicURI': term_to_wiki_uri(topic_name)})
 
 
 # ----------------------------------------------------------------------------

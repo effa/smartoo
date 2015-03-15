@@ -9,6 +9,30 @@
 
   <div class="container">
   <div ng-controller="practiceController" ng-view id="working-area" class="card">
+
+    <!-- session info -->
+      <!--<span class="glyphicon glyphicon-book" aria-hidden="true"></span>-->
+      <!--<a href="{{ topicURI }}" target="_blank">{{ topic }}</a>         -->
+      <!--<hr>                                                             -->
+
+      <span id="session-info">
+        <ol class="breadcrumb">
+          <li>
+              <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+              <span class="after-glyphicon">
+              Topic: <a href="{{ topicURI }}" target="_blank">{{ topic }}</a>
+              </span>
+          </li>
+        </ol>
+      </span>
+
+  <!--<nav class="navbar navbar-default">                                  -->
+  <!--  <p class="navbar-text">                                            -->
+  <!--    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>-->
+  <!--    <a href="{{ topicURI }}" target="_blank">{{ topic }}</a>         -->
+  <!--  </p>                                                               -->
+  <!--</nav>                                                               -->
+
     <!-- area for waiting wheel / exercise / feedback / final report -->
 
       <!--<div ng-show="state == 'waiting'">-->

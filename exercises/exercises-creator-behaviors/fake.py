@@ -29,6 +29,21 @@ class Fake(ExercisesCreatorBehavior):
                 'choices': ['0', '2', '4', '6'],
                 'correct-answer': '6'
             }),
+            Exercise(data={
+                'question': 'A',
+                'choices': ['1', '2', '3', '4'],
+                'correct-answer': '1'
+            }),
+            Exercise(data={
+                'question': 'B',
+                'choices': ['1', '2', '3', '4'],
+                'correct-answer': '1'
+            }),
+            Exercise(data={
+                'question': 'C',
+                'choices': ['1', '2', '3', '4'],
+                'correct-answer': '1'
+            })
         ]
         for exercise in prepared_exercises:
             yield exercise

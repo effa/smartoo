@@ -57,8 +57,8 @@ smartooApp.service('smartooService', ['$http', function ($http) {
 //  Controllers
 // --------------------------------------------------------------------------
 smartooApp.controller('practiceController',
-    ['$scope', '$location', '$http', 'smartooService',
-            function($scope, $location, $http, smartooService) {
+    ['$scope', '$location', '$http', '$window', 'smartooService',
+            function($scope, $location, $http, $window, smartooService) {
 
         function startSession(topic) {
             smartooService.startSession(topic).then(function(response) {
@@ -133,21 +133,30 @@ smartooApp.controller('practiceController',
             $scope.exercise.correct = option.correct;
         }
 
+        function resize() {
+            fullHeightWorkingArea();
+        }
+
+        // initial visual settings
+        resize();
+
         // initial state is "waiting"
         $scope.errorMessage = null;
         $scope.infoMessage = "";
         $scope.state = "waiting";
 
+        // TODO: lepsi by bylo posilat topic jiz v ramci js ze serveru
         var topic = parseTopic(window.location.pathname);
         startSession(topic);
 
+        // bind events
+        angular.element($window).bind('resize', function () {
+            resize();
+        });
 }]);
 
 
 
-
-// TODO: call after each new card display
-fullHeightWorkingArea()
 
 // ===========================================================================
 //  Helper functions
@@ -156,12 +165,26 @@ fullHeightWorkingArea()
 // sets minimum height of the working area to tu full page height (minus footer
 // height and margins)
 function fullHeightWorkingArea() {
-    var footerTop = $("#footer").offset().top;
-    var margin = parseInt($("#working-area").css("marginTop"));
-    var fullHeight = footerTop - 2 * margin;
+    //var footerTop = $("#footer").offset().top;
+    var workingArea = $("#working-area")
+
+    var footerHeight = $("#footer").outerHeight();  // outerHeight -> include padding
+    var windowHeight = $(window).height();
+    var marginTop = parseInt(workingArea.css("marginTop"));
+    var marginBottom = parseInt(workingArea.css("marginBottom"));
+    //console.log('footerTop', footerTop);
+    //console.log('margin', margin);
+    footer = $("#footer");
+
+    //var fullHeight = footerTop - 2 * margin;
+    console.log(windowHeight, footerHeight, marginTop, marginBottom);
+
+    var fullHeight = windowHeight - footerHeight - marginTop - marginBottom;
+
+    console.log(fullHeight);
 
     //$("#working-area").height(footerTop - 2 * margin);
-    $("#working-area").css("min-height", fullHeight);
+    workingArea.css("min-height", fullHeight);
 }
 
 

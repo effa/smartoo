@@ -13,7 +13,7 @@ class Component(models.Model):
     # name of the behavior (same as the name of the behavior (code) file)
     behavior_name = models.CharField(max_length=50)
     # parameters: json dict
-    parameters = DictField()
+    parameters = DictField(default=dict, blank=True, null=True)
 
     # flag for enabling this component (useful for testing and production)
     enabled = models.BooleanField(default=True)
