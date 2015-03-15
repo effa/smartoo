@@ -129,7 +129,7 @@ h1 {
     font-size: 0.8em;
     color: #666;
 }
-#session-info .glyphicon {
+.glyphicon {
     top: 2px;
 }
 #session-info .breadcrumb {
@@ -137,6 +137,9 @@ h1 {
 }
 .after-glyphicon {
     margin-left: 2px;
+}
+.before-glyphicon {
+    margin-right: 3px;
 }
 
 /* smaller fonts  on smaller displays */

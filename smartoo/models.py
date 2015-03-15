@@ -326,6 +326,9 @@ class Session(models.Model):
         # accumulate the feedback
         self.feedback.add(feedbacked_exercise)
 
+    def get_questions_count(self):
+        return self.feedback.get_all_questions_count()
+
     def __str__(self):
         return unicode(self).encode('utf-8')
 

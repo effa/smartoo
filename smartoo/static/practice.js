@@ -1,4 +1,24 @@
 // --------------------------------------------------------------------------
+// Directives
+// --------------------------------------------------------------------------
+
+//smartooApp.directive('unfocus', function($timeout, $document) {
+//  return {
+//    link: function(scope, element, attrs) {
+//      element.bind('click', function() {
+//        $timeout(function() {
+//          //element.parent().focus();
+//            console.log('unfocus');
+//            body = $document[0].body;
+//            body.focus();
+//            console.log($document[0].body);
+//        });
+//      });
+//    }
+//  };
+//});
+
+// --------------------------------------------------------------------------
 // Servicies
 // --------------------------------------------------------------------------
 
@@ -57,8 +77,8 @@ smartooApp.service('smartooService', ['$http', function ($http) {
 //  Controllers
 // --------------------------------------------------------------------------
 smartooApp.controller('practiceController',
-    ['$scope', '$location', '$http', '$window', 'smartooService',
-            function($scope, $location, $http, $window, smartooService) {
+    ['$scope', '$location', '$http', '$window', '$document', 'smartooService',
+            function($scope, $location, $http, $window, $document, smartooService) {
 
         function startSession(topic) {
             smartooService.startSession(topic).then(function(response) {
@@ -95,7 +115,19 @@ smartooApp.controller('practiceController',
         }
 
         // TODO: posilat zpetnou vazbu
-        $scope.nextExercise = function() {
+        $scope.nextExercise = function(feedback) {
+            // unless it's request for the first exercise, mark current
+            // exercise as finnished
+            if ($scope.exercise) {
+                $scope.exercise.finnished = true;
+            }
+
+            if (feedback == "irrelevant") {
+                $scope.exercise.irrelevant = true;
+            } else if (feedback == "invalid") {
+                $scope.exercise.invalid = true;
+            }
+
             // if it's not first exercise, also send a feedback for the
             // previous exercise
             smartooService.nextExercise($scope.exercise).then(function(response) {
@@ -103,8 +135,11 @@ smartooApp.controller('practiceController',
                     console.log(response.exercise);
                     $scope.exercise = response.exercise;
                     $scope.exercise.answered = false;
+                    $scope.exercise.correct = false;
                     $scope.exercise.invalid = false;
                     $scope.exercise.irrelevant = false;
+                    // finnishi = clicked next / invalid / irrelevant
+                    $scope.exercise.finnished = false;
 
                     // modify options (add selected and correct fields)
                     $scope.exercise.options = [];
@@ -165,25 +200,14 @@ smartooApp.controller('practiceController',
 // sets minimum height of the working area to tu full page height (minus footer
 // height and margins)
 function fullHeightWorkingArea() {
-    //var footerTop = $("#footer").offset().top;
     var workingArea = $("#working-area")
 
     var footerHeight = $("#footer").outerHeight();  // outerHeight -> include padding
     var windowHeight = $(window).height();
     var marginTop = parseInt(workingArea.css("marginTop"));
     var marginBottom = parseInt(workingArea.css("marginBottom"));
-    //console.log('footerTop', footerTop);
-    //console.log('margin', margin);
-    footer = $("#footer");
-
-    //var fullHeight = footerTop - 2 * margin;
-    console.log(windowHeight, footerHeight, marginTop, marginBottom);
 
     var fullHeight = windowHeight - footerHeight - marginTop - marginBottom;
-
-    console.log(fullHeight);
-
-    //$("#working-area").height(footerTop - 2 * margin);
     workingArea.css("min-height", fullHeight);
 }
 

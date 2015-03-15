@@ -5,7 +5,7 @@
   <div id="options">
     <button ng-repeat="option in exercise.options"
           class="btn btn-lg btn-default option"
-          ng-disabled="exercise.answered"
+          ng-disabled="exercise.finnished"
           ng-class="{
             'btn-success': exercise.answered && option.correct,
             'btn-danger': exercise.answered && option.selected && !option.correct}"
@@ -15,12 +15,34 @@
       </span>
     </button>
   </div>
-  <div class="pull-right">
-    <button class="btn btn-lg btn-default"
-        ng-disabled="!exercise.answered"
-        ng-click="nextExercise()">
-      Next
+
+  <div class="pull-left">
+    <button id="btnInvalid" class="btn btn-lg btn-default"
+        ng-disabled="exercise.finnished"
+        ng-click="nextExercise('invalid')">
+      <span class="before-glyphicon">Invalid</span>
+      <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+      <!--<span class="glyphicon glyphicon-play" aria-hidden="true"></span>-->
+    </button>
+
+    <button id="btnIrrelevant" class="btn btn-lg btn-default"
+        ng-disabled="exercise.finnished"
+        ng-click="nextExercise('irrelevant')">
+      <span class="before-glyphicon">Irrelevant</span>
+      <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+      <!--<span class="glyphicon glyphicon-play" aria-hidden="true"></span>-->
     </button>
   </div>
+
+  <div class="pull-right">
+    <button id="btnNext" class="btn btn-lg btn-default"
+        ng-disabled="!exercise.answered || exercise.finnished"
+        ng-click="nextExercise('ok')">
+      <span class="before-glyphicon">Next</span>
+      <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+      <!--<span class="glyphicon glyphicon-play" aria-hidden="true"></span>-->
+    </button>
+  </div>
+
   <div class="clearfix"></div>
 </div>
