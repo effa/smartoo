@@ -65,6 +65,14 @@
       <div ng-include="'/static/partials/exercise.html'"></div>
     </div>
 
+    <div ng-show="state == 'final-feedback'">
+      <div ng-include="'/static/partials/final-feedback.html'"></div>
+    </div>
+
+    <div ng-show="state == 'after-final-feedback'">
+      <div ng-include="'/static/partials/after-final-feedback.html'"></div>
+    </div>
+
     <div ng-show="errorMessage">
       <div ng-include="'/static/partials/error-message.html'"></div>
     </div>

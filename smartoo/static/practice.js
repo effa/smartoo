@@ -55,7 +55,7 @@ smartooApp.service('smartooService', ['$http', function ($http) {
     };
 
     // POST request to get new exercise
-    // TODO: and send back information about done exercise
+    // (also sends back information about done exercise)
     this.nextExercise = function(previousExercise) {
         // make sure previousExercise is null, not undefined
         if (!previousExercise) {
@@ -69,7 +69,23 @@ smartooApp.service('smartooService', ['$http', function ($http) {
             });
     };
 
-    // TODO: more  functions
+    // POST request to provide session feedback
+    this.finalFeedback = function(rating) {
+        if (rating == 'good') {
+            var value = 1.0;
+        } else if (rating = 'bad') {
+            var value = 0.0;
+        } else {
+            var value = 0.5;
+        }
+
+        return $http.post('/interface/session-feedback', {rating: value})
+            .then(function(response) {
+                return response.data;
+            }, function(response) {
+                return createFailResponse(response);
+            });
+    };
 }]);
 
 
@@ -132,25 +148,41 @@ smartooApp.controller('practiceController',
             // previous exercise
             smartooService.nextExercise($scope.exercise).then(function(response) {
                 if (response.success) {
-                    console.log(response.exercise);
-                    $scope.exercise = response.exercise;
-                    $scope.exercise.answered = false;
-                    $scope.exercise.correct = false;
-                    $scope.exercise.invalid = false;
-                    $scope.exercise.irrelevant = false;
-                    // finnishi = clicked next / invalid / irrelevant
-                    $scope.exercise.finnished = false;
+                    if (response.finnished) {
+                        // show final feedback form
+                        $scope.state = 'final-feedback';
+                    } else {
+                        //console.log(response.exercise);
+                        $scope.exercise = response.exercise;
+                        $scope.exercise.answered = false;
+                        $scope.exercise.correct = false;
+                        $scope.exercise.invalid = false;
+                        $scope.exercise.irrelevant = false;
+                        // finnishi = clicked next / invalid / irrelevant
+                        $scope.exercise.finnished = false;
 
-                    // modify options (add selected and correct fields)
-                    $scope.exercise.options = [];
-                    angular.forEach(response.exercise['choices'], function(option) {
-                        $scope.exercise.options.push({
-                            text: option,
-                            selected: false,
-                            correct: option == $scope.exercise['correct-answer']
+                        // modify options (add selected and correct fields)
+                        $scope.exercise.options = [];
+                        angular.forEach(response.exercise['choices'], function(option) {
+                            $scope.exercise.options.push({
+                                text: option,
+                                selected: false,
+                                correct: option == $scope.exercise['correct-answer']
+                            });
                         });
-                    });
-                    $scope.state = "exercise";
+                        $scope.state = "exercise";
+                    }
+                } else {
+                    errorState(response.message);
+                }
+            });
+        }
+
+
+        $scope.finalFeedback = function(rating) {
+            smartooService.finalFeedback(rating).then(function(response) {
+                if (response.success) {
+                    $scope.state = "after-final-feedback";
                 } else {
                     errorState(response.message);
                 }

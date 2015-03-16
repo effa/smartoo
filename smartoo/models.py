@@ -1,6 +1,8 @@
 import datetime
 from django.db import models
 from django.db import IntegrityError
+
+from common.settings import SESSION_MAX_LENGTH
 from knowledge.fields import TermField
 from knowledge.models import KnowledgeGraph, KnowledgeBuilder, Article
 from exercises.models import ExercisesCreator, Exercise
@@ -283,10 +285,14 @@ class Session(models.Model):
         Returns:
             new exercise (exercises.models.Exercise) || None
         """
-        graded_exercises = self.get_unused_graded_exercises()
-        exercise = self.practicer.next_exercise(graded_exercises, self.feedback)
-        # type of returned object is Exercise, not GradedExercise
-        return exercise
+        if self.get_questions_count() >= SESSION_MAX_LENGTH:
+            next_exercise = None
+        else:
+            graded_exercises = self.get_unused_graded_exercises()
+            # type of returned object is Exercise, not GradedExercise
+            next_exercise = self.practicer.next_exercise(graded_exercises, self.feedback)
+        # TODO: pokud je next_exercise None, nastavit session jako finnished
+        return next_exercise
 
     def provide_feedback(self, feedback_dictionary):
         """

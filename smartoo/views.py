@@ -4,7 +4,6 @@ from django.http import JsonResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
 
-from common.settings import SESSION_MAX_LENGTH
 from common.utils.wiki import term_to_wiki_uri
 from common.utils.http import BAD_REQUEST
 from knowledge.utils.terms import name_to_term, term_to_name
@@ -114,20 +113,17 @@ def next_exercise(request):
             if feedback:
                 session.provide_feedback(feedback)
 
-        if session.get_questions_count() >= SESSION_MAX_LENGTH:
-            # TODO: pokud uz je konec session, vratit feedback form
-            return JsonResponse({"success": False, "message": "LAST EXERCISE..."})
-
         exercise = session.next_exercise()
         if exercise is None:
-            # TODO: pokud uz je konec session, vratit feedback form
-            return JsonResponse({"success": False, "message": "LAST EXERCISE..."})
+            # show feedback form
+            return JsonResponse({'success': True, 'finnished': True})
 
         exercise_dict = exercise.data
         exercise_dict['pk'] = exercise.pk
 
         response_data = {
             'success': True,
+            'finnished': False,
             'exercise': exercise_dict
         }
 
@@ -140,7 +136,8 @@ def session_feedback(request):
     """
     Saves global feedback for the whole session.
     """
-    pass
+    # TODO: uloz feedback
+    return JsonResponse({'success': True})
 
 
 # ----------------------------------------------------------------------------
