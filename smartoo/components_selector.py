@@ -75,6 +75,8 @@ class ComponentsSelector(object):
         performances = defaultdict(list)
 
         # retrieve all sessions with their feedbacks
+        # NOTE: sessions with small number of questions should be perioically
+        # deleted
         sessions = self._session_manager.all()
         for session in sessions:
             components_keys = (

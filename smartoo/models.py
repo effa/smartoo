@@ -72,6 +72,15 @@ class AccumulativeFeedback(models.Model):
         # store the updated accumulative feedback to DB
         self.save()
 
+    def add_final_rating(self, rating):
+        """
+        Stores final user rating (number between 0 and 1).
+        """
+        # restrict rating to the interval [0, 1]
+        rating = max(0.0, min(1.0, rating))
+        self.final_rating = rating
+        self.save()
+
     def get_all_answered_count(self):
         """
         Returns number of all answered questions.
@@ -285,13 +294,15 @@ class Session(models.Model):
         Returns:
             new exercise (exercises.models.Exercise) || None
         """
-        if self.get_questions_count() >= SESSION_MAX_LENGTH:
+        if self.finnished:
             next_exercise = None
         else:
             graded_exercises = self.get_unused_graded_exercises()
             # type of returned object is Exercise, not GradedExercise
             next_exercise = self.practicer.next_exercise(graded_exercises, self.feedback)
-        # TODO: pokud je next_exercise None, nastavit session jako finnished
+            # if there are no more exercises, set the session as finnished
+            if not next_exercise:
+                self.set_finnished()
         return next_exercise
 
     def provide_feedback(self, feedback_dictionary):
@@ -317,10 +328,10 @@ class Session(models.Model):
         any stored session.
         """
         # get the exercise from DB
+        # TODO: kontrolovat, ze cviceni s timto pk je opravdu z teto session
         exercise = Exercise.objects.get(
             pk=feedback_dictionary["pk"])
-        # TODO: osetrit neexistenci cviceni s timto primarnim klicem
-        # store  the feedback in DB
+        # store the feedback in DB
         feedbacked_exercise = FeedbackedExercise(
             session=self,
             exercise=exercise,
@@ -331,9 +342,19 @@ class Session(models.Model):
         feedbacked_exercise.save()
         # accumulate the feedback
         self.feedback.add(feedbacked_exercise)
+        # check if the session is over
+        if self.get_questions_count() >= SESSION_MAX_LENGTH:
+            self.set_finnished()
+
+    def provide_final_feedback(self, rating):
+        self.feedback.add_final_rating(rating)
 
     def get_questions_count(self):
         return self.feedback.get_all_questions_count()
+
+    def set_finnished(self):
+        self.finnished = True
+        self.save()
 
     def __str__(self):
         return unicode(self).encode('utf-8')
@@ -362,3 +383,14 @@ class FeedbackedExercise(models.Model):
     irrelevant = models.BooleanField(default=False)
     #time (start/end) of the exercise or maybe just time_to_answer?
     #time_to_anser = models.IntegerField(null=True, default=None)  # in ms
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+    def __unicode__(self):
+        return '<FeedbackedExercise exercise={exercise}; answered={answered}, correct={correct}, invalid={invalid}, irrelevant={irrelevant}>'.format(
+            exercise=unicode(self.exercise),
+            answered=self.answered,
+            correct=self.correct,
+            invalid=self.invalid,
+            irrelevant=self.irrelevant)

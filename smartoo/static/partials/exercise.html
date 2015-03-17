@@ -5,11 +5,11 @@
   <div id="options">
     <button ng-repeat="option in exercise.options"
           class="btn btn-lg btn-default option"
-          ng-disabled="exercise.finnished"
+          ng-disabled="exercise.answered || exercise.finnished"
           ng-class="{
             'btn-success': exercise.answered && option.correct,
             'btn-danger': exercise.answered && option.selected && !option.correct}"
-          ng-click="answerSelected(option)">
+          ng-click="answerSelected(option)" ng-focus="blur($event)">
       <span>
         {{option.text}}
       </span>

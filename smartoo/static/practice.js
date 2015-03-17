@@ -71,12 +71,13 @@ smartooApp.service('smartooService', ['$http', function ($http) {
 
     // POST request to provide session feedback
     this.finalFeedback = function(rating) {
+
+        var value = 0.5;
+
         if (rating == 'good') {
-            var value = 1.0;
-        } else if (rating = 'bad') {
-            var value = 0.0;
-        } else {
-            var value = 0.5;
+            value = 1.0;
+        } else if (rating == 'bad') {
+            value = 0.0;
         }
 
         return $http.post('/interface/session-feedback', {rating: value})
@@ -198,6 +199,16 @@ smartooApp.controller('practiceController',
             option.selected = true;
             $scope.exercise.answered = true;
             $scope.exercise.correct = option.correct;
+        }
+
+        $scope.reloadPage = function() {
+            window.location.reload();
+        }
+
+        $scope.blur = function($event) {
+            //console.log($event);
+            // unfocus
+            $event.target.blur();
         }
 
         function resize() {

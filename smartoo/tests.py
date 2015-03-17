@@ -216,6 +216,11 @@ class SessionTestCase(TestCase):
             self.assertEqual(unused, all_exercises - i)
             # get and provide feedback for next exercise
             exercise = session.next_exercise()
+
+            if exercise is None:
+                # this may happen when limit of exercises per session is low
+                break
+
             feedback = {
                 'pk': exercise.pk,
                 'answered': True,
@@ -223,5 +228,6 @@ class SessionTestCase(TestCase):
                 'invalid': False,
                 'irrelevant': False}
             session.provide_feedback(feedback)
+
         # all exercises used, the next one should be None
         self.assertIsNone(session.next_exercise())

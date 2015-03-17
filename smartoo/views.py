@@ -136,8 +136,16 @@ def session_feedback(request):
     """
     Saves global feedback for the whole session.
     """
-    # TODO: uloz feedback
-    return JsonResponse({'success': True})
+    try:
+        session = retrieve_current_session(request)
+
+        post_data = json.loads(request.body)
+        rating = post_data.get('rating')
+        session.provide_final_feedback(rating)
+
+        return JsonResponse({'success': True})
+    except SessionError:
+        return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 
 # ----------------------------------------------------------------------------
