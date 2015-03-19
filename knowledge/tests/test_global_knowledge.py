@@ -63,6 +63,15 @@ class GlobalKnowledgeTestCase(TestCase):
         #print knowledge_graph
         #print 'number of triples:', len(knowledge_graph.graph)
 
+    @skipIf(SKIP_ONLINE_TESTS, 'online')
+    def test_get_graph_unicode(self):
+        term = TERM['John_C._Frémont']
+        knowledge_graph = self.global_knowledge.get_graph(term, online=True)
+        self.assertIsNotNone(knowledge_graph)
+        self.assertIsInstance(knowledge_graph, KnowledgeGraph)
+        self.assertGreater(len(knowledge_graph.graph), 0)
+
+
 #    #def test_label(self):
 #    #    henry = TERM['Henry_VIII_of_England']
 #    #    label = self.global_knowledge.label(henry, fallback_guess=False)

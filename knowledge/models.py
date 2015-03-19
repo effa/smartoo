@@ -3,7 +3,9 @@ from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
+
 from abstract_component.models import Component
+from common.utils.http import iri2uri
 from common.utils.metrics import euclidian_length, sigmoid
 from common.utils.wiki import uri_to_name
 from common.fields import DictField
@@ -565,7 +567,8 @@ class GlobalKnowledge(object):
             graph = Graph()
 
             # TODO: log '(online!) k/models.py,L369, term:', term
-            graph.parse(term)
+            print 'online, k/models.py, L 568', term, type(term), iri2uri(term)
+            graph.parse(iri2uri(term))
             # TODO: osetrit neexistenci grafu na danem zdroji
             # except HTTPError
 

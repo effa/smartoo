@@ -225,9 +225,13 @@ class Session(models.Model):
         """
         try:
             self.knowledge_builder.build_knowledge(self.topic)
-        except (IntegrityError, ValueError):
-            # TODO: zrava + retezeni? + logovani
-            raise SessionError
+        except IntegrityError as exc:
+            # TODO: logovani
+            raise SessionError('Integrity error: ' + exc.message)
+        except ValueError as exc:
+            # TODO: logovani
+            raise SessionError('Value error: ' + exc.message)
+            #raise
 
     def get_knowledge_graph(self):
         """

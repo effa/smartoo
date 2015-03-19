@@ -83,6 +83,7 @@ def build_knowledge(request):
         session.build_knowledge()
         return JsonResponse({"success": True})
     except SessionError:
+        #raise
         return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 

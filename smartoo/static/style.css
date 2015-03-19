@@ -18,7 +18,7 @@ html {
 }
 
 .space-below {
-    margin-bottom: 70px;
+    margin-bottom: 100px;
 }
 
 /*.container {          */
@@ -49,8 +49,9 @@ html {
     /* for modern browsers, leave some place for the footer */
     /*min-height: calc(100% - 100px);*/
     /*padding-bottom: 30px;*/
-    /*background: url(../img/bg.jpg) no-repeat center center scroll;*/
-    background-color: #C1DAD6;
+    background-color: #E9F3F9;
+    background-image: url("/static/img/neurons-tile-light.png");
+    background-repeat: repeat;
     /*-webkit-background-size: cover;*/
     /*-moz-background-size: cover;   */
     /*background-size: cover;        */
@@ -63,11 +64,13 @@ html {
     width: 100%;
     height: 100%;
     /*background: url(../img/bg.jpg) no-repeat center center scroll;*/
-    background-color: #C1DAD6;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
+    background-color: #E9F3F9;
+    background-image: url("/static/img/neurons-tile-light.png");
+    background-repeat: repeat;
+    /*-webkit-background-size: cover;*/
+    /*-moz-background-size: cover;   */
+    /*background-size: cover;        */
+    /*-o-background-size: cover;     */
 }
 
 .vertical-center {
@@ -115,12 +118,13 @@ html {
     white-space: normal;
 }
 
-/*.smartoo-logo {        */
-/*    position: absolute;*/
-/*    left: 10px;        */
-/*    top: 10px;         */
-/*    height: 100px;     */
-/*}                      */
+.smartoo-logo {
+    /*position: absolute;*/
+    /*left: 10px;        */
+    /*top: 10px;         */
+    margin: 20px 0 0 0;
+    height: 100px;
+}
 
 /* -------------------------------------------- */
 /*         styles, fonts and colors             */
@@ -159,6 +163,10 @@ h1 {
 }
 .before-glyphicon {
     margin-right: 3px;
+}
+
+.glow {
+    text-shadow: 0px 0px 8px #90ADD8;
 }
 
 /* smaller fonts  on smaller displays */
