@@ -5,25 +5,33 @@ Terms related utilities
 """
 
 from __future__ import unicode_literals
-#from knowledge.namespaces import TERM
+
+from knowledge.utils.terms import name_to_term
+
+from collections import defaultdict
 from nltk import ParentedTree, sent_tokenize, word_tokenize, pos_tag
 import re
 
 
-def parse_text(text, terms_trie):
+def shallow_parsing(text):
     """
-    Given text and a trie of terms, it will parse it, infere terms occurences
-    and return list of parsed sentences (each parse sentence consists of
-    a tree and list of terms).
+    Tokenizes text to words and sentences and assings a tag to each word.
     """
     text = preporcess_article_text(text)
     sentences = sent_tokenize(text)
     parsed_sentences = []
     for sentence in sentences:
-        sentence = pos_tag(word_tokenize(sentence))
-        parsed_sentence = parse_sentence(sentence, terms_trie)
+        # TODO: filter sentences
+        parsed_sentence = pos_tag(word_tokenize(sentence))
         parsed_sentences.append(parsed_sentence)
     return parsed_sentences
+
+
+def shallow_parsing_phrases(phrases):
+    """
+    Tokenizes and tags phrases.
+    """
+    return [pos_tag(word_tokenize(phrase)) for phrase in phrases]
 
 
 def preporcess_article_text(text):
@@ -57,43 +65,53 @@ def preporcess_article_text(text):
     return '\n'.join(text_lines)
 
 
-def parse_sentence(sentence, terms_trie):
+def terms_inference(sentences, terms_trie):
     """
-    Given (tokenized and tagged) sentence and a trie of terms, it will
-    parse it, infere terms occurences and return Trie
+    Given (tokenized and tagged) sentences and a trie of terms, it will
+    infere terms occurences and return list of sentence trees.
 
     Args:
-        sentence: tokenized and tagged sentence
-        terms_trie: knowledge.utils.termstrie.TermsTrie
+        sentences: shallow-parsed text
+        terms_trie: trie of terms
     Return:
-        (sentence with inferred terms in form of parse tree,
-        list of terms)
+        list of shallow parse trees with inferred terms,
+        dictionary of refferences to terms positions
     """
-    parsed_sentence = ParentedTree('S', [])
-    terms = []
+    parsed_sentences = []
+    terms_positions = defaultdict(list)
+    for sentence in sentences:
+        parsed_sentence = ParentedTree('S', [])
 
-    token_index = 0
-    while token_index < len(sentence):
-        term_label, term_length = _longest_matching_term(sentence,
-            token_index, terms_trie)
+        token_index = 0
+        while token_index < len(sentence):
+            term_label, term_length = _longest_matching_term(sentence,
+                token_index, terms_trie)
 
-        if term_length > 0:
-            # term found
-            term_node = ParentedTree('TERM', [])
-            for token in sentence[token_index:token_index + term_length]:
-                _append_word_token(term_node, token)
-            # TODO: use DBpedia to get more specific type sequence, e.g
-            # "TERM:AGENT:PERSON", "TERM:EVENT", "DATE", "NUMBER", ...
-            parsed_sentence.append(term_node)
-            token_index += term_length
-            terms.append(term_label)
-        else:
-            # there is no term starting from current postion
-            token = sentence[token_index]
-            _append_word_token(parsed_sentence, token)
-            token_index += 1
+            if term_length > 0:
+                # term found
+                term_node = ParentedTree('TERM', [])
+                # TODO: use DBpedia to get more specific type sequence, e.g
+                # "TERM:AGENT:PERSON", "TERM:EVENT", "DATE", "NUMBER", ...
 
-    return parsed_sentence, terms
+                term = name_to_term(term_label)
+                term_node.term = term
+                terms_positions[term].append(term_node)
+
+                for token in sentence[token_index:token_index + term_length]:
+                    _append_word_token(term_node, token)
+                parsed_sentence.append(term_node)
+
+                token_index += term_length
+
+            else:
+                # there is no term starting from current postion
+                token = sentence[token_index]
+                _append_word_token(parsed_sentence, token)
+                token_index += 1
+
+        parsed_sentences.append(parsed_sentence)
+
+    return parsed_sentences, terms_positions
 
 
 def _append_word_token(node, token):

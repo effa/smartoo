@@ -16,8 +16,8 @@ def euclidian_length(document):
     """
     length = 0
     for count in document.values():
-        if isinstance(count, list):
-            count = len(count)
+        #if isinstance(count, list):
+        #    count = len(count)
         length += count * count
     length = sqrt(length)
     return length
@@ -60,7 +60,7 @@ def cosine_similarity_exercise_article(exercise, article):
     # compute dot product (exercise . article)
     dot_product = 0
     for term, exercise_count in exercise.items():
-        dot_product += exercise_count * len(article.get_term_positions(term))
+        dot_product += exercise_count * article.get_term_count(term)
 
     # compute euclidian lengths of documents
     exercise_length = euclidian_length(exercise)

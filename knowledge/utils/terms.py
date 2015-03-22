@@ -5,7 +5,6 @@ Terms related utilities
 from __future__ import unicode_literals
 from knowledge.namespaces import TERM
 from knowledge.utils.termstrie import TermsTrie
-from nltk import word_tokenize
 
 
 def name_to_term(name):
@@ -29,14 +28,28 @@ def term_to_name(term):
     return name
 
 
-def terms_trie_from_term_labels(labels):
+#def terms_trie_from_term_labels(labels):
+    #"""
+    #Returns terms trie created from given list of labels
+    #"""
+    #terms_trie = TermsTrie()
+    #for label in labels:
+    #    terms_trie.add_with_subnames(label)
+    #return terms_trie
+
+
+def bulk_create_terms_trie(terms):
     """
     Returns terms trie created from given list of labels
+
+    Args:
+        terms: list of tuples of term label and shallowed parsed term
+    Retruns:
+        terms trie
     """
     terms_trie = TermsTrie()
-    for label in labels:
-        canonical_form = word_tokenize(label)
-        terms_trie.add(label, canonical_form)
+    for name, tagged_name in terms:
+        terms_trie.add_with_subnames(name, tagged_name)
     return terms_trie
 
 

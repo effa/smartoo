@@ -3,57 +3,8 @@
   <object pk="1" model="knowledge.Article">
     <field type="CharField" name="topic">Abraham_Lincoln</field>
     <field type="DictField" name="content"><![CDATA[
-{"sentences": [{"terms": ["Abraham Lincoln"], "sentence": "(S\n  (TERM (NNP Abraham) (NNP Lincoln))\n  (VBD was)\n  (DT a)\n  (NN president)\n  (IN of)\n  (DT the)\n  (NNP USA)\n  (. .))"}, {"terms": ["American Civil War"], "sentence": "(S\n  (PRP He)\n  (VBD led)\n  (DT the)\n  (NNP USA)\n  (IN through)\n  (PRP$ its)\n  (TERM (JJ American) (NNP Civil) (NN War))\n  (. .))"}]}
+{"terms": [["Abraham Lincoln", [["Abraham", "NNP"], ["Lincoln", "NNP"]]], ["American Civil War", [["American", "NNP"], ["Civil", "NNP"], ["War", "NNP"]]]], "sentences": [[["Abraham", "NNP"], ["Lincoln", "NNP"], ["was", "VBD"], ["a", "DT"], ["president", "NN"], ["of", "IN"], ["the", "DT"], ["USA", "NNP"], [".", "."]], [["Lincoln", "NNP"], ["led", "VBD"], ["the", "DT"], ["USA", "NNP"], ["through", "IN"], ["its", "PRP$"], ["Civil", "NNP"], ["War", "NNP"], [".", "."]]]}
     ]]>
     </field>
   </object>
-  <!--<object pk="1" model="knowledge.Vertical">
-    <field type="CharField" name="topic">Abraham_Lincoln</field>
-    <field type="TextField" name="content"><![CDATA[
-<doc id="7" url="http://en.wikipedia.org/wiki/Abraham_Lincoln" title="Abraham Lincoln">
-<p heading="1">
-<term wuri="Abraham_Lincoln">
-Abraham	NP	Abraham-n
-Lincoln	NP	Lincoln-n
-</term>
-</p>
-<p>
-<s>
-<term wuri="Abraham_Lincoln" uncertainty="1">
-Abraham	NP	Abraham-n
-Lincoln	NP	Lincoln-n
-</term>
-was	VBD	be-v
-the	DT	the-x
-<term wuri="List_of_Presidents_of_the_United_States">
-16	CD	16-x
-<g/>
-th	NN	th-n
-president	NN	president-n
-of	IN	of-i
-the	DT	the-x
-United	NP	United-n
-States	NPS	States-n
-</term>
-<g/>
-.	SENT	.-x
-</s>
-<s>
-Lincoln	NP	Lincoln-n
-led	VVD	lead-v
-the	DT	the-x
-United	NP	United-n
-States	NPS	States-n
-through	IN	through-i
-its	PP$	its-d
-<term wuri="American_Civil_War">
-Civil	NP	Civil-n
-War	NP	War-n
-</term>
-<g/>
-.	SENT	.-x
-</s>
-</doc>]]>
-    </field>
-  </object>-->
 </django-objects>

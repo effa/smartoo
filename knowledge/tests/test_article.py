@@ -58,7 +58,6 @@ Probably encouraged by these dissensions among the men of Tabor, the Bohemian no
         links = [u'Battle of Doma\u017elice', u'Battle of Lipany', u'Battle of \xdast\xed nad Labem', u'Cheb', u'Council of Basel', u'Czech language', u'Encyclop\xe6dia Britannica Eleventh Edition', u'Frederick I, Margrave of Brandenburg', u'German people', u'Holy Roman Empire', u'Hungary', u'Hussite', u'Hussite Wars', u'Jan \u017di\u017eka', u'Kol\xedn', u'Kourim', u'Kulmbach', u'New International Encyclopedia', u'New Town, Prague', u'Nuremberg', u'Plze\u0148', u'Prague', u'Prokop the Lesser', u'Public domain', u'Saxony', u'Sigismund, Holy Roman Emperor', u'Taborite', u'Tonsure', u'Utraquist', u'Prokop the Great']
         article = Article(topic=TERM['Prokop_the_Great'])
         article.create_content_from_text(text, links)
-        #print article.content
         terms = article.get_all_terms()
         self.assertIn(TERM['Prokop_the_Great'], terms)
         self.assertIn(TERM['Hussite_Wars'], terms)
@@ -95,3 +94,9 @@ class ArticleWithFixtureTestCase(TestCase):
         terms = self.article.get_all_terms()
         self.assertIn(TERM['Abraham_Lincoln'], terms)
         self.assertIn(TERM['American_Civil_War'], terms)
+
+    def test_euclidian_length(self):
+        euclidian_length = self.article.euclidian_length
+        # 2 terms: Lincoln has 2 occurencs + 10 bonus as a topic, War has 1
+        # occurence -> sqrt(12^2 + 1^2) = sqrt(145) ~= 12.041945
+        self.assertAlmostEqual(euclidian_length, 12.041945, places=2)

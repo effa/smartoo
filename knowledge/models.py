@@ -12,11 +12,12 @@ from common.fields import DictField
 from common.settings import ONLINE_ENABLED
 from knowledge.fields import GraphField, TermField
 from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, TERM
-from knowledge.utils.terms import terms_trie_from_term_labels, name_to_term, term_to_name
-from knowledge.utils.text import parse_text
+from knowledge.utils.terms import bulk_create_terms_trie, term_to_name
+from knowledge.utils.text import shallow_parsing, shallow_parsing_phrases, terms_inference
+
 from rdflib import Graph, URIRef
 from collections import defaultdict
-from nltk import ParentedTree
+#from nltk import ParentedTree
 import wikipedia
 
 
@@ -127,7 +128,10 @@ class Article(models.Model):
     content = DictField(default=dict)
 
     # constant for an empty content
-    EMPTY_CONTENT = '{"sentences": []}'
+    EMPTY_CONTENT = '{"sentences": [], "terms": []}'
+
+    # weight of the headline (i.e. topic term) relative to one term occurence
+    HEADLINE_WEIGHT = 10
 
     def save(self, *args, **kwargs):
         """
@@ -169,8 +173,9 @@ class Article(models.Model):
         # TODO: opravit chybu ve Wikipedia modulu
         links = wiki_page.links
 
-        # make sure title is in the links
-        links.append(topic_name)
+        # make sure title is in the links and in the first position (so it has
+        # the highest priority during terms inference
+        links.insert(0, topic_name)
         self.create_content_from_text(text, links)
 
     # TODO: da se to urcite udelat lip (efektivneji, prehledneji), v nltk
@@ -178,17 +183,14 @@ class Article(models.Model):
     # korpusy (i oznackovanymi korpusy!)
     def create_content_from_text(self, text, links=[]):
         """
-        Parse text, infere terms occurences (terms are given by :links: list),
-        creates self.content (= string which encodes tree structure of
-        sentences.
+        Parses text and creates self.content
         """
-        # vytvoreni TermsTrie ze seznamu odkazu
-        terms_trie = terms_trie_from_term_labels(links)
-
-        sentences = parse_text(text, terms_trie)
-
-        self.content = {'sentences': [{'sentence': unicode(s), 'terms': t}
-            for s, t in sentences]}
+        sentences = shallow_parsing(text)
+        terms = shallow_parsing_phrases(links)
+        self.content = {
+            'sentences': sentences,
+            'terms': zip(links, terms)
+        }
 
     @cached_property
     def sentences(self):
@@ -210,7 +212,9 @@ class Article(models.Model):
         """
         Euclidian length of the article (only terms are counted).
         """
-        return euclidian_length(self.terms_positions)
+        document_dict = {
+            term: self.get_term_count(term) for term in self.get_all_terms()}
+        return euclidian_length(document_dict)
 
     def _parse_terms_and_sentences(self, return_terms=False, return_sentences=False):
         """
@@ -219,30 +223,19 @@ class Article(models.Model):
         # content must be set before
         assert self.content is not None
 
-        if 'sentences' not in self.content:
-            return []
+        #if 'sentences' not in self.content:
+        #    return []
 
-        # transform text encoded content to list of sentences
-        sentences = []
-        terms_positions = defaultdict(list)
-        sentence_records = self.content['sentences']
-        for sentence_record in sentence_records:
-            sentence = ParentedTree.fromstring(sentence_record['sentence'])
-            terms = sentence_record['terms']
+        # vytvoreni TermsTrie ze vsech pojmu
+        terms_trie = bulk_create_terms_trie(self.content['terms'])
 
-            term_index = 0
-            for node in sentence:
-                if node.label() == 'TERM':
-                    term = name_to_term(terms[term_index])
-                    node.term = term
-                    terms_positions[term].append(node)
-                    term_index += 1
-
-            sentences.append(sentence)
+        sentences, terms_positions = terms_inference(self.content['sentences'], terms_trie)
 
         # set both self.sentences and self.terms_positions
-        self.terms_positions = terms_positions
         self.sentences = sentences
+        self.terms_positions = terms_positions
+
+        # return what was requested
         if return_terms and return_sentences:
             return terms_positions, sentences
         elif return_terms:
@@ -267,6 +260,15 @@ class Article(models.Model):
         Returns list of positions of :term: in the sentences
         """
         return self.terms_positions[term]
+
+    def get_term_count(self, term):
+        """
+        Returns number of occurences of given term in the article
+        """
+        occurences = len(self.get_term_positions(term))
+        if term == self.topic:
+            occurences += self.HEADLINE_WEIGHT
+        return occurences
 
     def get_sentences(self):
         """
@@ -451,7 +453,7 @@ class KnowledgeGraph(models.Model):
 
         # normalization -> number between 0 and 1
         # NOTE: devide common_types_count to make the function increse slower
-        similarity = 2.0 * (sigmoid(common_types_count / 2.0) - 0.5)
+        similarity = 2.0 * (sigmoid(common_types_count / 4.0) - 0.5)
         return similarity
 
     @cached_property
