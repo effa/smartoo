@@ -9,5 +9,6 @@ class Fake(PracticerBehavior):
 
     Returns first exercise without using accumulated feedback at all.
     """
-    def next_exercise(self, graded_exercises, accumulated_feedback):
+    def next_exercise(self, graded_exercises, accumulated_feedback,
+            feedbacked_exercises):
         return graded_exercises[0]

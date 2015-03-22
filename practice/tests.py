@@ -8,6 +8,6 @@ class PracticerTestCase(TestCase):
     def test_next_exercise(self):
         exercise = Exercise()
         practicer = Practicer(behavior_name='fake', parameters={})
-        next_exercise = practicer.next_exercise([GradedExercise(exercise=exercise)], None)
+        next_exercise = practicer.next_exercise([GradedExercise(exercise=exercise)], None, None)
         self.assertIsInstance(exercise, Exercise)
         self.assertEqual(next_exercise, exercise)

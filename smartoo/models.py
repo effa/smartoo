@@ -301,9 +301,11 @@ class Session(models.Model):
         if self.finnished:
             next_exercise = None
         else:
+            feedbacked_exercises = self.get_feedbacked_exercises()
             graded_exercises = self.get_unused_graded_exercises()
             # type of returned object is Exercise, not GradedExercise
-            next_exercise = self.practicer.next_exercise(graded_exercises, self.feedback)
+            next_exercise = self.practicer.next_exercise(graded_exercises,
+                self.feedback, feedbacked_exercises)
             # if there are no more exercises, set the session as finnished
             if not next_exercise:
                 self.set_finnished()

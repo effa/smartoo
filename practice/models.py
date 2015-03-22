@@ -15,7 +15,8 @@ class Practicer(Component):
     def get_behaviors_path(cls):
         return cls.BEHAVIORS_PATH
 
-    def next_exercise(self, graded_exercises, accumulated_feedback):
+    def next_exercise(self, graded_exercises, accumulated_feedback,
+            feedbacked_exercise):
         """
         Returns new exercise.
 
@@ -31,7 +32,7 @@ class Practicer(Component):
 
         behavior = self.get_behavior()
         graded_exercise = behavior.next_exercise(graded_exercises,
-            accumulated_feedback)
+            accumulated_feedback, feedbacked_exercise)
 
         assert isinstance(graded_exercise, GradedExercise)
         exercise = graded_exercise.exercise

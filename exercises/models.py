@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
+from collections import defaultdict
 from abstract_component.models import Component
 from common.fields import DictField
 from knowledge.models import KnowledgeGraph
@@ -156,6 +157,17 @@ class Exercise(models.Model):
         for name1, name2 in self.semantics['term-pairs']:
             pairs.append((name_to_term(name1), name_to_term(name2)))
         return pairs
+
+    def get_terms_counts(self):
+        """
+        Returns dictionary mapping from terms to the number of occurences in the
+        exercises term pairs.
+        """
+        terms = defaultdict(int)
+        for t1, t2 in self.get_term_pairs():
+            terms[t1] += 1
+            terms[t2] += 1
+        return terms
 
     def __unicode__(self):
         return '<Exercise {data}>'.format(data=self.data)

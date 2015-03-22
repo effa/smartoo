@@ -33,16 +33,24 @@ class ComponentsTestCase(TestCase):
         # components to test
         # ------------------------------------------------------------------
         self.session.knowledge_builder = KnowledgeBuilder.objects.get(
-            behavior_name='quasi',
+            #behavior_name='quasi',
+            behavior_name='fake',
             parameters={})
         self.session.exercises_creator = ExercisesCreator.objects.get(
             behavior_name='quasi',
+            #behavior_name='fake',
             parameters={})
         self.session.exercises_grader = ExercisesGrader.objects.get(
             behavior_name='simple',
+            #behavior_name='fake',
             parameters={})
-        self.session.practicer = Practicer.objects.get(
-            behavior_name='simple')
+        self.session.practicer = Practicer.objects.get(pk=1)
+        #behavior_name='simple',
+        #parameters={
+        #    "target-success": 0.75,
+        #    "relevance-weight": 1.0,
+        #    "difficulty-weight": 1.0
+        #})
         # ------------------------------------------------------------------
         self.session.save()
 
@@ -59,13 +67,13 @@ class ComponentsTestCase(TestCase):
         #print '***'
         for exercise in self.session.get_graded_exercises():
             print exercise
-            raw_input()
+            #raw_input()
 
         print '-' * 80, '\n', 'practicing:'
         exercise = self.session.next_exercise()
         print exercise
 
-    @skipIf(True or SKIP, "special components behavior test")
+    @skipIf(False or SKIP, "special components behavior test")
     def test_practicing_only(self):
         # knowledge building
         self.session.build_knowledge()
@@ -73,6 +81,7 @@ class ComponentsTestCase(TestCase):
         # fake exercises (to test pracicing only)
         GradedExercise.objects.create(
             exercise=Exercise.objects.create(data='B',
+                semantics={'term-pairs': [['t2', 't4'], ['t4', 't5']]},
                 knowledge_graph=self.session.get_knowledge_graph(),
                 exercises_creator=self.session.exercises_creator),
             exercises_grader=self.session.exercises_grader,
@@ -82,6 +91,7 @@ class ComponentsTestCase(TestCase):
 
         GradedExercise.objects.create(
             exercise=Exercise.objects.create(data='C',
+                semantics={'term-pairs': [['t1', 't2'], ['t1', 't4']]},
                 knowledge_graph=self.session.get_knowledge_graph(),
                 exercises_creator=self.session.exercises_creator),
             exercises_grader=self.session.exercises_grader,
@@ -91,6 +101,7 @@ class ComponentsTestCase(TestCase):
 
         GradedExercise.objects.create(
             exercise=Exercise.objects.create(data='A',
+                semantics={'term-pairs': [['t1', 't2'], ['t1', 't3']]},
                 knowledge_graph=self.session.get_knowledge_graph(),
                 exercises_creator=self.session.exercises_creator),
             exercises_grader=self.session.exercises_grader,
@@ -113,16 +124,16 @@ class ComponentsTestCase(TestCase):
         exercise = self.session.next_exercise()
         print exercise
 
-        self.session.provide_feedback({
-            'pk': exercise.pk,
-            'answered': True,
-            'correct': False,
-            'invalid': False,
-            'irrelevant': False
-        })
+        #self.session.provide_feedback({
+        #    'pk': exercise.pk,
+        #    'answered': True,
+        #    'correct': False,
+        #    'invalid': False,
+        #    'irrelevant': False
+        #})
 
-        exercise = self.session.next_exercise()
-        print exercise
+        #exercise = self.session.next_exercise()
+        #print exercise
 
 
 class ComponentsSelectorTestCase(TestCase):
@@ -131,7 +142,7 @@ class ComponentsSelectorTestCase(TestCase):
     def setUp(self):
         self.topic = TERM['Abraham_Lincoln']
 
-    @skipIf(True and SKIP, "special components selecting test")
+    @skipIf(True or SKIP, "special components selecting test")
     def test_selector(self):
         session = Session.objects.create_with_components(self.topic)
         self.assertIsNotNone(session)

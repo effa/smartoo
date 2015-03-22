@@ -16,8 +16,9 @@ class Fake(ExercisesCreatorBehavior):
             Exercise(data={
                 'question': 'When was Henry VIII of England born?',
                 'choices': ['1291', '1391', '1491', '1591'],
-                'correct-answer': '1491'
-            }),
+                'correct-answer': '1491'},
+                semantics={'term-pairs': [['Henry VIII', 'Henry VIII']]}
+            ),
             Exercise(data={
                 'question': 'Who was the successor of Henry VIII of England?',
                 'choices': ['Edward VI of England', 'Henry VII of England',

@@ -10,6 +10,11 @@
     <field type="DictField" name="parameters">{}</field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
+  <object pk="3" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">fake</field>
+    <field type="DictField" name="parameters">{}</field>
+    <field type="BooleanField" name="enabled">False</field>
+  </object>
   <object pk="1" model="exercises.exercisescreator">
     <field type="CharField" name="behavior_name">quasi</field>
     <field type="DictField" name="parameters">{}</field>
@@ -25,7 +30,8 @@
     <field type="DictField" name="parameters">{
       "target-success": 0.75,
       "relevance-weight": 1.0,
-      "difficulty-weight": 1.0}
+      "difficulty-weight": 1.0,
+      "repetitiveness_weight": 0.1}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -33,8 +39,9 @@
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
       "target-success": 0.75,
-      "relevance-weight": 0.1,
-      "difficulty-weight": 1.0}
+      "relevance-weight": 2.0,
+      "difficulty-weight": 1.0,
+      "repetitiveness_weight": 0.1}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -43,7 +50,8 @@
     <field type="DictField" name="parameters">{
       "target-success": 0.75,
       "relevance-weight": 1.0,
-      "difficulty-weight": 0.1}
+      "difficulty-weight": 2.0,
+      "repetitiveness_weight": 0.1}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
