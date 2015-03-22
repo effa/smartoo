@@ -5,7 +5,6 @@ class ExercisesCreatorBehavior(ComponentBehavior):
     """
     Base class for all exercises creator behaviors.
     """
-
     def create_exercises(self, knowledge_graph):
         """
         Yields exercises.

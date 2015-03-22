@@ -3,7 +3,7 @@
   <object pk="1" model="knowledge.Article">
     <field type="CharField" name="topic">Abraham_Lincoln</field>
     <field type="DictField" name="content"><![CDATA[
-{"terms": [["Abraham Lincoln", [["Abraham", "NNP"], ["Lincoln", "NNP"]]], ["American Civil War", [["American", "NNP"], ["Civil", "NNP"], ["War", "NNP"]]]], "sentences": [[["Abraham", "NNP"], ["Lincoln", "NNP"], ["was", "VBD"], ["a", "DT"], ["president", "NN"], ["of", "IN"], ["the", "DT"], ["USA", "NNP"], [".", "."]], [["Lincoln", "NNP"], ["led", "VBD"], ["the", "DT"], ["USA", "NNP"], ["through", "IN"], ["its", "PRP$"], ["Civil", "NNP"], ["War", "NNP"], [".", "."]]]}
+{"terms": [["Abraham Lincoln", [["Abraham", "NNP"], ["Lincoln", "NNP"]]], ["American Civil War", [["American", "NNP"], ["Civil", "NNP"], ["War", "NNP"]]]], "sentences": [[["Abraham", "NNP"], ["Lincoln", "NNP"], ["was", "VBD"], ["a", "DT"], ["president", "NN"], ["of", "IN"], ["the", "DT"], ["USA", "NNP"], [".", "."]], [["Abraham", "NNP"], ["Lincoln", "NNP"], ["led", "VBD"], ["the", "DT"], ["USA", "NNP"], ["through", "IN"], ["American", "NNP"], ["Civil", "NNP"], ["War", "NNP"], [".", "."]]]}
     ]]>
     </field>
   </object>

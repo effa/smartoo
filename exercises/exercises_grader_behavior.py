@@ -5,6 +5,9 @@ class ExercisesGraderBehavior(ComponentBehavior):
     """
     Base class for all exercises grader behaviors.
     """
+    def setup(self, topic):
+        self.topic = topic
+
     def grade_exercise(self, exercise):
         """
         Estimates exerice parameters such as correctness and difficulty.

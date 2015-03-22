@@ -198,14 +198,14 @@ class Article(models.Model):
         List of sentences in the article.
         Each sentence is represented as a tree.
         """
-        return self._parse_terms_and_sentences(return_sentences=True)
+        return self.parse_terms_and_sentences(return_sentences=True)
 
     @cached_property
     def terms_positions(self):
         """
         Dictionary mapping terms to their positions in sentences
         """
-        return self._parse_terms_and_sentences(return_terms=True)
+        return self.parse_terms_and_sentences(return_terms=True)
 
     @cached_property
     def euclidian_length(self):
@@ -216,7 +216,7 @@ class Article(models.Model):
             term: self.get_term_count(term) for term in self.get_all_terms()}
         return euclidian_length(document_dict)
 
-    def _parse_terms_and_sentences(self, return_terms=False, return_sentences=False):
+    def parse_terms_and_sentences(self, return_terms=False, return_sentences=False, knowledge_graph=None):
         """
         Parses sentences and terms from content (in json).
         """
@@ -227,7 +227,7 @@ class Article(models.Model):
         #    return []
 
         # vytvoreni TermsTrie ze vsech pojmu
-        terms_trie = bulk_create_terms_trie(self.content['terms'])
+        terms_trie = bulk_create_terms_trie(self.content['terms'], knowledge_graph)
 
         sentences, terms_positions = terms_inference(self.content['sentences'], terms_trie)
 

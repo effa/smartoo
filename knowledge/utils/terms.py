@@ -3,7 +3,7 @@ Terms related utilities
 """
 
 from __future__ import unicode_literals
-from knowledge.namespaces import TERM
+from knowledge.namespaces import TERM, ONTOLOGY
 from knowledge.utils.termstrie import TermsTrie
 
 
@@ -38,7 +38,7 @@ def term_to_name(term):
     #return terms_trie
 
 
-def bulk_create_terms_trie(terms):
+def bulk_create_terms_trie(terms, knowledge_graph=None):
     """
     Returns terms trie created from given list of labels
 
@@ -49,7 +49,10 @@ def bulk_create_terms_trie(terms):
     """
     terms_trie = TermsTrie()
     for name, tagged_name in terms:
-        terms_trie.add_with_subnames(name, tagged_name)
+        if knowledge_graph and ONTOLOGY['Person'] in knowledge_graph.types(name_to_term(name)):
+            terms_trie.add_with_subnames(name, tagged_name)
+        else:
+            terms_trie.add(name, tagged_name)
     return terms_trie
 
 

@@ -30,8 +30,8 @@ class Simple(PracticerBehavior):
         total_count = accumulated_feedback.get_all_answered_count()
         target_difficulty = compute_target_difficulty(target_success,
             correct_ratio, total_count)
-        print '---'
-        print 'target_difficulty:', target_difficulty
+        #print '---'
+        #print 'target_difficulty:', target_difficulty
 
         # compute how many times each term was already used
         terms_history_counts = defaultdict(int)
@@ -43,7 +43,6 @@ class Simple(PracticerBehavior):
         def compute_history_similarity(graded_exercise):
             exercise_terms = graded_exercise.exercise.get_terms_counts()
             history_similarity = cosine_similarity(exercise_terms, terms_history_counts)
-            print history_similarity
             return history_similarity
 
         def scoring_function(graded_exercise):
@@ -60,7 +59,7 @@ class Simple(PracticerBehavior):
         best_score = 0
         for exercise in graded_exercises:
             score = scoring_function(exercise)
-            print exercise, score
+            #print exercise, score
             if score > best_score:
                 best_exercise = exercise
                 best_score = score

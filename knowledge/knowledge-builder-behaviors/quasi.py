@@ -20,6 +20,7 @@ class Quasi(KnowledgeBuilderBehavior):
         knowledge_graph.add_related_global_knowledge(article,
             predicates=[RDFS['label'], RDF['type']],
             online=True)
+        article.parse_terms_and_sentences(knowledge_graph=knowledge_graph)
 
         for sentence in contextfree_sentences(article):
             # TODO: tohle by chtelo delat spis pomoci reqexu/gramatiky

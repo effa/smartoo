@@ -83,11 +83,13 @@ class ExercisesGrader(Component):
             IntegrityError: if knowledge_graph or exercise_creator is not
                 already stored in DB (we need their primary keys)
         """
+        self.behavior = self.get_behavior()
+        self.behavior.setup(knowledge_graph.topic)
         for exercise in exercises_creator.create_exercises(knowledge_graph):
             # compute grades and store them in DB
-            self.grade_exercise(exercise)
+            self._grade_exercise(exercise)
 
-    def grade_exercise(self, exercise):
+    def _grade_exercise(self, exercise):
         """
         Computes grade and stores them (doesn't return anything).
 
@@ -105,8 +107,7 @@ class ExercisesGrader(Component):
                 exercises_grader=self).exists():
             return  # nothing to do
 
-        behavior = self.get_behavior()
-        grades = behavior.grade_exercise(exercise)
+        grades = self.behavior.grade_exercise(exercise)
         grades.exercise = exercise
         grades.exercises_grader = self
         grades.save()

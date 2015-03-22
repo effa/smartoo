@@ -13,11 +13,12 @@ class Simple(ExercisesGraderBehavior):
     TODO: description
     Parameters: ---
     """
+    def setup(self, topic):
+        self.article = Article.objects.get(topic=topic)
 
     def grade_exercise(self, exercise):
         knowledge_graph = exercise.knowledge_graph
-        topic = knowledge_graph.topic
-        article = Article.objects.get(topic=topic)
+        #topic = knowledge_graph.topic
 
         similarities = []
         terms = defaultdict(int)
@@ -40,7 +41,7 @@ class Simple(ExercisesGraderBehavior):
 
         # Relevance is set as a cosine similiarity between article and the
         # exercise (only terms counted).
-        relevance = cosine_similarity_exercise_article(terms, article)
+        relevance = cosine_similarity_exercise_article(terms, self.article)
 
         # TODO: Extremely simple heuristic for correctness, such as length of
         # the exercise (cim delsi, tim vetsi pravdepodobnost problemu)
