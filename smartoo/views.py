@@ -9,6 +9,7 @@ from common.utils.http import BAD_REQUEST
 from knowledge.utils.terms import name_to_term, term_to_name
 #from knowledge.utils.topics import is_valid_topic
 from smartoo.exceptions import SessionError
+from smartoo.feedback import process_message_feedback
 from smartoo.models import Session
 import json
 
@@ -147,6 +148,29 @@ def session_feedback(request):
         return JsonResponse({'success': True})
     except SessionError:
         return JsonResponse({"success": False}, status=BAD_REQUEST)
+
+
+def feedback_message(request):
+    """
+    Process feedback message.
+    """
+    # try to find current session
+    try:
+        session = retrieve_current_session(request)
+        session_pk = session.pk
+    except SessionError:
+        session_pk = None
+
+    post_data = json.loads(request.body)
+    text = post_data.get('text')
+    email = post_data.get('email')
+
+    try:
+        process_message_feedback(text, email, session_pk)
+        return JsonResponse({'success': True})
+    except ValueError:
+        return JsonResponse({"success": False, "message": "Invalid message!"},
+            status=BAD_REQUEST)
 
 
 # ----------------------------------------------------------------------------

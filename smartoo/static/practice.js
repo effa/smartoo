@@ -19,78 +19,6 @@
 //});
 
 // --------------------------------------------------------------------------
-// Servicies
-// --------------------------------------------------------------------------
-
-smartooApp.service('smartooService', ['$http', function ($http) {
-
-    // POST request to start a new session with given topic
-    this.startSession = function(topic) {
-        return $http.post('/interface/start-session', {topic: topic})
-            .then(function(response) {
-                return response.data;
-            }, function(response) {
-                return createFailResponse(response);
-            });
-    };
-
-    // POST request to build knowledge
-    this.buildKnowledge = function() {
-        return $http.post('/interface/build-knowledge')
-            .then(function(response) {
-                return response.data;
-            }, function(response) {
-                return createFailResponse(response);
-            });
-    };
-
-    // POST request to create exercises
-    this.createExercises = function() {
-        return $http.post('/interface/create-exercises')
-            .then(function(response) {
-                return response.data;
-            }, function(response) {
-                return createFailResponse(response);
-            });
-    };
-
-    // POST request to get new exercise
-    // (also sends back information about done exercise)
-    this.nextExercise = function(previousExercise) {
-        // make sure previousExercise is null, not undefined
-        if (!previousExercise) {
-            previousExercise = null;
-        }
-        return $http.post('/interface/next-exercise', {feedback: previousExercise})
-            .then(function(response) {
-                return response.data;
-            }, function(response) {
-                return createFailResponse(response);
-            });
-    };
-
-    // POST request to provide session feedback
-    this.finalFeedback = function(rating) {
-
-        var value = 0.5;
-
-        if (rating == 'good') {
-            value = 1.0;
-        } else if (rating == 'bad') {
-            value = 0.0;
-        }
-
-        return $http.post('/interface/session-feedback', {rating: value})
-            .then(function(response) {
-                return response.data;
-            }, function(response) {
-                return createFailResponse(response);
-            });
-    };
-}]);
-
-
-// --------------------------------------------------------------------------
 //  Controllers
 // --------------------------------------------------------------------------
 smartooApp.controller('practiceController',
@@ -254,32 +182,6 @@ function fullHeightWorkingArea() {
     workingArea.css("min-height", fullHeight);
 }
 
-
-
-// returns response object (makes shure success and message attributes are set)
-function createFailResponse(response) {
-    var data = response.data;
-    console.log(data);
-
-    if (typeof(data) == "string") {
-        fail_response = {
-            'success': false,
-            'message': 'Server error',
-            'data': data
-        };
-
-        return fail_response;
-    }
-
-    // make sure success is false
-    data.success = false;
-
-    // if there is no error message in the response, use "Server error")
-    if (!data.message) {
-        data.message = "Server error";
-    }
-    return data;
-}
 
 // returns topic for given path or null if the topic is invalid
 function parseTopic(path) {

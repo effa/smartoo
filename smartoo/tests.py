@@ -1,4 +1,5 @@
 from django.test import TestCase
+#from common.settings import SKIP_ONLINE_TESTS
 from knowledge.models import Article, KnowledgeGraph, KnowledgeBuilder
 from knowledge.namespaces import TERM
 from exercises.models import Exercise, ExercisesCreator
@@ -6,6 +7,9 @@ from exercises.models import GradedExercise, ExercisesGrader
 from practice.models import Practicer
 from smartoo.models import Session, AccumulativeFeedback, FeedbackedExercise
 from smartoo.exceptions import SmartooError
+from smartoo.feedback import process_message_feedback
+
+from unittest import skipIf
 
 
 class AccumulativeFeedbackTestCase(TestCase):
@@ -231,3 +235,10 @@ class SessionTestCase(TestCase):
 
         # all exercises used, the next one should be None
         self.assertIsNone(session.next_exercise())
+
+
+#class MessageFeedbackTestCase(TestCase):
+
+#    @skipIf(False, "special message feedback test")
+#    def test_send_message(self):
+#        process_message_feedback("some text", "a@b.c", 123)

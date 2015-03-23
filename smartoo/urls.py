@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url('^interface/build-knowledge$', views.build_knowledge),
     url('^interface/create-exercises$', views.create_exercises),
     url(r'^interface/next-exercise$', views.next_exercise),
-    url(r'^interface/session-feedback$', views.session_feedback)
+    url(r'^interface/session-feedback$', views.session_feedback),
+    url(r'^interface/feedback-message$', views.feedback_message)
 )
