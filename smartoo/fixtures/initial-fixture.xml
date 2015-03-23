@@ -40,7 +40,7 @@
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
       "target-success": 0.75,
-      "relevance-weight": 1.5,
+      "relevance-weight": 1.25,
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 0.25}
     </field>
@@ -51,7 +51,7 @@
     <field type="DictField" name="parameters">{
       "target-success": 0.75,
       "relevance-weight": 1.0,
-      "difficulty-weight": 1.5,
+      "difficulty-weight": 1.25,
       "repetitiveness_weight": 0.25}
     </field>
     <field type="BooleanField" name="enabled">True</field>
@@ -70,7 +70,7 @@
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
       "target-success": 0.75,
-      "relevance-weight": 1.5,
+      "relevance-weight": 1.25,
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 0.5}
     </field>
@@ -81,7 +81,7 @@
     <field type="DictField" name="parameters">{
       "target-success": 0.75,
       "relevance-weight": 1.0,
-      "difficulty-weight": 1.5,
+      "difficulty-weight": 1.25,
       "repetitiveness_weight": 0.5}
     </field>
     <field type="BooleanField" name="enabled">True</field>

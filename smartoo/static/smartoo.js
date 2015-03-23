@@ -10,4 +10,23 @@ var smartooApp = angular.module('smartooApp', ['ngCookies']).
 // TODO: mainController (footer buttons etc.)
 smartooApp.controller('mainController', ['$scope', function($scope) {
     // TODO
+    //$scope.focusTextArea = function() {
+    //    m = $('#message-text');
+    //    console.log(m);
+    //    $('#message-text').focus();
+    //};
 }]);
+
+
+// visual properties (NOTE: ideally visual properties should be in directives)
+$(document).ready(function() {
+    $('#writeUsModal').on('shown.bs.modal', function(e){
+        // focus text area
+        $("#message-text").focus();
+
+        // unfocus modal trigger button
+        $('#writeUsBtn').one('focus', function(e){
+            $(this).blur();
+        });
+    });
+});
