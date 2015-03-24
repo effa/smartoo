@@ -19,6 +19,10 @@ from rdflib import Graph, URIRef
 from collections import defaultdict
 #from nltk import ParentedTree
 import wikipedia
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class KnowledgeBuilder(Component):
@@ -156,7 +160,6 @@ class Article(models.Model):
         assert self.topic is not None
         assert not self.content
         assert ONLINE_ENABLED
-        # TODO: log 'Wikipedia access'
 
         #print 'simulate wikipedia api .....'
         #text = 'Abraham Lincoln was a president of the USA. He led the USA through its Civil war.'
@@ -164,6 +167,7 @@ class Article(models.Model):
 
         topic_name = term_to_name(self.topic)
 
+        logger.info('online access - Wikipedia: {topic})'.format(topic=topic_name))
         wiki_page = wikipedia.page(topic_name)
 
         text = wiki_page.content
@@ -568,8 +572,8 @@ class GlobalKnowledge(object):
             # use public endpoint to retrieve the graph
             graph = Graph()
 
-            # TODO: log '(online!) k/models.py,L369, term:', term
-            print 'online, k/models.py, L 568', term, type(term), iri2uri(term)
+            #print 'online, k/models.py, L 568', term, type(term), iri2uri(term)
+            logger.info('online access - DBpedia: {term})'.format(term=unicode(term)))
             graph.parse(iri2uri(term))
             # TODO: osetrit neexistenci grafu na danem zdroji
             # except HTTPError

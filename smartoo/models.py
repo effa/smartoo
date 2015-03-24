@@ -1,4 +1,3 @@
-import datetime
 from django.db import models
 from django.db import IntegrityError
 
@@ -12,6 +11,11 @@ from smartoo import ComponentsSelector
 from smartoo.exceptions import SessionError
 from wikipedia.exceptions import WikipediaException
 
+import datetime
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 #class AccumulativeFeedbackManager(models.Manager):
 #    def create_empty_feedback(self):
@@ -226,12 +230,11 @@ class Session(models.Model):
         try:
             self.knowledge_builder.build_knowledge(self.topic)
         except IntegrityError as exc:
-            # TODO: logovani
+            logger.warning('IntegrityError on knowledge building of ' + unicode(self.topic))
             raise SessionError('Integrity error: ' + exc.message)
         except ValueError as exc:
-            # TODO: logovani
+            logger.warning('ValueError on knowledge building of ' + unicode(self.topic))
             raise SessionError('Value error: ' + exc.message)
-            #raise
 
     def get_knowledge_graph(self):
         """

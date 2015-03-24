@@ -11,7 +11,12 @@ from knowledge.utils.terms import name_to_term, term_to_name
 from smartoo.exceptions import SessionError
 from smartoo.feedback import process_message_feedback
 from smartoo.models import Session
+
 import json
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 # ----------------------------------------------------------------------------
@@ -65,6 +70,7 @@ def start_session(request):
         session = Session.objects.create_with_components(topic=topic)
         # remember the session id
         request.session['session_id'] = session.id
+        logger.info('new session (pk={pk})'.format(pk=session.pk))
         return JsonResponse({"success": True})
     except ValueError:
         # TODO: specialni zpracovani napr. DisambiguationError
