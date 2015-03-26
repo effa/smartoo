@@ -3,6 +3,7 @@ from django.http import JsonResponse
 #from django.http import HttpResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from common.utils.wiki import term_to_wiki_uri
 from common.utils.http import BAD_REQUEST
@@ -23,10 +24,12 @@ logger = logging.getLogger(__name__)
 #  Views
 # ----------------------------------------------------------------------------
 
+@ensure_csrf_cookie
 def home(request):
     return render(request, 'smartoo/home.html')
 
 
+@ensure_csrf_cookie
 def practice_session(request, topic_name):
     """
     Main view for practice session.
