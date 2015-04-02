@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['*']
 
 TEMPLATE_DEBUG = True
 
-ADMINS = (('Tomas Effenberger', 'xeffenberger@gmail.com'))
+ADMINS = (('Tomas Effenberger', 'xeffenberger@gmail.com'),)
 
 # Application definition
 
