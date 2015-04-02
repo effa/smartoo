@@ -584,8 +584,18 @@ class GlobalKnowledge(object):
 
             #print 'online, k/models.py, L 568', term, type(term), iri2uri(term)
             logger.info('online access - DBpedia: {term}'.format(term=unicode(term)))
-            graph.parse(iri2uri(term))
-            # TODO: osetrit neexistenci grafu na danem zdroji
+
+            try:
+                graph.parse(iri2uri(term))
+            except Exception as exc:
+                logger.warning('Graph parsing for {term} failed: {exc}'
+                    .format(term=term, exc=exc))
+                return None
+
+            if not graph:
+                logger.warning('Empty graphj for {term}'.format(term=term))
+                return None
+
             # except HTTPError
 
             # namespaces binding
