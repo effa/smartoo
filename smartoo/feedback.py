@@ -30,4 +30,8 @@ def process_message_feedback(text, email, session_pk):
 
     logger.info("Email feedback: " + message)
 
-    mail_admins('Smartoo: Message Feedback', message)
+    try:
+        mail_admins('Smartoo: Message Feedback', message)
+    except Exception as exc:
+        logger.error('Sending mail failed: ' + exc.message)
+        raise
