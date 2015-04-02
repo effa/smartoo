@@ -162,6 +162,7 @@ def session_feedback(request):
         return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 
+@ensure_csrf_cookie
 def feedback_message(request):
     """
     Process feedback message.
@@ -180,7 +181,8 @@ def feedback_message(request):
     try:
         process_message_feedback(text, email, session_pk)
         return JsonResponse({'success': True})
-    except ValueError:
+    except ValueError as exc:
+        logger.info("Invalid feedback message: " + exc.message)
         return JsonResponse({"success": False, "message": "Invalid message!"},
             status=BAD_REQUEST)
 
