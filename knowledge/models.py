@@ -17,6 +17,7 @@ from knowledge.utils.text import shallow_parsing, shallow_parsing_phrases, terms
 
 from rdflib import Graph, URIRef
 from collections import defaultdict
+from wikipedia.exceptions import WikipediaException
 #from nltk import ParentedTree
 import wikipedia
 import logging
@@ -60,8 +61,9 @@ class KnowledgeBuilder(Component):
         try:
             article = Article.objects.get(topic=topic)
         except ObjectDoesNotExist:
-            raise ValueError('Invalid topic: {topic}'
-                .format(topic=unicode(topic)))
+            message = 'No article for the topic: {topic}'.format(topic=unicode(topic))
+            logger.warning(message)
+            raise ValueError(message)
 
         knowledge_graph = behavior.build_knowledge_graph(article)
         knowledge_graph.knowledge_builder = self
@@ -144,7 +146,11 @@ class Article(models.Model):
         """
         if not self.pk and not self.content:
             # find article on Wiki and process it to vertical
-            self.get_content_from_wikipedia()
+            try:
+                self.get_content_from_wikipedia()
+            except Exception as exc:
+                logger.error('Wikipedia article processing failed: ' + exc.message)
+                raise
 
         super(Article, self).save(*args, **kwargs)
 
@@ -168,10 +174,14 @@ class Article(models.Model):
         topic_name = term_to_name(self.topic)
 
         logger.info('online access - Wikipedia: {topic})'.format(topic=topic_name))
-        wiki_page = wikipedia.page(topic_name)
+        try:
+            wiki_page = wikipedia.page(topic_name)
+        except WikipediaException as exc:
+            logger.warning(exc.message)
+            raise
 
         text = wiki_page.content
-        # Proble je, ze seznam odkazu nebude uplny, pokud jich je hodne :-(
+        # Problem je, ze seznam odkazu nebude uplny, pokud jich je hodne :-(
         # viz https://github.com/goldsmith/Wikipedia/issues/71
         # patch vysvetlen tady: https://github.com/goldsmith/Wikipedia/pull/80
         # TODO: opravit chybu ve Wikipedia modulu
@@ -573,7 +583,7 @@ class GlobalKnowledge(object):
             graph = Graph()
 
             #print 'online, k/models.py, L 568', term, type(term), iri2uri(term)
-            logger.info('online access - DBpedia: {term})'.format(term=unicode(term)))
+            logger.info('online access - DBpedia: {term}'.format(term=unicode(term)))
             graph.parse(iri2uri(term))
             # TODO: osetrit neexistenci grafu na danem zdroji
             # except HTTPError

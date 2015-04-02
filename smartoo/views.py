@@ -92,7 +92,8 @@ def build_knowledge(request):
         session = retrieve_current_session(request)
         session.build_knowledge()
         return JsonResponse({"success": True})
-    except SessionError:
+    except SessionError as exc:
+        logger.warning('SessionError: ' + exc.message)
         #raise
         return JsonResponse({"success": False}, status=BAD_REQUEST)
 
@@ -105,7 +106,8 @@ def create_exercises(request):
         session = retrieve_current_session(request)
         session.create_graded_exercises()
         return JsonResponse({"success": True})
-    except SessionError:
+    except SessionError as exc:
+        logger.warning('SessionError: ' + exc.message)
         return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 
@@ -139,7 +141,8 @@ def next_exercise(request):
         }
 
         return JsonResponse(response_data)
-    except SessionError:
+    except SessionError as exc:
+        logger.warning('SessionError: ' + exc.message)
         return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 

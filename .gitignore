@@ -3,6 +3,7 @@
 
 # data
 db.*
+db2.*
 data/
 
 # Temporary / local files
