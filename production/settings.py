@@ -165,6 +165,12 @@ LOGGING = {
     }
 }
 
+# emails
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
+SERVER_EMAIL = 'feedbackform@smartoo.thran.cz'
+
 # ===== django_extensions settings =====
 
 # Always use IPython for shell_plus
