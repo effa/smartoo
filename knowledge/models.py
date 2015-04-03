@@ -570,10 +570,13 @@ class GlobalKnowledge(object):
             knowledge_graph = KnowledgeGraph.objects.get(topic=term,
                 knowledge_builder=self.knowledge_builder)
             return knowledge_graph
-
         except ObjectDoesNotExist:
             if not online:
                 return None
+        except Exception as exc:
+            logger.error('Getting graph for {term} failed; {message}; {excType}'
+                .format(term=term, message=exc.message, excType=unicode(type(exc))))
+            return None
 
             assert ONLINE_ENABLED
 
