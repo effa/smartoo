@@ -56,7 +56,11 @@ class KnowledgeBuilder(Component):
                 knowledge_builder=self).exists():
             return  # already created, nothing to do
 
-        behavior = self.get_behavior()
+        try:
+            behavior = self.get_behavior()
+        except Exception:
+            logger.error('Unable to get behavior.')
+            raise
 
         try:
             article = Article.objects.get(topic=topic)
@@ -65,7 +69,12 @@ class KnowledgeBuilder(Component):
             logger.warning(message)
             raise ValueError(message)
 
-        knowledge_graph = behavior.build_knowledge_graph(article)
+        try:
+            knowledge_graph = behavior.build_knowledge_graph(article)
+        except ValueError:
+            logger.warning('ValueError on knowledge building.')
+            raise
+
         knowledge_graph.knowledge_builder = self
         knowledge_graph.topic = topic
         knowledge_graph.save()
@@ -364,44 +373,31 @@ class KnowledgeGraph(models.Model):
             article: for which article to find related global knowledge
             predicates: triples with which predicates to incorporate
         """
-        # at first find all related terms
-        terms = article.get_all_terms()
-        topic = article.topic
-        global_knowledge = GlobalKnowledge()
-        primary_graph = global_knowledge.get_graph(topic, online=online)
-        if primary_graph:
-            terms.update(primary_graph.all_terms)
+        try:
+            # at first find all related terms
+            terms = article.get_all_terms()
+            topic = article.topic
+            global_knowledge = GlobalKnowledge()
+            primary_graph = global_knowledge.get_graph(topic, online=online)
+            if primary_graph:
+                terms.update(primary_graph.all_terms)
 
-        #i = 2
-        for term in terms:
-            # add the term in graph
-            self.add((term, RDF['type'], SMARTOO['term']))
-            secondary_graph = global_knowledge.get_graph(term, online=online)
-            #print '#' * 70
-            #print 'term:', term
-            #print secondary_graph
+            for term in terms:
+                # add the term in graph
+                self.add((term, RDF['type'], SMARTOO['term']))
+                secondary_graph = global_knowledge.get_graph(term, online=online)
 
-#            print '#' * 70
-#            print """
-#  <object pk="{i}" model="knowledge.knowledgegraph">
-#    <field to="knowledge.knowledgebuilder" name="knowledge_builder" rel="ManyToOneRel">1</field>
-#    <field type="CharField" name="topic">{topic}</field>
-#    <field type="TextField" name="graph"><![CDATA[
-#{graph}]]>
-#    </field>
-#  </object>
-#""".format(i=i, topic=term, graph=secondary_graph.graph.serialize(format='turtle').decode('utf-8'))
-#            i += 1
-#            raw_input()
+                if not secondary_graph:
+                    continue
 
-            if not secondary_graph:
-                continue
+                for predicate in predicates:
+                    for value in secondary_graph.get_objects(term, predicate):
+                        self.add((term, predicate, value))
 
-            for predicate in predicates:
-                for value in secondary_graph.get_objects(term, predicate):
-                    self.add((term, predicate, value))
-
-        self._update_notification()
+            self._update_notification()
+        except ValueError:
+            logger.error('ValueError: ' + unicode(article.topic))
+            raise
 
     # TODO: cachovani dotazu (pozor na add())
     def query(self, query, initBindings={}):
