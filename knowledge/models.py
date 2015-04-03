@@ -21,6 +21,7 @@ from wikipedia.exceptions import WikipediaException
 #from nltk import ParentedTree
 import wikipedia
 import logging
+import traceback
 
 
 logger = logging.getLogger(__name__)
@@ -396,7 +397,8 @@ class KnowledgeGraph(models.Model):
 
             self._update_notification()
         except ValueError:
-            logger.error('ValueError: ' + unicode(article.topic))
+            #logger.error('ValueError: ' + unicode(article.topic) + '\n' + traceback.f)
+            logger.error(traceback.format_exc())
             raise
 
     # TODO: cachovani dotazu (pozor na add())

@@ -227,6 +227,7 @@ class Session(models.Model):
         Uses KnowledgeBuilder to build and store knowledge graph for current
         topic.
         """
+        logger.info('building knowledge for %s started' % self.topic)
         try:
             self.knowledge_builder.build_knowledge(self.topic)
         except IntegrityError as exc:
