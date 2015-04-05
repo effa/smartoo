@@ -148,7 +148,7 @@ smartooApp.controller('practiceController',
 
         // initial state is "waiting"
         $scope.errorMessage = null;
-        $scope.infoMessage = "";
+        $scope.infoMessage = "Building knowledge..."
         $scope.state = "waiting";
 
         // TODO: lepsi by bylo posilat topic jiz v ramci js ze serveru

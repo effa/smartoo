@@ -17,7 +17,8 @@
         <div class="input-group">
           <input type="text" class="form-control"
               placeholder="Wars of the Roses, Abraham Lincoln, Elephant, ..."
-              ng-model="searchText">
+              ng-model="searchText"
+              ng-enter="practice()">
           <span class="input-group-btn">
             <button class="btn btn-primary" type="button" ng-click="practice($event)">Practice!</button>
           </span>
