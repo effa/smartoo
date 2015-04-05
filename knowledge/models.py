@@ -331,13 +331,12 @@ class KnowledgeGraph(models.Model):
     knowledge_builder = models.ForeignKey(KnowledgeBuilder)
     topic = TermField()
 
+    # topic + builder should be unique (and with index)
+    class Meta:
+        unique_together = ("topic", "knowledge_builder")
+
     # graph representation
     graph = GraphField(default=get_initialized_graph)
-
-    # TODO: definovat unikatnost dvojice KB-topic a zajistit, aby se graf pro
-    # takovou dvojici nevytvarel znova
-
-    # TODO: define access methods to work with the knowledge graph
 
     _CACHED_ATTRIBUTES = ['terms_of_type', 'types_of_term', 'all_terms']
 
