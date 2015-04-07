@@ -9,6 +9,7 @@ Module for RDF namespaces.
 # namespaces
 TERM = Namespace('http://dbpedia.org/resource/')
 ONTOLOGY = Namespace('http://dbpedia.org/ontology/')
+DCTERMS = Namespace('http://purl.org/dc/terms/')
 # own namespaces
 SMARTOO = Namespace('http://fi.muni.cz/smartoo/')
 
@@ -21,7 +22,8 @@ NAMESPACES_DICT = {
     'rdf': RDF,
     'rdfs': RDFS,
     'dc': DC,
-    'xsd': XSD
+    'xsd': XSD,
+    'dcterms': DCTERMS
 }
 
 # preprepared nodes

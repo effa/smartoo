@@ -5,23 +5,27 @@ from django.db import models
 from django.utils.functional import cached_property
 
 from abstract_component.models import Component
-from common.utils.http import iri2uri
+#from common.utils.http import iri2uri
 from common.utils.metrics import euclidian_length, sigmoid
 from common.utils.wiki import uri_to_name
 from common.fields import DictField
 from common.settings import ONLINE_ENABLED
 from knowledge.fields import GraphField, TermField
-from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, TERM
+from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, TERM, DCTERMS
 from knowledge.utils.terms import bulk_create_terms_trie, term_to_name
 from knowledge.utils.text import shallow_parsing, shallow_parsing_phrases, terms_inference
 
-from rdflib import Graph, URIRef
+from rdflib import Graph, URIRef, Literal
 from collections import defaultdict
 from wikipedia.exceptions import WikipediaException
 #from nltk import ParentedTree
 import wikipedia
 import logging
 import traceback
+
+from SPARQLWrapper import SPARQLWrapper, JSON
+from urllib import quote_plus
+from urllib2 import HTTPError
 
 
 logger = logging.getLogger(__name__)
@@ -579,53 +583,113 @@ class GlobalKnowledge(object):
 
             assert ONLINE_ENABLED
 
-            # use public endpoint to retrieve the graph
-            graph = Graph()
+        # use public endpoint to retrieve the graph
+        logger.info('online access - DBpedia: {term}'.format(term=unicode(term)))
+        term_utf = term.encode('utf-8')
+        term_url = quote_plus(term_utf, safe=str('/:'))
+        sparql = SPARQLWrapper("http://dbpedia.org/sparql")
+        #query = """
+        #    SELECT ?p ?o
+        #    WHERE {{ <{term_url}> ?p ?o }}
+        #""".format(term_url=term_url)
+        query = """
+            SELECT ?p ?o
+            WHERE {{
+                <{term_url}> ?p ?o
+                FILTER( STRSTARTS(STR(?p), "{foaf}")
+                    || STRSTARTS(STR(?p), "{rdf}")
+                    || STRSTARTS(STR(?p), "{rdfs}")
+                    || STRSTARTS(STR(?p), "{dcterms}")
+                    || STRSTARTS(STR(?p), "{ontology}"))
+                FILTER (isURI(?o) || langMatches(lang(?o), "EN"))
+            }}
+        """.format(term_url=term_url,
+                foaf=unicode(FOAF),
+                rdf=unicode(RDF),
+                rdfs=unicode(RDFS),
+                dcterms=unicode(DCTERMS),
+                ontology=unicode(ONTOLOGY))
 
-            #print 'online, k/models.py, L 568', term, type(term), iri2uri(term)
-            logger.info('online access - DBpedia: {term}'.format(term=unicode(term)))
+        sparql.setQuery(query.encode('utf-8'))
+        sparql.setReturnFormat(JSON)
+        try:
+            results = sparql.query().convert()
+        except HTTPError as exc:
+            # can occur if DBpedia is under maintenance (quite often)
+            # TODO: propaget error and show message to the user
+            logger.error('Getting graph for {term} failed; {message}; {excType}'
+                .format(term=term, message=exc.message, excType=unicode(type(exc))))
+            return None
 
+        # create graph and bind relevant namespaces
+        graph = Graph()
+        for prefix, namespace in NAMESPACES_DICT.items():
+            graph.bind(prefix, namespace)
+
+        LITERAL_MAX_LENGTH = 600
+        for result in results["results"]["bindings"]:
             try:
-                graph.parse(iri2uri(term))
-            except Exception as exc:
-                logger.warning('Graph parsing for {term} failed: {exc}'
-                    .format(term=term, exc=exc))
-                return None
+                p = URIRef(result['p']['value'])
+                # filter wikiPageRevisionID, wikiPageExternalLike etc.
+                if p.startswith(ONTOLOGY['wiki']):
+                    continue
+                if result['o']['type'] == 'uri':
+                    o = URIRef(result['o']['value'])
+                else:
+                    o = Literal(result['o']['value'])
+                    # if object is too long (e.g. abstract, ignore it)
+                    if len(o) > LITERAL_MAX_LENGTH:
+                        continue
+                graph.add((term, p, o))
+                #print type(p), p
+                #print type(o), o
+                #print '*'
+            except KeyError:
+                continue
 
-            if not graph:
-                logger.warning('Empty graphj for {term}'.format(term=term))
-                return None
+        """
+        try:
+            graph.parse(iri2uri(term))
+        except Exception as exc:
+            logger.warning('Graph parsing for {term} failed: {exc}'
+                .format(term=term, exc=exc))
+            return None
 
-            # except HTTPError
+        if not graph:
+            logger.warning('Empty graph for {term}'.format(term=term))
+            return None
 
-            # namespaces binding
-            filtered_graph = Graph()
-            for prefix, namespace in NAMESPACES_DICT.items():
-                filtered_graph.bind(prefix, namespace)
+        # except HTTPError
 
-            # graph filtering
-            predicate_namespaces = tuple(unicode(ns) for ns in (FOAF, RDF,
-                RDFS, ONTOLOGY))
-            for (s, p, o) in graph.triples((term, None, None)):
-                # only preserve predicates in "reliable" namespaces
-                # and fitler wikiPageRevisionID, wikiPageExternalLike etc.
-                if p.startswith(predicate_namespaces) and\
-                        not p.startswith(ONTOLOGY['wiki']):
-                    # only preserve objects which are not literals in
-                    # non-english languages
-                    if isinstance(o, URIRef) or not o.language\
-                            or o.language == 'en':
-                        # if the triple passed all these filteres, add it to
-                        # the graph
-                        filtered_graph.add((s, p, o))
+        # namespaces binding
+        filtered_graph = Graph()
+        for prefix, namespace in NAMESPACES_DICT.items():
+            filtered_graph.bind(prefix, namespace)
 
-            # store created (and filtered) graph in DB
-            knowledge_graph = KnowledgeGraph.objects.create(
-                knowledge_builder=self.knowledge_builder,
-                topic=term,
-                graph=filtered_graph)
+        # graph filtering
+        predicate_namespaces = tuple(unicode(ns) for ns in (FOAF, RDF,
+            RDFS, ONTOLOGY))
+        for (s, p, o) in graph.triples((term, None, None)):
+            # only preserve predicates in "reliable" namespaces
+            # and fitler wikiPageRevisionID, wikiPageExternalLike etc.
+            if p.startswith(predicate_namespaces) and\
+                    not p.startswith(ONTOLOGY['wiki']):
+                # only preserve objects which are not literals in
+                # non-english languages
+                if isinstance(o, URIRef) or not o.language\
+                        or o.language == 'en':
+                    # if the triple passed all these filteres, add it to
+                    # the graph
+                    filtered_graph.add((s, p, o))
+        """
 
-            return knowledge_graph
+        # store created (and filtered) graph in DB
+        knowledge_graph = KnowledgeGraph.objects.create(
+            knowledge_builder=self.knowledge_builder,
+            topic=term,
+            graph=graph)
+
+        return knowledge_graph
 
     #def label(self, term, fallback_guess=True):
     #    """
