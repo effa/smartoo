@@ -570,7 +570,8 @@ class GlobalKnowledge(object):
         assert isinstance(term, URIRef)
 
         try:
-            knowledge_graph = KnowledgeGraph.objects.get(topic=term,
+            # mozno vyzkouset jen topic=unicode(term)
+            knowledge_graph = KnowledgeGraph.objects.get(topic=term.encode('utf-8'),
                 knowledge_builder=self.knowledge_builder)
             return knowledge_graph
         except ObjectDoesNotExist:
