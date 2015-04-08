@@ -68,7 +68,7 @@ class KnowledgeBuilder(Component):
             raise
 
         try:
-            article = Article.objects.get(topic=topic)
+            article = Article.objects.get(topic=topic.encode('utf-8'))
         except ObjectDoesNotExist:
             message = 'No article for the topic: {topic}'.format(topic=unicode(topic))
             logger.warning(message)
@@ -189,7 +189,9 @@ class Article(models.Model):
 
         logger.info('online access - Wikipedia: {topic})'.format(topic=topic_name))
         try:
-            wiki_page = wikipedia.page(topic_name)
+            name_utf = topic_name.encode('utf-8')
+            wiki_page = wikipedia.page(name_utf)
+            #wiki_page = wikipedia.page(topic_name)
         except WikipediaException as exc:
             logger.warning(exc.message)
             raise

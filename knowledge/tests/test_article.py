@@ -37,6 +37,24 @@ class ArticleWithoutFixtureTestCase(TestCase):
         self.assertIn(TERM['Prokop_the_Great'], terms)
         self.assertIn(TERM['Hussite_Wars'], terms)
 
+    @skipIf(SKIP_ONLINE_TESTS, 'connection to Wikipedia public API')
+    def test_new_article_from_wikipedia_unicode(self):
+        topic = TERM['John_C._Frémont']
+        article, created = Article.objects.get_or_create(topic=topic)
+        self.assertEqual(created, True)
+        self.assertIsNotNone(article)
+        self.assertEqual(article.topic, topic)
+        terms = article.get_all_terms()
+        self.assertIn(TERM['John_C._Frémont'], terms)
+        self.assertIn(TERM['California_Gold_Rush'], terms)
+        # check that article is in the DB
+        article = Article.objects.get(topic=topic)
+        self.assertIsNotNone(article)
+        self.assertEqual(article.topic, topic)
+        terms = article.get_all_terms()
+        self.assertIn(TERM['John_C._Frémont'], terms)
+        self.assertIn(TERM['California_Gold_Rush'], terms)
+
     def test_create_content_from_text(self):
         text = """
 Prokop or Prokop the Great (Czech: Prokop Veliký) (b. about 1380 – d. 30 May 1434 at Lipany) was one of the most prominent Hussite generals of the Hussite Wars. His name has also been given as Prokop Holý or Prokopius Rasus - Latin translation ("the Shaven," in allusion to his having received the tonsure in early life), Procopius the Great, and Andrew Procopius.

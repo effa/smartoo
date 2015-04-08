@@ -162,6 +162,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'rdflib': {
+            'handlers': ['file', 'console'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
     }
 }
 
