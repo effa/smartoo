@@ -14,7 +14,7 @@ class Simple(ExercisesGraderBehavior):
     Parameters: ---
     """
     def setup(self, topic):
-        self.article = Article.objects.get(unicode(topic))
+        self.article = Article.objects.get(topic=unicode(topic))
 
     def grade_exercise(self, exercise):
         knowledge_graph = exercise.knowledge_graph

@@ -4,6 +4,7 @@ from django.http import JsonResponse
 #from django.template import RequestContext, loader
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
+#from django.conf import settings
 
 from common.utils.wiki import term_to_wiki_uri
 from common.utils.http import BAD_REQUEST
@@ -16,6 +17,7 @@ from smartoo.models import Session
 import json
 import logging
 from urllib import unquote
+#import traceback
 
 
 logger = logging.getLogger(__name__)
@@ -114,6 +116,8 @@ def create_exercises(request):
     except SessionError as exc:
         logger.warning('SessionError: ' + exc.message)
         return JsonResponse({"success": False}, status=BAD_REQUEST)
+    #except Exception:
+    #    print traceback.format_exc()
 
 
 def next_exercise(request):

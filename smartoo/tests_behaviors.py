@@ -19,7 +19,7 @@ from practice.models import Practicer
 from smartoo.models import Session
 
 # skip flag: whether to execute these special tests or not
-SKIP = False
+SKIP = True
 
 
 class ComponentsTestCase(TestCase):
