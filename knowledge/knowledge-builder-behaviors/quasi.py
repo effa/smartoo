@@ -16,13 +16,16 @@ Creates (pseudo)facts about sentences with terms.
 class Quasi(KnowledgeBuilderBehavior):
 
     def build_knowledge_graph(self, article):
+        # parameters
+        max_sentence_length = self.get_parameter('max-sentence-length')
+
         knowledge_graph = KnowledgeGraph()
         knowledge_graph.add_related_global_knowledge(article,
             predicates=[RDFS['label'], RDF['type']],
             online=True)
         article.parse_terms_and_sentences(knowledge_graph=knowledge_graph)
 
-        for sentence in contextfree_sentences(article):
+        for sentence in contextfree_sentences(article, max_sentence_length):
             # TODO: tohle by chtelo delat spis pomoci reqexu/gramatiky
             before_term = []
             after_term = []

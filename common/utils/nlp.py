@@ -25,13 +25,13 @@ def sentence_to_tree(sentence):
     return tree
 
 
-def is_contextfree(sentence):
+def is_contextfree(sentence, max_sentence_length=50):
     """
     Returns True if the :sentence: is context-free, False otherwise
     """
     # detect too short or too long sentences
     length = len(sentence.leaves())
-    if length < 5 or length > 50:
+    if length < 5 or length > max_sentence_length:
         return False
 
     # discard questions and exclamation sentences
@@ -52,7 +52,7 @@ def is_contextfree(sentence):
     return True
 
 
-def contextfree_sentences(article):
+def contextfree_sentences(article, max_sentence_length=50):
     """
     Returns sentences which are likely to be context-free.
 
@@ -68,7 +68,7 @@ def contextfree_sentences(article):
     # pronoun
     contextfree_sentences = []
     for sentence in article.get_sentences():
-        if is_contextfree(sentence):
+        if is_contextfree(sentence, max_sentence_length):
             contextfree_sentences.append(sentence)
     return contextfree_sentences
 

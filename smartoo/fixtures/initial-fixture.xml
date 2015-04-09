@@ -7,10 +7,19 @@
   </object>
   <object pk="2" model="knowledge.knowledgebuilder">
     <field type="CharField" name="behavior_name">quasi</field>
-    <field type="DictField" name="parameters">{}</field>
+    <field type="DictField" name="parameters">{
+      "max-sentence-length": 50
+      }</field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
   <object pk="3" model="knowledge.knowledgebuilder">
+    <field type="CharField" name="behavior_name">quasi</field>
+    <field type="DictField" name="parameters">{
+      "max-sentence-length": 35
+      }</field>
+    <field type="BooleanField" name="enabled">True</field>
+  </object>
+  <object pk="4" model="knowledge.knowledgebuilder">
     <field type="CharField" name="behavior_name">fake</field>
     <field type="DictField" name="parameters">{}</field>
     <field type="BooleanField" name="enabled">False</field>
@@ -32,7 +41,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.0,
-      "repetitiveness_weight": 0.25}
+      "repetitiveness_weight": 0.4}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -42,7 +51,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.25,
       "difficulty-weight": 1.0,
-      "repetitiveness_weight": 0.25}
+      "repetitiveness_weight": 0.4}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -52,7 +61,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.25,
-      "repetitiveness_weight": 0.25}
+      "repetitiveness_weight": 0.4}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -62,7 +71,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.0,
-      "repetitiveness_weight": 0.5}
+      "repetitiveness_weight": 0.6}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -72,7 +81,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.25,
       "difficulty-weight": 1.0,
-      "repetitiveness_weight": 0.5}
+      "repetitiveness_weight": 0.6}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -82,7 +91,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.25,
-      "repetitiveness_weight": 0.5}
+      "repetitiveness_weight": 0.6}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>

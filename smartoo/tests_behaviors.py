@@ -19,7 +19,7 @@ from practice.models import Practicer
 from smartoo.models import Session
 
 # skip flag: whether to execute these special tests or not
-SKIP = True
+SKIP = False
 
 
 class ComponentsTestCase(TestCase):
@@ -32,18 +32,21 @@ class ComponentsTestCase(TestCase):
         # ------------------------------------------------------------------
         # components to test
         # ------------------------------------------------------------------
-        self.session.knowledge_builder = KnowledgeBuilder.objects.get(
-            #behavior_name='quasi',
-            behavior_name='fake',
-            parameters={})
-        self.session.exercises_creator = ExercisesCreator.objects.get(
-            behavior_name='quasi',
-            #behavior_name='fake',
-            parameters={})
-        self.session.exercises_grader = ExercisesGrader.objects.get(
-            behavior_name='simple',
-            #behavior_name='fake',
-            parameters={})
+        self.session.knowledge_builder = KnowledgeBuilder.objects.get(pk=2)
+        #self.session.knowledge_builder = KnowledgeBuilder.objects.get(
+        #    #behavior_name='quasi',
+        #    behavior_name='fake',
+        #    parameters={})
+        self.session.exercises_creator = ExercisesCreator.objects.get(pk=1)
+        #self.session.exercises_creator = ExercisesCreator.objects.get(
+        #    #behavior_name='quasi',
+        #    behavior_name='fake',
+        #    parameters={})
+        self.session.exercises_grader = ExercisesGrader.objects.get(pk=1)
+        #self.session.exercises_grader = ExercisesGrader.objects.get(
+        #    #behavior_name='simple',
+        #    behavior_name='fake',
+        #    parameters={})
         self.session.practicer = Practicer.objects.get(pk=1)
         #behavior_name='simple',
         #parameters={
@@ -54,13 +57,14 @@ class ComponentsTestCase(TestCase):
         # ------------------------------------------------------------------
         self.session.save()
 
-    @skipIf(True or SKIP, "special components behavior test")
+    @skipIf(SKIP, "special components behavior test")
     def test_components(self):
         # NOTE: there will whatever I want to test right now
 
         # knowledge building
         self.session.build_knowledge()
         #print self.session.get_knowledge_graph()
+        return
 
         # exercises creating
         self.session.create_graded_exercises()
@@ -73,7 +77,7 @@ class ComponentsTestCase(TestCase):
         exercise = self.session.next_exercise()
         print exercise
 
-    @skipIf(False or SKIP, "special components behavior test")
+    @skipIf(True or SKIP, "special components behavior test")
     def test_practicing_only(self):
         # knowledge building
         self.session.build_knowledge()

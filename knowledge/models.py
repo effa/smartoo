@@ -11,21 +11,18 @@ from common.utils.wiki import uri_to_name
 from common.fields import DictField
 from common.settings import ONLINE_ENABLED
 from knowledge.fields import GraphField, TermField
-from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, FOAF, ONTOLOGY, SMARTOO, TERM, DCTERMS
+from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, ONTOLOGY, SMARTOO, TERM
 from knowledge.utils.terms import bulk_create_terms_trie, term_to_name
 from knowledge.utils.text import shallow_parsing, shallow_parsing_phrases, terms_inference
+from knowledge.utils.sparql import retrieve_graph_from_dbpedia
 
-from rdflib import Graph, URIRef, Literal
+from rdflib import Graph, URIRef
 from collections import defaultdict
 from wikipedia.exceptions import WikipediaException
 #from nltk import ParentedTree
 import wikipedia
 import logging
 import traceback
-
-from SPARQLWrapper import SPARQLWrapper, JSON
-from urllib import quote_plus
-from urllib2 import HTTPError
 
 
 logger = logging.getLogger(__name__)
@@ -68,7 +65,8 @@ class KnowledgeBuilder(Component):
             raise
 
         try:
-            article = Article.objects.get(topic=topic.encode('utf-8'))
+            article = Article.objects.get(topic=unicode(topic))
+            #article = Article.objects.get(topic=topic.encode('utf-8'))
         except ObjectDoesNotExist:
             message = 'No article for the topic: {topic}'.format(topic=unicode(topic))
             logger.warning(message)
@@ -187,13 +185,13 @@ class Article(models.Model):
 
         topic_name = term_to_name(self.topic)
 
-        logger.info('online access - Wikipedia: {topic})'.format(topic=topic_name))
+        logger.info('online access - Wikipedia: {topic}'.format(topic=topic_name))
         try:
-            name_utf = topic_name.encode('utf-8')
-            wiki_page = wikipedia.page(name_utf)
-            #wiki_page = wikipedia.page(topic_name)
+            #name_utf = topic_name.encode('utf-8')
+            #wiki_page = wikipedia.page(name_utf)
+            wiki_page = wikipedia.page(topic_name)
         except WikipediaException as exc:
-            logger.warning(exc.message)
+            logger.warning(exc.message or 'wiki page retrieval failed')
             raise
 
         text = wiki_page.content
@@ -572,127 +570,26 @@ class GlobalKnowledge(object):
         assert isinstance(term, URIRef)
 
         try:
-            # mozno vyzkouset jen topic=unicode(term)
-            knowledge_graph = KnowledgeGraph.objects.get(topic=term.encode('utf-8'),
+            knowledge_graph = KnowledgeGraph.objects.get(topic=unicode(term),
                 knowledge_builder=self.knowledge_builder)
             return knowledge_graph
         except ObjectDoesNotExist:
-            if not online:
+            if online:
+                # use public endpoint to retrieve the graph
+                graph = retrieve_graph_from_dbpedia(term)
+                # store created graph in DB
+                knowledge_graph = KnowledgeGraph.objects.create(
+                    knowledge_builder=self.knowledge_builder,
+                    topic=term,
+                    graph=graph)
+                return knowledge_graph
+            else:
                 return None
+
         except Exception as exc:
             logger.error('Getting graph for {term} failed; {message}; {excType}'
                 .format(term=term, message=exc.message, excType=unicode(type(exc))))
             return None
-
-            assert ONLINE_ENABLED
-
-        # use public endpoint to retrieve the graph
-        logger.info('online access - DBpedia: {term}'.format(term=unicode(term)))
-        term_utf = term.encode('utf-8')
-        term_url = quote_plus(term_utf, safe=str('/:'))
-        sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-        #query = """
-        #    SELECT ?p ?o
-        #    WHERE {{ <{term_url}> ?p ?o }}
-        #""".format(term_url=term_url)
-        query = """
-            SELECT ?p ?o
-            WHERE {{
-                <{term_url}> ?p ?o
-                FILTER( STRSTARTS(STR(?p), "{foaf}")
-                    || STRSTARTS(STR(?p), "{rdf}")
-                    || STRSTARTS(STR(?p), "{rdfs}")
-                    || STRSTARTS(STR(?p), "{dcterms}")
-                    || STRSTARTS(STR(?p), "{ontology}"))
-                FILTER (isURI(?o) || langMatches(lang(?o), "EN"))
-            }}
-        """.format(term_url=term_url,
-                foaf=unicode(FOAF),
-                rdf=unicode(RDF),
-                rdfs=unicode(RDFS),
-                dcterms=unicode(DCTERMS),
-                ontology=unicode(ONTOLOGY))
-
-        sparql.setQuery(query.encode('utf-8'))
-        sparql.setReturnFormat(JSON)
-        try:
-            results = sparql.query().convert()
-        except HTTPError as exc:
-            # can occur if DBpedia is under maintenance (quite often)
-            # TODO: propaget error and show message to the user
-            logger.error('Getting graph for {term} failed; {message}; {excType}'
-                .format(term=term, message=exc.message, excType=unicode(type(exc))))
-            return None
-
-        # create graph and bind relevant namespaces
-        graph = Graph()
-        for prefix, namespace in NAMESPACES_DICT.items():
-            graph.bind(prefix, namespace)
-
-        LITERAL_MAX_LENGTH = 600
-        for result in results["results"]["bindings"]:
-            try:
-                p = URIRef(result['p']['value'])
-                # filter wikiPageRevisionID, wikiPageExternalLike etc.
-                if p.startswith(ONTOLOGY['wiki']):
-                    continue
-                if result['o']['type'] == 'uri':
-                    o = URIRef(result['o']['value'])
-                else:
-                    o = Literal(result['o']['value'])
-                    # if object is too long (e.g. abstract, ignore it)
-                    if len(o) > LITERAL_MAX_LENGTH:
-                        continue
-                graph.add((term, p, o))
-                #print type(p), p
-                #print type(o), o
-                #print '*'
-            except KeyError:
-                continue
-
-        """
-        try:
-            graph.parse(iri2uri(term))
-        except Exception as exc:
-            logger.warning('Graph parsing for {term} failed: {exc}'
-                .format(term=term, exc=exc))
-            return None
-
-        if not graph:
-            logger.warning('Empty graph for {term}'.format(term=term))
-            return None
-
-        # except HTTPError
-
-        # namespaces binding
-        filtered_graph = Graph()
-        for prefix, namespace in NAMESPACES_DICT.items():
-            filtered_graph.bind(prefix, namespace)
-
-        # graph filtering
-        predicate_namespaces = tuple(unicode(ns) for ns in (FOAF, RDF,
-            RDFS, ONTOLOGY))
-        for (s, p, o) in graph.triples((term, None, None)):
-            # only preserve predicates in "reliable" namespaces
-            # and fitler wikiPageRevisionID, wikiPageExternalLike etc.
-            if p.startswith(predicate_namespaces) and\
-                    not p.startswith(ONTOLOGY['wiki']):
-                # only preserve objects which are not literals in
-                # non-english languages
-                if isinstance(o, URIRef) or not o.language\
-                        or o.language == 'en':
-                    # if the triple passed all these filteres, add it to
-                    # the graph
-                    filtered_graph.add((s, p, o))
-        """
-
-        # store created (and filtered) graph in DB
-        knowledge_graph = KnowledgeGraph.objects.create(
-            knowledge_builder=self.knowledge_builder,
-            topic=term,
-            graph=graph)
-
-        return knowledge_graph
 
     #def label(self, term, fallback_guess=True):
     #    """

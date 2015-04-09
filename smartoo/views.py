@@ -15,6 +15,7 @@ from smartoo.models import Session
 
 import json
 import logging
+from urllib import unquote
 
 
 logger = logging.getLogger(__name__)
@@ -59,6 +60,10 @@ def start_session(request):
     if not topic_name:
         return JsonResponse({"success": False, "message": "Request without topic."},
             status=BAD_REQUEST)
+
+    # yes, these utf-8 chess are unfortunately neccessary
+    topic_name = unquote(topic_name.encode('utf-8'))
+    topic_name = topic_name.decode('utf-8')
 
     # TODO: normalizace tematu, osetretni neexistence termatu!!!, ...
     # ale to by melo nastat uz ve view practice_session
