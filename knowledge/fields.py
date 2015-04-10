@@ -54,7 +54,7 @@ class TermField(models.CharField):
     __metaclass__ = models.SubfieldBase
 
     def __init__(self, *args, **kwargs):
-        kwargs['max_length'] = 100
+        kwargs['max_length'] = 200
         super(TermField, self).__init__(*args, **kwargs)
 
     def deconstruct(self):
