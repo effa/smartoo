@@ -570,13 +570,20 @@ class GlobalKnowledge(object):
         assert isinstance(term, URIRef)
 
         try:
-            knowledge_graph = KnowledgeGraph.objects.get(topic=unicode(term),
+            knowledge_graph = KnowledgeGraph.objects.get(topic=unicode(term).encode('utf-8'),
                 knowledge_builder=self.knowledge_builder)
             return knowledge_graph
         except ObjectDoesNotExist:
             if online:
                 # use public endpoint to retrieve the graph
-                graph = retrieve_graph_from_dbpedia(term)
+                try:
+                    graph = retrieve_graph_from_dbpedia(term)
+                except Exception:
+                    logger.error('retrieve_graph_from_dbpedia failed\n' + traceback.format_exc())
+                    # store empty graph (to prevent calling failing retrieval
+                    # again)
+                    graph = Graph()
+
                 # store created graph in DB
                 knowledge_graph = KnowledgeGraph.objects.create(
                     knowledge_builder=self.knowledge_builder,
