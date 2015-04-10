@@ -576,19 +576,18 @@ class GlobalKnowledge(object):
         except ObjectDoesNotExist:
             if online:
                 # use public endpoint to retrieve the graph
-                try:
-                    graph = retrieve_graph_from_dbpedia(term)
-                except Exception:
-                    logger.error('retrieve_graph_from_dbpedia failed\n' + traceback.format_exc())
-                    # store empty graph (to prevent calling failing retrieval
-                    # again)
-                    graph = Graph()
+                graph = retrieve_graph_from_dbpedia(term)
 
                 # store created graph in DB
-                knowledge_graph = KnowledgeGraph.objects.create(
-                    knowledge_builder=self.knowledge_builder,
-                    topic=term,
-                    graph=graph)
+                try:
+                    knowledge_graph = KnowledgeGraph.objects.create(
+                        knowledge_builder=self.knowledge_builder,
+                        topic=term,
+                        graph=graph)
+                except Exception:
+                    logger.error('retrieve_graph_from_dbpedia failed\n' + traceback.format_exc())
+                    return None
+
                 return knowledge_graph
             else:
                 return None
