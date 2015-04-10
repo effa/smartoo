@@ -94,7 +94,7 @@ def retrieve_graph_from_dbpedia(term):
 
     # check if the graph is not empty
     if not graph:
-        logger.warning('Retrieved empty graph for ' + term)
+        logger.warning('Retrieved empty graph for ' + unicode(term))
 
     return graph
 
