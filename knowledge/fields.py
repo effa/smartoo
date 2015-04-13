@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.encoding import smart_text
 from rdflib import Graph, URIRef
 from common.utils.wiki import uri_to_name
 from knowledge.namespaces import TERM
@@ -69,6 +70,8 @@ class TermField(models.CharField):
             return None
         # deserialize string
         # sometimes, value will be unicode with TERM prefix
+        print '!!!!!!!!!!! to_python', type(value)
+        value = smart_text(value)
         if value.startswith(TERM):
             term = URIRef(value)
         else:
