@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.encoding import smart_text
 from rdflib import Graph, URIRef
-from common.utils.wiki import uri_to_name
+#from common.utils.wiki import uri_to_name
 from knowledge.namespaces import TERM
 
 # we will use turtle syntax for RDF serialization, it is quite compact and
@@ -70,7 +70,7 @@ class TermField(models.CharField):
             return None
         # deserialize string
         # sometimes, value will be unicode with TERM prefix
-        print '!!!!!!!!!!! to_python', type(value)
+        #print '!!!!!!!!!!! to_python', type(value)
         value = smart_text(value)
         if value.startswith(TERM):
             term = URIRef(value)
@@ -82,12 +82,22 @@ class TermField(models.CharField):
         if value == '':
             return None
         if isinstance(value, URIRef):
-            value = uri_to_name(value)
+            value = unicode(value)
+            #value = uri_to_name(value)
         return super(TermField, self).get_db_prep_save(value, *args, **kwargs)
+
+    def get_prep_value(self, value):
+        # musi vracet str!!! (kvuli MySQL)
+        value = super(TermField, self).get_prep_value(value)
+        if isinstance(value, URIRef):
+            value = unicode(value)
+        if isinstance(value, unicode):
+            return value.encode('utf-8')
+        return value
 
     # serialization (e.g. for creating DB dumps in XML)
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
         #return self.get_prep_value(value)
-        #return unicode(value)
-        return uri_to_name(value)
+        return unicode(value)
+        #return uri_to_name(value)
