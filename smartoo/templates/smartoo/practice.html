@@ -5,15 +5,9 @@
 
 {% block content %}
 <div class="background-wrapper">
-  <!--<p>Topic: {{ topic }}</p>-->
 
   <div class="container">
   <div ng-controller="practiceController" ng-view id="working-area" class="card">
-
-    <!-- session info -->
-      <!--<span class="glyphicon glyphicon-book" aria-hidden="true"></span>-->
-      <!--<a href="{{ topicURI }}" target="_blank">{{ topic }}</a>         -->
-      <!--<hr>                                                             -->
 
       <span id="session-info">
         <ol class="breadcrumb">
@@ -25,37 +19,6 @@
           </li>
         </ol>
       </span>
-
-  <!--<nav class="navbar navbar-default">                                  -->
-  <!--  <p class="navbar-text">                                            -->
-  <!--    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>-->
-  <!--    <a href="{{ topicURI }}" target="_blank">{{ topic }}</a>         -->
-  <!--  </p>                                                               -->
-  <!--</nav>                                                               -->
-
-    <!-- area for waiting wheel / exercise / feedback / final report -->
-
-      <!--<div ng-show="state == 'waiting'">-->
-      <!--  false                           -->
-      <!--</div>                            -->
-      <!--<div ng-show="state == 'error'">  -->
-      <!--  true                            -->
-      <!--</div>                            -->
-
-    <!--<div ng-switch="state">                                                  -->
-    <!--  <div ng-swith-when="waiting">                                          -->
-    <!--    [><div ng-include="'/static/partials/waiting.html'"></div><]         -->
-    <!--    error                                                                -->
-    <!--  </div>                                                                 -->
-    <!--  <div ng-swith-when="error">                                            -->
-    <!--    <div ng-include="'/static/partials/error-message.html'"></div>       -->
-    <!--    chyba                                                                -->
-    <!--  </div>                                                                 -->
-    <!--  <div ng-swith-when="exercise">                                         -->
-    <!--    [><div ng-include="'/static/partials/error-message.html'"></div><]   -->
-    <!--    exercise                                                             -->
-    <!--  </div>                                                                 -->
-    <!--</div>                                                                   -->
 
     <div ng-show="state == 'waiting'">
       <div ng-include="'/static/partials/waiting.html'"></div>

@@ -41,7 +41,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.0,
-      "repetitiveness_weight": 0.4}
+      "repetitiveness_weight": 0.5}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -51,7 +51,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.25,
       "difficulty-weight": 1.0,
-      "repetitiveness_weight": 0.4}
+      "repetitiveness_weight": 0.5}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -61,7 +61,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.25,
-      "repetitiveness_weight": 0.4}
+      "repetitiveness_weight": 0.5}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -71,7 +71,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.0,
-      "repetitiveness_weight": 0.6}
+      "repetitiveness_weight": 0.75}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -81,7 +81,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.25,
       "difficulty-weight": 1.0,
-      "repetitiveness_weight": 0.6}
+      "repetitiveness_weight": 0.75}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
@@ -91,7 +91,7 @@
       "target-success": 0.75,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.25,
-      "repetitiveness_weight": 0.6}
+      "repetitiveness_weight": 0.75}
     </field>
     <field type="BooleanField" name="enabled">True</field>
   </object>

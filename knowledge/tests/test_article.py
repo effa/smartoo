@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 #from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from common.settings import SKIP_ONLINE_TESTS
-from knowledge.models import Article
+from knowledge.models import Article, article_search
 from knowledge.namespaces import TERM
 from unittest import skipIf
 
@@ -28,9 +28,10 @@ class ArticleWithoutFixtureTestCase(TestCase):
 
     @skipIf(SKIP_ONLINE_TESTS, 'connection to Wikipedia public API')
     def test_new_article_from_wikipedia(self):
-        topic = TERM['Prokop_the_Great']
-        article, created = Article.objects.get_or_create(topic=topic)
-        self.assertEqual(created, True)
+        term_name = 'Prokop_the_Great'
+        topic = article_search(search_string=term_name)
+        self.assertEqual(topic, TERM[term_name])
+        article = Article.objects.get(topic=topic)
         self.assertIsNotNone(article)
         self.assertEqual(article.topic, topic)
         terms = article.get_all_terms()
@@ -39,14 +40,9 @@ class ArticleWithoutFixtureTestCase(TestCase):
 
     @skipIf(SKIP_ONLINE_TESTS, 'connection to Wikipedia public API')
     def test_new_article_from_wikipedia_unicode(self):
-        topic = TERM['John_C._Frémont']
-        article, created = Article.objects.get_or_create(topic=topic)
-        self.assertEqual(created, True)
-        self.assertIsNotNone(article)
-        self.assertEqual(article.topic, topic)
-        terms = article.get_all_terms()
-        self.assertIn(TERM['John_C._Frémont'], terms)
-        self.assertIn(TERM['California_Gold_Rush'], terms)
+        term_name = 'John_C._Frémont'
+        topic = article_search(search_string=term_name)
+        self.assertEqual(topic, TERM[term_name])
         # check that article is in the DB
         article = Article.objects.get(topic=topic)
         self.assertIsNotNone(article)

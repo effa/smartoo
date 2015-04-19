@@ -8,7 +8,9 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from common.utils.wiki import term_to_wiki_uri
 from common.utils.http import BAD_REQUEST
-from knowledge.utils.terms import name_to_term, term_to_name
+#from knowledge.utils.terms import name_to_term, term_to_name
+from knowledge.utils.terms import term_to_name
+from knowledge.models import article_search
 #from knowledge.utils.topics import is_valid_topic
 from smartoo.exceptions import SessionError
 from smartoo.feedback import process_message_feedback
@@ -69,13 +71,15 @@ def start_session(request):
 
     # TODO: normalizace tematu, osetretni neexistence termatu!!!, ...
     # ale to by melo nastat uz ve view practice_session
-    try:
-        topic = name_to_term(topic_name)
-    except ValueError:
-        return JsonResponse({"success": False, "message": "Invalid topic."},
-            status=BAD_REQUEST)
+    #try:
+    #    topic = name_to_term(topic_name)
+    #except ValueError:
+    #    return JsonResponse({"success": False, "message": "Invalid topic."},
+    #        status=BAD_REQUEST)
 
     try:
+        # if article not in DB, try to find it
+        topic = article_search(search_string=topic_name)
         # create session and select components
         session = Session.objects.create_with_components(topic=topic)
         # remember the session id

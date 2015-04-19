@@ -12,7 +12,7 @@ from common.fields import DictField
 from common.settings import ONLINE_ENABLED
 from knowledge.fields import GraphField, TermField
 from knowledge.namespaces import NAMESPACES_DICT, RDF, RDFS, ONTOLOGY, SMARTOO, TERM
-from knowledge.utils.terms import bulk_create_terms_trie, term_to_name
+from knowledge.utils.terms import bulk_create_terms_trie, name_to_term  # , term_to_name
 from knowledge.utils.text import shallow_parsing, shallow_parsing_phrases, terms_inference
 from knowledge.utils.sparql import retrieve_graph_from_dbpedia
 
@@ -95,6 +95,62 @@ class KnowledgeBuilder(Component):
 #  Corpora Related
 # ----------------------------------------------------------------------------
 
+def article_search(search_string):
+    """
+    Check if the article for this string is already in DB.
+    If not, try to find it on the Wikipedia.
+    If it does not exist, raise ValueError
+
+    Returns: topic of the article
+    """
+    # first try -- search string is exactly name of an article in DB
+    try:
+        topic = name_to_term(search_string)
+        Article.objects.get(topic=topic)
+        return topic
+    except ValueError:
+        pass  # it just means the search_string is not valid part of topic uri
+    except ObjectDoesNotExist:
+        pass  # it just means the search_string is not a topic in DB
+
+    try:
+        assert ONLINE_ENABLED
+        # search string normalization
+        # replace _ with ' ' (necessary for search to work correctly)
+        search_string = search_string.replace('_', ' ')
+        wiki_page = wikipedia.page(title=search_string)
+        topic = name_to_term(wiki_page.title)
+        # check that this is not already in the DB (because of auto-suggest
+        # feature, this topic can differ from the originial search_string
+        try:
+            Article.objects.get(topic=topic)
+            # article exist, just return its topic
+            return topic
+        except ObjectDoesNotExist:
+            # create new artcile from retrieved page
+            article = Article(topic=topic)
+
+            text = wiki_page.content
+            # Problem je, ze seznam odkazu nebude uplny, pokud jich je hodne :-(
+            # viz https://github.com/goldsmith/Wikipedia/issues/71
+            # patch vysvetlen tady: https://github.com/goldsmith/Wikipedia/pull/80
+            # TODO: opravit chybu ve Wikipedia modulu
+            links = wiki_page.links
+
+            # make sure title is in the links and in the first position (so it has
+            # the highest priority during terms inference
+            links.insert(0, wiki_page.title)
+            article.create_content_from_text(text, links)
+            # save created article and return the topic
+            article.save()
+            return topic
+
+    except WikipediaException as exc:
+        logger.warning(exc.message or 'wiki page retrieval failed')
+        raise ValueError('Invalid topic: {topic}'
+            .format(topic=unicode(search_string)))
+
+
 class Article(models.Model):
     """
     Model of article on the English Wikipedia.
@@ -151,60 +207,59 @@ class Article(models.Model):
     # weight of the headline (i.e. topic term) relative to one term occurence
     HEADLINE_WEIGHT = 10
 
-    def save(self, *args, **kwargs):
-        """
-        Save modification: if it hasn't been stored already
-        and content is not set, find the content using Wikipedia API
-        """
-        if not self.pk and not self.content:
-            # find article on Wiki and process it to vertical
-            try:
-                self.get_content_from_wikipedia()
-            except Exception as exc:
-                logger.error('Wikipedia article processing failed: ' + exc.message)
-                raise
+    #def save(self, *args, **kwargs):
+    #    """
+    #    Save modification: if it hasn't been stored already
+    #    and content is not set, find the content using Wikipedia API
+    #    """
+    #    if not self.pk and not self.content:
+    #        # find article on Wiki and process it to vertical
+    #        try:
+    #            self.get_content_from_wikipedia()
+    #        except Exception as exc:
+    #            logger.error('Wikipedia article processing failed: ' + exc.message)
+    #            raise
+    #    super(Article, self).save(*args, **kwargs)
 
-        super(Article, self).save(*args, **kwargs)
+    #def get_content_from_wikipedia(self):
+    #    """
+    #    Uses Wikipedia api to retrieve content for topic of the article
+    #    TODO: vyhodit vyjimku, pokud se to nepodari (clanek neexistuje)
 
-    def get_content_from_wikipedia(self):
-        """
-        Uses Wikipedia api to retrieve content for topic of the article
-        TODO: vyhodit vyjimku, pokud se to nepodari (clanek neexistuje)
+    #    Raises:
+    #        WikipediaException (see Wikipedia module docs for details)
+    #    """
+    #    # topic has to be set, content not and online access hat to be enabled
+    #    assert self.topic is not None
+    #    assert not self.content
+    #    assert ONLINE_ENABLED
 
-        Raises:
-            WikipediaException (see Wikipedia module docs for details)
-        """
-        # topic has to be set, content not and online access hat to be enabled
-        assert self.topic is not None
-        assert not self.content
-        assert ONLINE_ENABLED
+    #    #print 'simulate wikipedia api .....'
+    #    #text = 'Abraham Lincoln was a president of the USA. He led the USA through its Civil war.'
+    #    #links = ['Abraham Lincoln', 'USA', 'Civil war']
 
-        #print 'simulate wikipedia api .....'
-        #text = 'Abraham Lincoln was a president of the USA. He led the USA through its Civil war.'
-        #links = ['Abraham Lincoln', 'USA', 'Civil war']
+    #    topic_name = term_to_name(self.topic)
 
-        topic_name = term_to_name(self.topic)
+    #    logger.info('online access - Wikipedia: {topic}'.format(topic=topic_name))
+    #    try:
+    #        #name_utf = topic_name.encode('utf-8')
+    #        #wiki_page = wikipedia.page(name_utf)
+    #        wiki_page = wikipedia.page(topic_name)
+    #    except WikipediaException as exc:
+    #        logger.warning(exc.message or 'wiki page retrieval failed')
+    #        raise
 
-        logger.info('online access - Wikipedia: {topic}'.format(topic=topic_name))
-        try:
-            #name_utf = topic_name.encode('utf-8')
-            #wiki_page = wikipedia.page(name_utf)
-            wiki_page = wikipedia.page(topic_name)
-        except WikipediaException as exc:
-            logger.warning(exc.message or 'wiki page retrieval failed')
-            raise
+    #    text = wiki_page.content
+    #    # Problem je, ze seznam odkazu nebude uplny, pokud jich je hodne :-(
+    #    # viz https://github.com/goldsmith/Wikipedia/issues/71
+    #    # patch vysvetlen tady: https://github.com/goldsmith/Wikipedia/pull/80
+    #    # TODO: opravit chybu ve Wikipedia modulu
+    #    links = wiki_page.links
 
-        text = wiki_page.content
-        # Problem je, ze seznam odkazu nebude uplny, pokud jich je hodne :-(
-        # viz https://github.com/goldsmith/Wikipedia/issues/71
-        # patch vysvetlen tady: https://github.com/goldsmith/Wikipedia/pull/80
-        # TODO: opravit chybu ve Wikipedia modulu
-        links = wiki_page.links
-
-        # make sure title is in the links and in the first position (so it has
-        # the highest priority during terms inference
-        links.insert(0, topic_name)
-        self.create_content_from_text(text, links)
+    #    # make sure title is in the links and in the first position (so it has
+    #    # the highest priority during terms inference
+    #    links.insert(0, topic_name)
+    #    self.create_content_from_text(text, links)
 
     # TODO: da se to urcite udelat lip (efektivneji, prehledneji), v nltk
     # je primo nejaka prace s texty jako soubory vet, nebo dokonce i

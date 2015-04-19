@@ -11,6 +11,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 from urllib import quote_plus
 from urllib2 import HTTPError
 
+import cjson
 import logging
 #import traceback
 
@@ -58,7 +59,11 @@ def retrieve_graph_from_dbpedia(term):
     sparql.setQuery(query.encode('utf-8'))
     sparql.setReturnFormat(JSON)
     try:
-        results = sparql.query().convert()
+        results = sparql.query()
+        # workaround for "Invalid \escape" error which can be raised by
+        # convert()
+        body = results.response.read()
+        results = cjson.decode(body)
     except HTTPError as exc:
         # can occur if DBpedia is under maintenance (quite often)
         # TODO: propaget error and show message to the user

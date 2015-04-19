@@ -9,7 +9,7 @@ from exercises.models import ExercisesGrader, GradedExercise
 from practice.models import Practicer
 from smartoo import ComponentsSelector
 from smartoo.exceptions import SessionError
-from wikipedia.exceptions import WikipediaException
+#from wikipedia.exceptions import WikipediaException
 
 import datetime
 import logging
@@ -197,12 +197,11 @@ class Session(models.Model):
         if self.id is None:
             self.start = datetime.datetime.now()
 
+        # NOTE: Aritcle jiz musel byt stazeny predtim
         # create article if it wasn't already
-        try:
-            Article.objects.get_or_create(topic=self.topic)
-        except WikipediaException:
-            raise ValueError('Invalid topic: {topic}'
-                .format(topic=unicode(self.topic)))
+        # (viz view.start_session)
+        # ... ale mozna by bylo dobre zkontrolovat, ze uz je clanek opravdu v
+        # DB...
 
         # create feedback if it wasn't already
         if self.feedback_id is None:
