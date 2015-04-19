@@ -84,8 +84,10 @@ def start_session(request):
         session = Session.objects.create_with_components(topic=topic)
         # remember the session id
         request.session['session_id'] = session.id
-        logger.info('new session (pk={pk})'.format(pk=session.pk))
-        return JsonResponse({"success": True})
+        topic_name = term_to_name(topic)
+        logger.info('new session (pk={pk}, topic={topic})'.format(
+            pk=session.pk, topic=topic_name))
+        return JsonResponse({"success": True, "topic": topic_name})
     except ValueError:
         # TODO: specialni zpracovani napr. DisambiguationError
         # topic doesn't exist, don't create a session

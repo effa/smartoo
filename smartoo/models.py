@@ -3,7 +3,7 @@ from django.db import IntegrityError
 
 from common.settings import SESSION_MAX_LENGTH
 from knowledge.fields import TermField
-from knowledge.models import KnowledgeGraph, KnowledgeBuilder, Article
+from knowledge.models import KnowledgeGraph, KnowledgeBuilder
 from exercises.models import ExercisesCreator, Exercise
 from exercises.models import ExercisesGrader, GradedExercise
 from practice.models import Practicer
@@ -226,7 +226,7 @@ class Session(models.Model):
         Uses KnowledgeBuilder to build and store knowledge graph for current
         topic.
         """
-        logger.info('building knowledge for %s started' % self.topic)
+        #logger.info('building knowledge for %s started' % self.topic)
         try:
             self.knowledge_builder.build_knowledge(self.topic)
         except IntegrityError as exc:

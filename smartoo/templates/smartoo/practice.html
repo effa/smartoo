@@ -9,16 +9,7 @@
   <div class="container">
   <div ng-controller="practiceController" ng-view id="working-area" class="card">
 
-      <span id="session-info">
-        <ol class="breadcrumb">
-          <li>
-              <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-              <span class="after-glyphicon">
-              Topic: <a href="{{ topicURI }}" target="_blank">{{ topic }}</a>
-              </span>
-          </li>
-        </ol>
-      </span>
+    <div ng-include="'/static/partials/topic-panel.html'"></div>
 
     <div ng-show="state == 'waiting'">
       <div ng-include="'/static/partials/waiting.html'"></div>

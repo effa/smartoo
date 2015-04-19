@@ -28,6 +28,8 @@ smartooApp.controller('practiceController',
         function startSession(topic) {
             smartooService.startSession(topic).then(function(response) {
                 if (response.success) {
+                    $scope.topic.name = response.topic;
+                    $scope.topic.uri = "http://en.wikipedia.org/wiki/" + response.topic.replace(" ", "_");
                     buildKnowledge();
 
                 } else {
@@ -150,6 +152,7 @@ smartooApp.controller('practiceController',
         $scope.errorMessage = null;
         $scope.infoMessage = "Building knowledge..."
         $scope.state = "waiting";
+        $scope.topic = {name:'', uri:''};
 
         // TODO: lepsi by bylo posilat topic jiz v ramci js ze serveru
         var topic = parseTopic(window.location.pathname);
