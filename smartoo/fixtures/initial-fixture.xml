@@ -8,14 +8,14 @@
   <object pk="2" model="knowledge.knowledgebuilder">
     <field type="CharField" name="behavior_name">quasi</field>
     <field type="DictField" name="parameters">{
-      "max-sentence-length": 50
+      "max-sentence-length": 40
       }</field>
     <field type="BooleanField" name="enabled">True</field>
   </object>
   <object pk="3" model="knowledge.knowledgebuilder">
     <field type="CharField" name="behavior_name">quasi</field>
     <field type="DictField" name="parameters">{
-      "max-sentence-length": 35
+      "max-sentence-length": 30
       }</field>
     <field type="BooleanField" name="enabled">True</field>
   </object>

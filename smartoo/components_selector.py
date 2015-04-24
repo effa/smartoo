@@ -68,9 +68,6 @@ class ComponentsSelector(object):
         return (knowledge_builder, exercises_creator,
                 exercises_grader, practicer)
 
-    # mozne dalsi metody (podle potreby): vyber jedine komponenty / podmnoziny
-    # komponent, vyber zatim nejlepsich komponent
-
     def create_performances_list(self, components_lists):
         performances = defaultdict(list)
 
