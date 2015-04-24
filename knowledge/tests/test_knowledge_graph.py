@@ -36,19 +36,19 @@ class KnowledgeGraphWithoutFixtureTestCase(TestCase):
         termA = TERM['A']
         termB = TERM['B']
         # adding types and checking similarity after each step
-        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0)
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.06241874674751258)
         knowledge_graph.add((termA, RDF['type'], SMARTOO['term']))
-        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0)
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.06241874674751258)
         knowledge_graph.add((termB, RDF['type'], SMARTOO['term']))
-        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.12435300177159614)
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.06241874674751258)
         knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Agent']))
-        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.12435300177159614)
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.06241874674751258)
         knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Agent']))
-        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.2449186624037092)
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.12435300177159614)
         knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Person']))
-        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.2449186624037092)
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.12435300177159614)
         knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Person']))
-        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.35835739835078595)
+        self.assertAlmostEqual(knowledge_graph.similarity(termA, termB), 0.18533319990813935)
 
     def test_all_terms(self):
         knowledge_graph = KnowledgeGraph()

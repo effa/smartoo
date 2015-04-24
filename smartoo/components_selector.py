@@ -79,6 +79,9 @@ class ComponentsSelector(object):
         # deleted
         sessions = self._session_manager.all()
         for session in sessions:
+            # skip too sessions
+            if session.feedback.get_all_questions_count() < 3:
+                continue
             components_keys = (
                 session.knowledge_builder.pk,
                 session.exercises_creator.pk,

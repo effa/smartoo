@@ -75,8 +75,8 @@ class DistractorsUtilsTestCase(TestCase):
         termB = TERM['B']
         knowledge_graph.add((termA, RDF['type'], SMARTOO['term']))
         knowledge_graph.add((termB, RDF['type'], SMARTOO['term']))
-        knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Person']))
-        knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Person']))
+        knowledge_graph.add((termA, RDF['type'], ONTOLOGY['Agent']))
+        knowledge_graph.add((termB, RDF['type'], ONTOLOGY['Agent']))
         terms = generate_similar_terms(termA, knowledge_graph, 4)
         # as the generating method might be random, we cant's say a term is in
         # the result for sure, so we just check that correct number of terms
@@ -97,7 +97,7 @@ class DistractorsUtilsTestCase(TestCase):
         elizabeth = TERM['Elizabeth_of_York']
         knowledge_graph.add((henry, LABEL, Literal('Henry VIII')))
         knowledge_graph.add((edward, LABEL, Literal('Edward VI')))
-        # it should also work without havin some terms in the graph (using
+        # it should also work without having some terms in the graph (using
         # label fallback)
         #knowledge_graph.add((elizabeth, LABEL, Literal('Elizabeth of York')))
         choices = create_choice_list([henry, edward, elizabeth], knowledge_graph)

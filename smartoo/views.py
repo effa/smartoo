@@ -107,7 +107,6 @@ def build_knowledge(request):
         return JsonResponse({"success": True})
     except SessionError as exc:
         logger.warning('SessionError: ' + exc.message)
-        #raise
         return JsonResponse({"success": False}, status=BAD_REQUEST)
 
 
@@ -143,6 +142,12 @@ def next_exercise(request):
 
         exercise = session.next_exercise()
         if exercise is None:
+            # if no qeustion for the session was generated, return error
+            # message
+            if session.get_questions_count() == 0:
+                return JsonResponse({'success': False,
+                    'message': 'Sorry, this topic is too hard for me, '
+                             + 'I\'m not able to create questions about it.'})
             # show feedback form
             return JsonResponse({'success': True, 'finnished': True})
 

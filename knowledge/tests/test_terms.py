@@ -33,3 +33,8 @@ class TermsTrieTestCase(TestCase):
         terms_trie.add_with_subnames("Abraham Lincoln")
         self.assertEquals(terms_trie.get(['Abraham', 'Lincoln']), 'Abraham Lincoln')
         self.assertEquals(terms_trie.get(['Lincoln']), 'Abraham Lincoln')
+
+    def test_lowercase(self):
+        terms_trie = TermsTrie()
+        terms_trie.add("Mathematics", [("Mathematics", "NN")])
+        self.assertEquals(terms_trie.get(['Mathematics']), 'Mathematics')

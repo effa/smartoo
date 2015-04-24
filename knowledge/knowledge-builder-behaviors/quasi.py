@@ -26,7 +26,7 @@ class Quasi(KnowledgeBuilderBehavior):
         article.parse_terms_and_sentences(knowledge_graph=knowledge_graph)
 
         for sentence in contextfree_sentences(article, max_sentence_length):
-            # TODO: tohle by chtelo delat spis pomoci reqexu/gramatiky
+            #print 'uvazovana veta:', sentence
             before_term = []
             after_term = []
             term_found = False
@@ -38,8 +38,6 @@ class Quasi(KnowledgeBuilderBehavior):
                         term = chunk.term
                         term_found = True
                         continue
-                        # TODO: pomocna metoda na vytvoreni uri z pojmenovane
-                        # entity (ve forme ParentedTree)
                     before_term.extend(chunk.leaves())
                 else:
                     after_term.extend([word for word in chunk.leaves()])

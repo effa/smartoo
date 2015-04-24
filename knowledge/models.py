@@ -518,12 +518,11 @@ class KnowledgeGraph(models.Model):
         term1_types = self.types(term1)
         term2_types = self.types(term2)
         common_types = term1_types & term2_types
-        # don't count smartoo:term and dbpedia:Thing as common types
-        common_types_count = len(common_types)
+        common_types_count = max(1, len(common_types))
 
         # normalization -> number between 0 and 1
         # NOTE: devide common_types_count to make the function increse slower
-        similarity = 2.0 * (sigmoid(common_types_count / 4.0) - 0.5)
+        similarity = 2.0 * (sigmoid(common_types_count / 8.0) - 0.5)
         return similarity
 
     @cached_property

@@ -32,7 +32,8 @@ class TermsTrie(object):
         node = self._trie
         for token in tagged_name:
             # bylo by lepsi pouzivat lemmata misto slov
-            word = token[0]
+            # lowercase the token
+            word = token[0].lower()
             # step down one level in trie; create empty subtrie
             # if it hasn't existed before
             node = node.setdefault(word, {})
@@ -92,6 +93,7 @@ class TermsTrie(object):
         if self._current is None:
             # TODO: specializovanejsi vyjimka?
             raise Exception('no search to continue in (use search_start())')
+        lemma = lemma.lower()
         if lemma in self._current:
             self._current = self._current[lemma]
             return True
