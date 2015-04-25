@@ -80,7 +80,7 @@ def compute_target_difficulty(target_success, correct_ratio, total_count):
     """
     # correct ratio stabilization (make the recommendations at the
     # beginning less influened by the success rate)
-    stabilizator_weight = 1.0 / (total_count + 1)
+    stabilizator_weight = 1.0 / (2 * total_count + 1)
     actual_success = (1 - stabilizator_weight) * correct_ratio\
         + (stabilizator_weight * target_success)
 
