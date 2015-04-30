@@ -6,16 +6,18 @@ class PracticerBehavior(ComponentBehavior):
     Base class for all practicer behaviors.
     """
 
-    def next_exercise(self, graded_exercises, accumulated_feedback,
-            feedbacked_exercises):
+    def next_exercise(self, unused_graded_exercises, accumulated_feedback,
+            feedbacked_exercises, used_graded_exercises):
         """
         Returns new exercise.
 
         Args:
-            graded_exercises: collection of exercises and their grades
-            accumulated_feedback: feedback from previous exercises to help us
-                decide which exercise is best for the user
-            feedbacked_exercises: already done exercises with feedback
+            unused_graded_exercises: collection of exercises and their grades
+                which were not already used
+            accumulated_feedback: accumulative feedback from previous exercises
+            feedbacked_exercises: collection feedbacked finnished exercises
+            used_graded_exercises: collection of graded finnished exercises
+
         Returns:
             new exercise
         """

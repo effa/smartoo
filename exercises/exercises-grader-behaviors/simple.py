@@ -3,6 +3,7 @@ from common.utils.metrics import cosine_similarity_exercise_article
 from knowledge.models import Article
 from exercises import ExercisesGraderBehavior
 from exercises.models import GradedExercise
+from exercises.utils.difficulty import normalized_average_similarity
 
 
 class Simple(ExercisesGraderBehavior):
@@ -28,9 +29,8 @@ class Simple(ExercisesGraderBehavior):
             terms[t1] += 1
             terms[t2] += 1
 
-        # set difficulty to average_similarity
-        average_similarity = sum(similarities) / len(similarities)
-        difficulty = average_similarity
+        # set difficulty to normalized average_similarity
+        difficulty = normalized_average_similarity(similarities)
 
         # Relevance is based on the frequence of terms in the article.
         # All terms are used, not just the correct answer (because we want to

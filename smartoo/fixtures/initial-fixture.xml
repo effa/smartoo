@@ -38,7 +38,7 @@
   <object pk="1" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
-      "target-success": 0.75,
+      "target-success": 0.65,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 1.0}
@@ -48,7 +48,7 @@
   <object pk="2" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
-      "target-success": 0.75,
+      "target-success": 0.65,
       "relevance-weight": 1.25,
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 1.0}
@@ -58,7 +58,7 @@
   <object pk="3" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
-      "target-success": 0.75,
+      "target-success": 0.65,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.25,
       "repetitiveness_weight": 1.0}
@@ -68,7 +68,7 @@
   <object pk="4" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
-      "target-success": 0.75,
+      "target-success": 0.65,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 1.25}
@@ -78,7 +78,7 @@
   <object pk="5" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
-      "target-success": 0.75,
+      "target-success": 0.65,
       "relevance-weight": 1.25,
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 1.25}
@@ -88,7 +88,7 @@
   <object pk="6" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
     <field type="DictField" name="parameters">{
-      "target-success": 0.75,
+      "target-success": 0.65,
       "relevance-weight": 1.0,
       "difficulty-weight": 1.25,
       "repetitiveness_weight": 1.25}

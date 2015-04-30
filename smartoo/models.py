@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from common.settings import SESSION_MAX_LENGTH
 from knowledge.fields import TermField
 from knowledge.models import KnowledgeGraph, KnowledgeBuilder
-from exercises.models import ExercisesCreator, Exercise
+from exercises.models import ExercisesCreator
 from exercises.models import ExercisesGrader, GradedExercise
 from practice.models import Practicer
 from smartoo import ComponentsSelector
@@ -282,16 +282,14 @@ class Session(models.Model):
         """
         Returns exercises which were generated but not used already.
 
-        Returns:
-            list of graded exercises
+        Returns: list of graded exercises
         """
         # first find which graded exercises were created for this session
         all_exercises = self.get_graded_exercises()
         # discard exercises which were already used
-        # NOTE that used_exercises are not graded ones
         used_exercises = self.get_feedbacked_exercises()
         used_exercises = used_exercises.values_list('exercise', flat=True)
-        unused_exercises = all_exercises.exclude(exercise__pk__in=used_exercises)
+        unused_exercises = all_exercises.exclude(pk__in=used_exercises)
         return list(unused_exercises)
 
     def next_exercise(self):
@@ -305,10 +303,10 @@ class Session(models.Model):
             next_exercise = None
         else:
             feedbacked_exercises = self.get_feedbacked_exercises()
-            graded_exercises = self.get_unused_graded_exercises()
+            unused_graded_exercises = self.get_unused_graded_exercises()
             # type of returned object is Exercise, not GradedExercise
-            next_exercise = self.practicer.next_exercise(graded_exercises,
-                self.feedback, feedbacked_exercises)
+            next_exercise = self.practicer.next_exercise(unused_graded_exercises,
+                self.feedback, feedbacked_exercises=feedbacked_exercises)
             # if there are no more exercises, set the session as finnished
             if not next_exercise:
                 self.set_finnished()
@@ -338,7 +336,7 @@ class Session(models.Model):
         """
         # get the exercise from DB
         # TODO: kontrolovat, ze cviceni s timto pk je opravdu z teto session
-        exercise = Exercise.objects.get(
+        exercise = GradedExercise.objects.get(
             pk=feedback_dictionary["pk"])
         # store the feedback in DB
         feedbacked_exercise = FeedbackedExercise(
@@ -383,7 +381,7 @@ class FeedbackedExercise(models.Model):
     """
     # identification: session + exercise
     session = models.ForeignKey(Session)
-    exercise = models.ForeignKey(Exercise)
+    exercise = models.ForeignKey(GradedExercise)
 
     # feedback
     answered = models.BooleanField(default=False)
@@ -392,6 +390,10 @@ class FeedbackedExercise(models.Model):
     irrelevant = models.BooleanField(default=False)
     #time (start/end) of the exercise or maybe just time_to_answer?
     #time_to_anser = models.IntegerField(null=True, default=None)  # in ms
+
+    def get_exercise(self):
+        # exercise is wrapped into GradedExercise and FeedbackedExercise
+        return self.exercise.exercise
 
     def __str__(self):
         return unicode(self).encode('utf-8')

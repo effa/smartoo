@@ -7,9 +7,6 @@ from exercises.models import GradedExercise, ExercisesGrader
 from practice.models import Practicer
 from smartoo.models import Session, AccumulativeFeedback, FeedbackedExercise
 from smartoo.exceptions import SmartooError
-from smartoo.feedback import process_message_feedback
-
-from unittest import skipIf
 
 
 class AccumulativeFeedbackTestCase(TestCase):
@@ -199,8 +196,8 @@ class SessionTestCase(TestCase):
         session.build_knowledge()
         session.create_graded_exercises()
         exercise = session.next_exercise()
-        # should return Exercise, not GradedExercise
-        self.assertIsInstance(exercise, Exercise)
+        # should return GradedExercise
+        self.assertIsInstance(exercise, GradedExercise)
 
     def test_provide_feedback(self):
         """
@@ -235,10 +232,3 @@ class SessionTestCase(TestCase):
 
         # all exercises used, the next one should be None
         self.assertIsNone(session.next_exercise())
-
-
-#class MessageFeedbackTestCase(TestCase):
-
-#    @skipIf(False, "special message feedback test")
-#    def test_send_message(self):
-#        process_message_feedback("some text", "a@b.c", 123)

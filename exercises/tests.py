@@ -5,6 +5,7 @@ from knowledge.namespaces import RDF, SMARTOO, ONTOLOGY, TERM, LABEL
 from exercises.models import Exercise, ExercisesCreator
 from exercises.models import GradedExercise, ExercisesGrader
 from exercises.utils.distractors import generate_similar_terms, create_choice_list
+from exercises.utils.difficulty import difficulty_normalization
 from rdflib import Literal
 
 
@@ -102,3 +103,13 @@ class DistractorsUtilsTestCase(TestCase):
         #knowledge_graph.add((elizabeth, LABEL, Literal('Elizabeth of York')))
         choices = create_choice_list([henry, edward, elizabeth], knowledge_graph)
         self.assertEqual(sorted(choices), ['Edward VI', 'Elizabeth of York', 'Henry VIII'])
+
+
+class DifficultyUtilsTestCase(TestCase):
+
+    def test_difficulty_normalization(self):
+        self.assertEqual(difficulty_normalization(0), -2)
+        self.assertEqual(difficulty_normalization(1), 2)
+        self.assertAlmostEqual(difficulty_normalization(0.5), 0)
+        self.assertAlmostEqual(difficulty_normalization(0.75), 1)
+        self.assertAlmostEqual(difficulty_normalization(0.125), -1.5)

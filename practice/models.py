@@ -15,29 +15,31 @@ class Practicer(Component):
     def get_behaviors_path(cls):
         return cls.BEHAVIORS_PATH
 
-    def next_exercise(self, graded_exercises, accumulated_feedback,
-            feedbacked_exercise):
+    def next_exercise(self, unused_graded_exercises, accumulated_feedback,
+            feedbacked_exercises):
         """
         Returns new exercise.
 
         Args:
-            graded_exercises: collection of exercises and their grades
+            unused_graded_exercises: collection of exercises and their grades
+                which were not already used
             accumulated_feedback: feedback from previous exercises to help us
                 decide which exercise is best for the user
+            feedbacked_exercises: collection of feedbacked finnished exercises
         Returns:
             new exercise || None if there is no exercise left
         """
-        if not graded_exercises:
+        if not unused_graded_exercises:
             return None
 
         behavior = self.get_behavior()
-        graded_exercise = behavior.next_exercise(graded_exercises,
-            accumulated_feedback, feedbacked_exercise)
+        graded_exercise = behavior.next_exercise(unused_graded_exercises,
+            accumulated_feedback, feedbacked_exercises)
 
         assert isinstance(graded_exercise, GradedExercise)
-        exercise = graded_exercise.exercise
+        #exercise = graded_exercise.exercise
 
-        return exercise
+        return graded_exercise
 
     def __str__(self):
         return unicode(self).encode('utf-8')

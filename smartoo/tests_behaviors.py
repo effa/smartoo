@@ -11,7 +11,7 @@ from django.test import TestCase
 from unittest import skipIf
 
 from knowledge.namespaces import TERM
-from knowledge.models import KnowledgeBuilder
+from knowledge.models import KnowledgeBuilder, Article
 from exercises.models import ExercisesCreator
 from exercises.models import ExercisesGrader
 from exercises.models import GradedExercise, Exercise
@@ -27,12 +27,13 @@ class ComponentsTestCase(TestCase):
 
     def setUp(self):
         self.topic = TERM['Abraham_Lincoln']
+        Article.objects.create(topic=self.topic, content=Article.EMPTY_CONTENT)
         #self.session = Session.objects.create_with_components(self.topic)
         self.session = Session(topic=self.topic)
         # ------------------------------------------------------------------
         # components to test
         # ------------------------------------------------------------------
-        self.session.knowledge_builder = KnowledgeBuilder.objects.get(pk=2)
+        self.session.knowledge_builder = KnowledgeBuilder.objects.get(pk=4)  # fake
         #self.session.knowledge_builder = KnowledgeBuilder.objects.get(
         #    #behavior_name='quasi',
         #    behavior_name='fake',
@@ -57,7 +58,7 @@ class ComponentsTestCase(TestCase):
         # ------------------------------------------------------------------
         self.session.save()
 
-    @skipIf(SKIP, "special components behavior test")
+    @skipIf(True or SKIP, "special components behavior test")
     def test_components(self):
         # NOTE: there will whatever I want to test right now
 
@@ -77,56 +78,72 @@ class ComponentsTestCase(TestCase):
         exercise = self.session.next_exercise()
         print exercise
 
-    @skipIf(True or SKIP, "special components behavior test")
+    @skipIf(SKIP, "special components behavior test")
     def test_practicing_only(self):
         # knowledge building
         self.session.build_knowledge()
 
-        # fake exercises (to test pracicing only)
-        GradedExercise.objects.create(
-            exercise=Exercise.objects.create(data='B',
-                semantics={'term-pairs': [['t2', 't4'], ['t4', 't5']]},
-                knowledge_graph=self.session.get_knowledge_graph(),
-                exercises_creator=self.session.exercises_creator),
-            exercises_grader=self.session.exercises_grader,
-            difficulty=0.55,
-            correctness=0.5,
-            relevance=0.2)
+        ## fake exercises (to test pracicing only)
+        #GradedExercise.objects.create(
+        #    exercise=Exercise.objects.create(data='B',
+        #        semantics={'term-pairs': [['t2', 't4'], ['t4', 't5']]},
+        #        knowledge_graph=self.session.get_knowledge_graph(),
+        #        exercises_creator=self.session.exercises_creator),
+        #    exercises_grader=self.session.exercises_grader,
+        #    difficulty=0.55,
+        #    correctness=0.5,
+        #    relevance=0.2)
 
-        GradedExercise.objects.create(
-            exercise=Exercise.objects.create(data='C',
-                semantics={'term-pairs': [['t1', 't2'], ['t1', 't4']]},
-                knowledge_graph=self.session.get_knowledge_graph(),
-                exercises_creator=self.session.exercises_creator),
-            exercises_grader=self.session.exercises_grader,
-            difficulty=0.5,
-            correctness=0.5,
-            relevance=0.2)
+        #GradedExercise.objects.create(
+        #    exercise=Exercise.objects.create(data='C',
+        #        semantics={'term-pairs': [['t1', 't2'], ['t1', 't4']]},
+        #        knowledge_graph=self.session.get_knowledge_graph(),
+        #        exercises_creator=self.session.exercises_creator),
+        #    exercises_grader=self.session.exercises_grader,
+        #    difficulty=0.5,
+        #    correctness=0.5,
+        #    relevance=0.2)
 
-        GradedExercise.objects.create(
-            exercise=Exercise.objects.create(data='A',
-                semantics={'term-pairs': [['t1', 't2'], ['t1', 't3']]},
-                knowledge_graph=self.session.get_knowledge_graph(),
-                exercises_creator=self.session.exercises_creator),
-            exercises_grader=self.session.exercises_grader,
-            difficulty=0.5,
-            correctness=0.5,
-            relevance=0.4)
+        #GradedExercise.objects.create(
+        #    exercise=Exercise.objects.create(data='A',
+        #        semantics={'term-pairs': [['t1', 't2'], ['t1', 't3']]},
+        #        knowledge_graph=self.session.get_knowledge_graph(),
+        #        exercises_creator=self.session.exercises_creator),
+        #    exercises_grader=self.session.exercises_grader,
+        #    difficulty=0.5,
+        #    correctness=0.5,
+        #    relevance=0.4)
 
-        # practicing
-        exercise = self.session.next_exercise()
-        print exercise
+        for difficulty in [-1.2 + 0.1 * k for k in range(32)]:
+            GradedExercise.objects.create(
+                exercise=Exercise.objects.create(data='Q',
+                    semantics={'term-pairs': []},
+                    knowledge_graph=self.session.get_knowledge_graph(),
+                    exercises_creator=self.session.exercises_creator),
+                exercises_grader=self.session.exercises_grader,
+                difficulty=difficulty,
+                correctness=0.5,
+                relevance=0.5)
 
-        self.session.provide_feedback({
-            'pk': exercise.pk,
-            'answered': True,
-            'correct': False,
-            'invalid': False,
-            'irrelevant': False
-        })
+        for i in range(10):
 
-        exercise = self.session.next_exercise()
-        print exercise
+            # practicing
+            exercise = self.session.next_exercise()
+            print exercise
+
+            print 'Correct answer? ',
+            answer = bool(int(raw_input()))
+
+            self.session.provide_feedback({
+                'pk': exercise.pk,
+                'answered': True,
+                'correct': answer,
+                'invalid': False,
+                'irrelevant': False
+            })
+
+        #exercise = self.session.next_exercise()
+        #print exercise
 
         #self.session.provide_feedback({
         #    'pk': exercise.pk,

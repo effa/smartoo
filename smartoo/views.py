@@ -12,6 +12,7 @@ from common.utils.http import BAD_REQUEST
 from knowledge.utils.terms import term_to_name
 from knowledge.models import article_search
 #from knowledge.utils.topics import is_valid_topic
+from exercises.models import GradedExercise
 from smartoo.exceptions import SessionError
 from smartoo.feedback import process_message_feedback
 from smartoo.models import Session
@@ -151,7 +152,8 @@ def next_exercise(request):
             # show feedback form
             return JsonResponse({'success': True, 'finnished': True})
 
-        exercise_dict = exercise.data
+        assert isinstance(exercise, GradedExercise)
+        exercise_dict = exercise.exercise.data
         exercise_dict['pk'] = exercise.pk
 
         response_data = {
