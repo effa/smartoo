@@ -30,7 +30,7 @@ def retrieve_graph_from_dbpedia(term):
     assert ONLINE_ENABLED
     logger.info('online access - DBpedia: {term}'.format(term=unicode(term)))
     term_utf = term.encode('utf-8')
-    term_url = quote_plus(term_utf, safe=str("/:,()'"))
+    term_url = quote_plus(term_utf, safe=str("/:#,()'"))
     #print '---'
     #print 'term_url', term_url
     sparql = SPARQLWrapper("http://dbpedia.org/sparql")

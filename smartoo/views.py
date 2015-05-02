@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 #from django.http import HttpResponse
@@ -66,7 +67,7 @@ def start_session(request):
         return JsonResponse({"success": False, "message": "Request without topic."},
             status=BAD_REQUEST)
 
-    # yes, these utf-8 chess are unfortunately neccessary
+    # yes, this utf-8 chess are unfortunately neccessary
     topic_name = unquote(topic_name.encode('utf-8'))
     topic_name = topic_name.decode('utf-8')
 
@@ -85,9 +86,12 @@ def start_session(request):
         session = Session.objects.create_with_components(topic=topic)
         # remember the session id
         request.session['session_id'] = session.id
+        print 'a'
         topic_name = term_to_name(topic)
+        print 'b'
         logger.info('new session (pk={pk}, topic={topic})'.format(
             pk=session.pk, topic=topic_name))
+        print 'c'
         return JsonResponse({"success": True, "topic": topic_name})
     except ValueError:
         # TODO: specialni zpracovani napr. DisambiguationError

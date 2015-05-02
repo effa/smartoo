@@ -5,6 +5,7 @@ Terms related utilities
 from __future__ import unicode_literals
 from knowledge.namespaces import TERM, ONTOLOGY
 from knowledge.utils.termstrie import TermsTrie
+#from urllib import quote_plus, unquote_plus
 
 
 def name_to_term(name):
@@ -15,7 +16,7 @@ def name_to_term(name):
         raise ValueError("Invalid argument: " + str(name))
 
     # name normalization
-    name = name.replace(' ', '_')
+    name = name.replace(' ', '_').replace('"', '')
 
     return TERM[name]
 
