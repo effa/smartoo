@@ -71,27 +71,22 @@ def start_session(request):
     topic_name = unquote(topic_name.encode('utf-8'))
     topic_name = topic_name.decode('utf-8')
 
-    # TODO: normalizace tematu, osetretni neexistence termatu!!!, ...
-    # ale to by melo nastat uz ve view practice_session
-    #try:
-    #    topic = name_to_term(topic_name)
-    #except ValueError:
-    #    return JsonResponse({"success": False, "message": "Invalid topic."},
-    #        status=BAD_REQUEST)
-
     try:
         # if article not in DB, try to find it
         topic = article_search(search_string=topic_name)
+
+        print topic
+
         # create session and select components
         session = Session.objects.create_with_components(topic=topic)
+
+        print 'b'
+
         # remember the session id
         request.session['session_id'] = session.id
-        print 'a'
         topic_name = term_to_name(topic)
-        print 'b'
         logger.info('new session (pk={pk}, topic={topic})'.format(
             pk=session.pk, topic=topic_name))
-        print 'c'
         return JsonResponse({"success": True, "topic": topic_name})
     except ValueError:
         # TODO: specialni zpracovani napr. DisambiguationError

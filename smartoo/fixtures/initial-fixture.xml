@@ -10,7 +10,7 @@
     <field type="DictField" name="parameters">{
       "max-sentence-length": 40
       }</field>
-    <field type="BooleanField" name="enabled">True</field>
+    <field type="BooleanField" name="enabled">False</field>
   </object>
   <object pk="3" model="knowledge.knowledgebuilder">
     <field type="CharField" name="behavior_name">quasi</field>
@@ -43,7 +43,7 @@
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 1.0}
     </field>
-    <field type="BooleanField" name="enabled">True</field>
+    <field type="BooleanField" name="enabled">False</field>
   </object>
   <object pk="2" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
@@ -53,7 +53,7 @@
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 1.0}
     </field>
-    <field type="BooleanField" name="enabled">True</field>
+    <field type="BooleanField" name="enabled">False</field>
   </object>
   <object pk="3" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
@@ -63,7 +63,7 @@
       "difficulty-weight": 1.25,
       "repetitiveness_weight": 1.0}
     </field>
-    <field type="BooleanField" name="enabled">True</field>
+    <field type="BooleanField" name="enabled">False</field>
   </object>
   <object pk="4" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>
@@ -83,7 +83,7 @@
       "difficulty-weight": 1.0,
       "repetitiveness_weight": 1.25}
     </field>
-    <field type="BooleanField" name="enabled">True</field>
+    <field type="BooleanField" name="enabled">False</field>
   </object>
   <object pk="6" model="practice.practicer">
     <field type="CharField" name="behavior_name">simple</field>

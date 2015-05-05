@@ -84,8 +84,11 @@ class ComponentsSelector(object):
                 session.exercises_creator.pk,
                 session.exercises_grader.pk,
                 session.practicer.pk)
-            performance = session.feedback.get_performance()
-            performances[components_keys].append(performance)
+            # check that all components are currently  enabled
+            if all([components_keys[i] in components_lists[i]
+                    for i in range(4)]):
+                performance = session.feedback.get_performance()
+                performances[components_keys].append(performance)
 
         # smoothing: add one made up session with average performance
         AVERAGE_PERFORMANCE = 0.5
