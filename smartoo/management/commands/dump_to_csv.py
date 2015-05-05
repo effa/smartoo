@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.core.management.base import BaseCommand
 #from django.core.management.base import BaseCommand, CommandError
 from smartoo.models import Session
@@ -37,4 +38,4 @@ class Command(BaseCommand):
                     final_rating=feedback.final_rating,
                     performance=feedback.get_performance()
                 )
-                f.write(line + '\n')
+                f.write((line + '\n').encode('utf-8'))
