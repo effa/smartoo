@@ -44,7 +44,7 @@ def is_contextfree(sentence, max_sentence_length=50):
         if node.label() in FORBIDDEN_POS_TAGS:
             return False
 
-    FORBIDDEN_WORDS = {':', 'this', 'that', 'these', 'those', 'there', 'then', 'following'}
+    FORBIDDEN_WORDS = {':', ';', 'this', 'that', 'these', 'those', 'there', 'then', 'following'}
     for word in sentence.leaves():
         if word.lower() in FORBIDDEN_WORDS:
             return False
