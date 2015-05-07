@@ -5,6 +5,30 @@ import csv
 from collections import Counter, defaultdict
 from itertools import product
 
+DIFFICULTIES_FILE = 'data/difficulties.csv'
+STEP = 0.5
+
+
+def process_difficulties_data():
+    questions_correct = Counter()
+    questions_total = Counter()
+    with open(DIFFICULTIES_FILE, 'r') as f:
+        csvreader = csv.reader(f, delimiter=';')
+        # skip header
+        next(csvreader)
+        for row in csvreader:
+            difficulty = float(row[0])
+            group = int((2 + difficulty) / STEP)
+            correct = int(row[1])
+            questions_correct[group] += correct
+            questions_total[group] += 1
+            #print difficulty, correct, type(difficulty), type(correct)
+        print '\nDifficulties:'
+        for group in range(int(4 / STEP)):
+            min_difficutly = -2 + group * STEP
+            success_rate = float(questions_correct[group]) / questions_total[group]
+            print group, min_difficutly, success_rate, questions_total[group]
+
 
 class Command(BaseCommand):
     args = '<data_file_name>'
@@ -131,3 +155,5 @@ pr performance 1/../6: {pr1}/{pr2}/{pr3}/{pr4}/{pr5}/{pr6}
             print performance_record
 
         # TODO: plot graphs and strore them
+
+        process_difficulties_data()
