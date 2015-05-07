@@ -1,2 +1,1 @@
 from components_selector import ComponentsSelector
-from components_feedbacker import ComponentsFeedbacker

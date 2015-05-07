@@ -169,8 +169,6 @@ class SessionTestCase(TestCase):
 
     def test_create_graded_exercises(self):
         session = Session.objects.create_with_components(self.topic)
-        # TODO: lepsi by bylo tam graf vlozit manualne (abychom se zbavili
-        # zavislosti na uspechu build_knowledge()
         session.build_knowledge()
         session.create_graded_exercises()
         exercises = Exercise.objects.all()

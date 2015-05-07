@@ -39,12 +39,10 @@ class Component(models.Model):
             name=self.behavior_name))
 
         # load the file with behavior
-        # TODO: osetrit neexistenci zdroje
         behavior_module = imp.load_source('component_module', behavior_path)
         behavior_class_name = to_camel_case(self.behavior_name)
 
         # instantiate the component behavior object
-        # TODO: osetrit neexistentci tridy s pozadovanym nazvem
         behavior_class = getattr(behavior_module, behavior_class_name)
         behavior_object = behavior_class(self.parameters)
         return behavior_object

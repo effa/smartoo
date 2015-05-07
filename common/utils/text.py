@@ -1,5 +1,5 @@
 """
-Simple text processing utilities..
+Simple text processing utilities.
 """
 
 

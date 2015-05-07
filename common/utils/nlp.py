@@ -61,11 +61,6 @@ def contextfree_sentences(article, max_sentence_length=50):
     Returns:
         list of (context-free) sentences
     """
-    # TODO: some simple heuristic for that, later some sophisticated
-    # anafora resolution would be great
-    # NOTE: simple heuristic: sentence is considered context-free, if it has
-    # reasonable length (at least 5 tokens, at most 40) and does not cotain any
-    # pronoun
     contextfree_sentences = []
     for sentence in article.get_sentences():
         if is_contextfree(sentence, max_sentence_length):

@@ -6,7 +6,7 @@ class TermsTrie(object):
 
     """Trie of terms of easy longest-matching term lookup
 
-    TODO: blizsi popis pouziti
+    Example of terms trie:
 
                     +-> square +-> END -> "blue squares"
         +-> blue ->|
@@ -91,7 +91,6 @@ class TermsTrie(object):
         :return: True if given lemma was possible next step, False otherwise
         """
         if self._current is None:
-            # TODO: specializovanejsi vyjimka?
             raise Exception('no search to continue in (use search_start())')
         lemma = lemma.lower()
         if lemma in self._current:

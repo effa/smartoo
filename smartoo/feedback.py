@@ -12,10 +12,6 @@ def process_message_feedback(text, email, session_pk):
     if len(text) < MIN_TEXT_LENGTH:
         raise ValueError("Message text is too short")
 
-    #print session_pk
-    #print text
-    #print email
-
     # render message (email body)
     message = """
     text:

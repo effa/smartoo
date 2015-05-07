@@ -6,8 +6,6 @@ import json
 Custom model fields.
 """
 
-# TODO: DictField - projit, okomentovat, otestovat, odladit
-
 
 class DictField(models.TextField):
     """

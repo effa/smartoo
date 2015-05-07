@@ -19,7 +19,7 @@
   <object pk="1" model="knowledge.Article">
     <field type="CharField" name="topic">http://dbpedia.org/resource/Abraham_Lincoln</field>
     <field type="TextField" name="content"><![CDATA[
-      TODO....
+      empty
     ]]>
     </field>
   </object>

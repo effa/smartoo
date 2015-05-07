@@ -154,6 +154,4 @@ pr performance 1/../6: {pr1}/{pr2}/{pr3}/{pr4}/{pr5}/{pr6}
         for performance_record in performances_list:
             print performance_record
 
-        # TODO: plot graphs and strore them
-
-        process_difficulties_data()
+        #process_difficulties_data()

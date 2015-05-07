@@ -23,5 +23,3 @@ class SparqlTestCase(TestCase):
         self.knowledge_graph.add((self.henry8,
             ONTOLOGY['birthDate'],
             Literal('1491-06-28', datatype=XSD.date)))
-
-    # TODO

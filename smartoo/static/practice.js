@@ -61,7 +61,6 @@ smartooApp.controller('practiceController',
             });
         }
 
-        // TODO: posilat zpetnou vazbu
         $scope.nextExercise = function(feedback) {
             // unless it's request for the first exercise, mark current
             // exercise as finnished
@@ -154,7 +153,6 @@ smartooApp.controller('practiceController',
         $scope.state = "waiting";
         $scope.topic = {name:'', uri:''};
 
-        // TODO: lepsi by bylo posilat topic jiz v ramci js ze serveru
         var topic = parseTopic(window.location.pathname);
         startSession(topic);
 

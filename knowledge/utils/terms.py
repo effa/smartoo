@@ -29,16 +29,6 @@ def term_to_name(term):
     return name
 
 
-#def terms_trie_from_term_labels(labels):
-    #"""
-    #Returns terms trie created from given list of labels
-    #"""
-    #terms_trie = TermsTrie()
-    #for label in labels:
-    #    terms_trie.add_with_subnames(label)
-    #return terms_trie
-
-
 def bulk_create_terms_trie(terms, knowledge_graph=None):
     """
     Returns terms trie created from given list of labels

@@ -27,9 +27,6 @@ smartooApp.controller('homeController', ['$scope', '$window', function($scope, $
         }
 
         // go to the practice page
-        // TODO: first check if it's correct topic (if not get suggested
-        // similar topics)
-        // TODO: lower/upper case normalization
         var practiceUrl = '/practice/' + searchText;
         console.log(practiceUrl);
 

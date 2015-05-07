@@ -31,9 +31,7 @@ class ExercisesCreator(Component):
         Yields:
             exercises (exercises.models.Exercise)
         """
-        # first check whether the exercises are not already built (TODO: tohle
-        # je potreba zjistovat pres specialni tabulku, jinak muzou nastat
-        # problemy)
+        # first check whether the exercises are not already built
         exercises = Exercise.objects.filter(
             knowledge_graph=knowledge_graph,
             exercises_creator=self)
@@ -99,9 +97,7 @@ class ExercisesGrader(Component):
         Raises:
             IntegrityError: if the exercise is not already stored in DB
         """
-        # first check whether the exercises are not already built (TODO: tohle
-        # je potreba zjistovat pres specialni tabulku, jinak muzou nastat
-        # problemy)
+        # first check whether the exercises are not already built
         if GradedExercise.objects.filter(
                 exercise=exercise,
                 exercises_grader=self).exists():

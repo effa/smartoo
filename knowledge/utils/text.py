@@ -21,7 +21,6 @@ def shallow_parsing(text):
     sentences = sent_tokenize(text)
     parsed_sentences = []
     for sentence in sentences:
-        # TODO: filter sentences
         parsed_sentence = pos_tag(word_tokenize(sentence))
         parsed_sentences.append(parsed_sentence)
     return parsed_sentences
@@ -90,8 +89,6 @@ def terms_inference(sentences, terms_trie):
             if term_length > 0:
                 # term found
                 term_node = ParentedTree('TERM', [])
-                # TODO: use DBpedia to get more specific type sequence, e.g
-                # "TERM:AGENT:PERSON", "TERM:EVENT", "DATE", "NUMBER", ...
 
                 term = name_to_term(term_label)
                 term_node.term = term

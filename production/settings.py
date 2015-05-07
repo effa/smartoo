@@ -1,11 +1,5 @@
 """
 Django settings for smartoo project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -14,10 +8,6 @@ import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '24o@tak8xtx)mr*@uia!_(abl5jnru(@-_u^4&t@0c$t$zy=a1'
 
 ON_SERVER = os.getenv('ON_AL', "False") == "True"
@@ -102,7 +92,6 @@ STATIC_URL = '/static/'
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # Caches
-# TODO: use Memcached
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'

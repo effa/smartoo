@@ -50,8 +50,6 @@ class KnowledgeBuilder(Component):
                 (its ID is needed to store the graph)
             ValueError: if the topic is invalid (there is no such topic)
         """
-        # TODO: odstranit toto cachovani behem vyvoje, lepe prepisovat
-        # existujici graf
         # At first check if the knowledge graph hasn't already been created
         # (for this builder-topic combo)
         if KnowledgeGraph.objects.filter(topic=topic,
@@ -101,7 +99,8 @@ def article_search(search_string):
     If not, try to find it on the Wikipedia.
     If it does not exist, raise ValueError
 
-    Returns: topic of the article
+    Returns:
+        topic of the article
     """
     # first try -- search string is exactly name of an article in DB
     try:
@@ -131,11 +130,10 @@ def article_search(search_string):
             article = Article(topic=topic)
 
             text = wiki_page.content
-            # Problem je, ze seznam odkazu nebude uplny, pokud jich je hodne :-(
-            # viz https://github.com/goldsmith/Wikipedia/issues/71
-            # patch vysvetlen tady: https://github.com/goldsmith/Wikipedia/pull/80
-            # TODO: opravit chybu ve Wikipedia modulu
             links = wiki_page.links
+            # NOTE: wikipedia modul only retrieves first 500 links,
+            # see https://github.com/goldsmith/Wikipedia/issues/71
+            # and https://github.com/goldsmith/Wikipedia/pull/80
 
             # make sure title is in the links and in the first position (so it has
             # the highest priority during terms inference
@@ -161,41 +159,13 @@ class Article(models.Model):
     and leaves are tokens, stored as a tuple (word, pos-tag).
 
     Attributes:
-    _sentences: list of sentences in the article (each sentence is a tree)
-    #_terms: dictionary mapping terms to their occurrences in the article
-    _terms: set of terms which are in the article
-
-    Each sentence is a ParentedTree, where a node is represented as a list of
-    descenants with some additional attributes, such as label (e.g. "S", "VBD",
-    "DT", "TERM", "DATE", "PERSON") and (optional) term (URIRef) or literal.
-    Example:
-
-    (S
-        (PERSON
-            (NP Abraham/NP/Abraham-n)
-            (NP Lincoln/NP/Lincoln-n)
-            .term=URIRef('http://dbpedia.org/resource/Abraham_Lincoln'))
-        (VBD was/VBD/be-v)
-        (DT the/DT/the-x)
-        (TERM
-            (CD 16/CD/16-x)
-            (NN th/NN/th-n)
-            (NN president/NN/president-n)
-            (IN of/IN/of-i)
-            (DT the/DT/the-x)
-            (NP United/NP/United-n)
-            (NPS States/NPS/States-n)
-            .term=URIRef('http://dbpedia.org/resource/List_of_USA_presidents'))
-        (SENT ./SENT/.-x))
-
-    Instead of term attribute, the can also be literal, e.g:
-        .literal=Literal('1809-02-12',datatype=XSD.date)},
+    sentences: list of sentences in the article (each sentence is a tree)
+    terms_positions: mappings from terms to the list of their occurences
     """
     # URI of the topic
     # NOTE that it can be different from article URL (e.g.
     # topic=http://dbpedia.org/resource/Abraham_Lincoln
     # but article_url=http://en.wikipedia.org/wiki/Abraham_Lincoln)
-    # TODO: if article URL is needed as well, than make an attribute for it
     topic = TermField(unique=True)
 
     # article content will be stored directly in relational DB encoded in JSON
@@ -207,63 +177,6 @@ class Article(models.Model):
     # weight of the headline (i.e. topic term) relative to one term occurence
     HEADLINE_WEIGHT = 10
 
-    #def save(self, *args, **kwargs):
-    #    """
-    #    Save modification: if it hasn't been stored already
-    #    and content is not set, find the content using Wikipedia API
-    #    """
-    #    if not self.pk and not self.content:
-    #        # find article on Wiki and process it to vertical
-    #        try:
-    #            self.get_content_from_wikipedia()
-    #        except Exception as exc:
-    #            logger.error('Wikipedia article processing failed: ' + exc.message)
-    #            raise
-    #    super(Article, self).save(*args, **kwargs)
-
-    #def get_content_from_wikipedia(self):
-    #    """
-    #    Uses Wikipedia api to retrieve content for topic of the article
-    #    TODO: vyhodit vyjimku, pokud se to nepodari (clanek neexistuje)
-
-    #    Raises:
-    #        WikipediaException (see Wikipedia module docs for details)
-    #    """
-    #    # topic has to be set, content not and online access hat to be enabled
-    #    assert self.topic is not None
-    #    assert not self.content
-    #    assert ONLINE_ENABLED
-
-    #    #print 'simulate wikipedia api .....'
-    #    #text = 'Abraham Lincoln was a president of the USA. He led the USA through its Civil war.'
-    #    #links = ['Abraham Lincoln', 'USA', 'Civil war']
-
-    #    topic_name = term_to_name(self.topic)
-
-    #    logger.info('online access - Wikipedia: {topic}'.format(topic=topic_name))
-    #    try:
-    #        #name_utf = topic_name.encode('utf-8')
-    #        #wiki_page = wikipedia.page(name_utf)
-    #        wiki_page = wikipedia.page(topic_name)
-    #    except WikipediaException as exc:
-    #        logger.warning(exc.message or 'wiki page retrieval failed')
-    #        raise
-
-    #    text = wiki_page.content
-    #    # Problem je, ze seznam odkazu nebude uplny, pokud jich je hodne :-(
-    #    # viz https://github.com/goldsmith/Wikipedia/issues/71
-    #    # patch vysvetlen tady: https://github.com/goldsmith/Wikipedia/pull/80
-    #    # TODO: opravit chybu ve Wikipedia modulu
-    #    links = wiki_page.links
-
-    #    # make sure title is in the links and in the first position (so it has
-    #    # the highest priority during terms inference
-    #    links.insert(0, topic_name)
-    #    self.create_content_from_text(text, links)
-
-    # TODO: da se to urcite udelat lip (efektivneji, prehledneji), v nltk
-    # je primo nejaka prace s texty jako soubory vet, nebo dokonce i
-    # korpusy (i oznackovanymi korpusy!)
     def create_content_from_text(self, text, links=[]):
         """
         Parses text and creates self.content
@@ -305,9 +218,6 @@ class Article(models.Model):
         """
         # content must be set before
         assert self.content is not None
-
-        #if 'sentences' not in self.content:
-        #    return []
 
         # vytvoreni TermsTrie ze vsech pojmu
         terms_trie = bulk_create_terms_trie(self.content['terms'], knowledge_graph)
@@ -401,7 +311,6 @@ class KnowledgeGraph(models.Model):
 
     def _update_notification(self):
         # after an update, we may need to recompute some attributes
-        # (NOTE: ale mozna by stacilo jen pri pridani RDF["type"])
         # NOTE: using self.__dict__.pop('attribute', None) rather than if
         # self.attribut: del self.attribute, because the latter requires
         # computation of attribute if it is not cached.
@@ -413,13 +322,8 @@ class KnowledgeGraph(models.Model):
         Adds new triple to knowledge graph.
         """
         self.graph.add(triple)
-        # TODO: misto notifikace a nasledneho kompletniho prepocitani vsech
-        # cachovanych atributu by slo i pouze upravit jejich hodnoty podle
-        # pridaneho tripletu (-> mnohem rychlejsi)
         self._update_notification()
 
-    # TODO: vyfaktorovat implicitni hodnoty parametru do nejakych konstant, aby
-    # se dalo lepe rict DEFAULT + neco dalsiho
     def add_related_global_knowledge(self, article,
             predicates=[RDFS['label'], RDF['type'], ONTOLOGY['birthYear'],
                 ONTOLOGY['deathYear'], RDFS['comment']], online=True):
@@ -459,7 +363,6 @@ class KnowledgeGraph(models.Model):
             logger.error(traceback.format_exc())
             raise
 
-    # TODO: cachovani dotazu (pozor na add())
     def query(self, query, initBindings={}):
         """
         Performs SPARQL query over the knowledge graph.
@@ -560,10 +463,6 @@ class KnowledgeGraph(models.Model):
             if isinstance(node, URIRef) and node.startswith(term_prefix):
                 terms.add(node)
 
-        ## NOTE: Previously, we have considered as terms only subjects with
-        ## type "smartoo:term".
-        #terms = set(self.graph.subjects(RDF['type'], SMARTOO['term']))
-
         return terms
 
     def get_subjects(self, predicate=None, object=None):
@@ -650,22 +549,3 @@ class GlobalKnowledge(object):
             logger.error('Getting graph for {term} failed; {message}; {excType}'
                 .format(term=term, message=exc.message, excType=unicode(type(exc))))
             return None
-
-    #def label(self, term, fallback_guess=True):
-    #    """
-    #    Returns label for given term.
-
-    #    Args:
-    #        term: URI reference to the object for which to find label
-    #        fallback_guess: guess the label (using URI) if label wasn't found
-    #    Returns:
-    #        label [unicode]
-    #    """
-    #    # TODO: osetrit neexistenci grafu
-    #    graph = self.get_graph(term)
-    #    return graph.label(term)
-
-    # NOTE: vzhledem k zvolene zjednodusene reprezentaci globalnich znalosti,
-    # nelze v obecnosti implementovat metodu query(sparql), ale pro nase ucely
-    # to asi nevadi, nam staci vzdy informace o konkretnim subjetku (napr. jeho
-    # typ, datum narozeni atp.)

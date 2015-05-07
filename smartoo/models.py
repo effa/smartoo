@@ -17,19 +17,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-#class AccumulativeFeedbackManager(models.Manager):
-#    def create_empty_feedback(self):
-#        """
-#        Creates empty accumulative feedback and stores it to DB.
-
-#        Returns:
-#            empty accumulative feedback (smartoo.models.AccumulativeFeedback)
-#        """
-#        pass
-#        #feedback = AccumulativeFeedback()
-#        #feedback.save()
-#        #return feedback
-
 
 class AccumulativeFeedback(models.Model):
     """
@@ -72,7 +59,6 @@ class AccumulativeFeedback(models.Model):
             self.unanswered_count += 1
         self.invalid_count += int(feedback.invalid)
         self.irrelevant_count += int(feedback.irrelevant)
-        # TODO: quality calculation ?
         # store the updated accumulative feedback to DB
         self.save()
 
@@ -127,23 +113,6 @@ class AccumulativeFeedback(models.Model):
         performance = float(good_plus) / all_plus
         return performance
 
-# NOTE: Due to migrations serializations issues (and Python 2), this method for
-# creating empty feedback has to be in the main body of the module. It can't be
-# method (neither in manager nor in the model as as static class).
-# Using default=AccumuliveFeedback.objects.save also doesn't work.
-# NOTE: Strange SessionManager works without these problems....
-#def create_empty_feedback():
-#    """
-#    Creates empty accumulative feedback and stores it to DB.
-
-#    Returns:
-#        empty accumulative feedback
-#    """
-#    #return AccumulativeFeedback.objects.create()
-#    feedback = AccumulativeFeedback()
-#    #feedback.save()
-#    return feedback
-
 
 class SessionManager(models.Manager):
     def create_with_components(self, topic):
@@ -197,18 +166,9 @@ class Session(models.Model):
         if self.id is None:
             self.start = datetime.datetime.now()
 
-        # NOTE: Aritcle jiz musel byt stazeny predtim
-        # create article if it wasn't already
-        # (viz view.start_session)
-        # ... ale mozna by bylo dobre zkontrolovat, ze uz je clanek opravdu v
-        # DB...
-
         # create feedback if it wasn't already
         if self.feedback_id is None:
             self.feedback = AccumulativeFeedback.objects.create()
-
-        #from django.core import serializers
-        #print serializers.serialize('xml', [self], indent=2)
 
         super(Session, self).save(*args, **kwargs)
 
@@ -216,7 +176,6 @@ class Session(models.Model):
         """
         Selects components for this session.
         """
-        # TODO: vyhodit vhodnou vyjimku, pokud uz jsou vybrany
         selector = ComponentsSelector(session_manager=Session.objects)
         (self.knowledge_builder, self.exercises_creator, self.exercises_grader,
             self.practicer) = selector.select_components()
@@ -256,7 +215,6 @@ class Session(models.Model):
         """
         # retrieve knowledge graph for the session topic and used knowledge
         # builder
-        # TODO (?) nejprve kontrolovat zda uz nejsou cviceni vytvorena?
         knowledge_graph = self.get_knowledge_graph()
         self.exercises_grader.create_graded_exercises(
             knowledge_graph=knowledge_graph,
@@ -335,7 +293,6 @@ class Session(models.Model):
         any stored session.
         """
         # get the exercise from DB
-        # TODO: kontrolovat, ze cviceni s timto pk je opravdu z teto session
         exercise = GradedExercise.objects.get(
             pk=feedback_dictionary["pk"])
         # store the feedback in DB

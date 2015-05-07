@@ -56,29 +56,3 @@ class KnowledgeBuilderTestCase(TestCase):
         knowledge_graph = KnowledgeGraph.objects.all().first()
         self.assertIsNotNone(knowledge_graph)
         self.assertIsInstance(knowledge_graph, KnowledgeGraph)
-        #print knowledge_graph
-
-
-# ----------------------------------------------------------------------------
-#  Behaviors Tests
-# ----------------------------------------------------------------------------
-
-# NOTE: nevim, jak tyhle testy delat, aby byla jistota, ze se nepouzivaji
-# online zdroje a pritom hodnota techto testu je opravdu nizka, takze se bez
-# nich zatim objedu
-#class BehaviorsTestCase(TestCase):
-#    def setUp(self):
-#        self.BEHAVIORS = [
-#            ('simple', {'alpha': 0.5})
-#        ]
-#        self.article = Article()
-#        self.article = Article(self.article)
-
-#    def test_behavior(self):
-#        for behavior_name, parameters in self.BEHAVIORS:
-#            knowledge_builder = KnowledgeBuilder(
-#                behavior_name=behavior_name,
-#                parameters=parameters)
-#            behavior = knowledge_builder.get_behavior()
-#            knowledge_graph = behavior.build_knowledge_graph(self.article)
-#            self.assertIsInstance(knowledge_graph, KnowledgeGraph)

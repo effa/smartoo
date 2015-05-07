@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 from django.test import TestCase
 
 from common.utils.mock import MockObject
-from common.settings import SKIP_ONLINE_TESTS
+from common.settings import SKIP_ONLINE_TESTS, SKIP_LOGGING_TESTS
 from knowledge.namespaces import TERM
 from knowledge.models import KnowledgeGraph
 from exercises.models import Exercise, GradedExercise
@@ -23,10 +23,11 @@ class StartSessionViewTestCase(TestCase):
     def setUp(self):
         pass
 
-# NOTE: As it's problematic too test view using session data (and encode
+# NOTE: As it's problematic too test views using session data (and encode
 # request body the same way as AngularJS?!), we will test directly views
 # methods using fake requests (with fake session dictionary)
 
+    @skipIf(SKIP_LOGGING_TESTS, 'logging successfully started session')
     def test_start_session_successfully(self):
         #response = self.client.post('/interface/start-session',
         #    {"topic": "Abraham_Lincoln"})
@@ -74,16 +75,6 @@ class BuildKnowledgeViewTestCase(TestCase):
         knowledge_graph = knowledge_graphs[0]
         self.assertEqual(knowledge_graph.topic, topic)
 
-    #def test_build_knowledge_invalid_session_id(self):
-    #    topic = TERM['Abraham_Lincoln']
-    #    session = Session.objects.create_with_components(topic)
-    #    fake_request = MockObject(session={'session_id': session.id + 1})
-    #    response = build_knowledge(fake_request)
-    #    self.assertEqual(loads(response.content)["success"], False)
-    #    self.assertEqual(response.status_code, 400)
-    #    knowledge_graphs = KnowledgeGraph.objects.all()
-    #    self.assertEqual(len(knowledge_graphs), 0)
-
 
 class CreateExercisesViewTestCase(TestCase):
     fixtures = ['fake-components-article.xml']
@@ -121,16 +112,3 @@ class NextExerciseViewTestCase(TestCase):
         self.assertEqual(response_content["success"], True)
         self.assertIn('exercise', response_content)
         self.assertIn('question', response_content['exercise'])
-
-
-#def _session_storage_init(test_case):
-#    """
-#    Helper function to enable storing session for a test_case
-#    NOTE: It  didn't work correctly...
-#    """
-#    settings.SESSION_ENGINE = 'django.contrib.sessions.backends.file'
-#    engine = import_module(settings.SESSION_ENGINE)
-#    store = engine.SessionStore()
-#    store.save()
-#    test_case.session = store
-#    test_case.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key

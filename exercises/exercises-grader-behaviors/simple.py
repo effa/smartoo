@@ -11,8 +11,8 @@ class Simple(ExercisesGraderBehavior):
     Simple Exercises Grader Behavior
     ------------------------------
 
-    TODO: description
-    Parameters: ---
+    Description: Uses heuristics to rank relevance and difficulty.
+    Parameters: no parameters
     """
     def setup(self, topic):
         self.article = Article.objects.get(topic=unicode(topic))
@@ -43,8 +43,6 @@ class Simple(ExercisesGraderBehavior):
         # exercise (only terms counted).
         relevance = cosine_similarity_exercise_article(terms, self.article)
 
-        # TODO: Extremely simple heuristic for correctness, such as length of
-        # the exercise (cim delsi, tim vetsi pravdepodobnost problemu)
         correctness = 0.5
 
         return GradedExercise(

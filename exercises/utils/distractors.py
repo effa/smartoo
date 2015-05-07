@@ -5,8 +5,6 @@ Module for generating distractors
 from knowledge.namespaces import ONTOLOGY, TERM
 from random import sample, shuffle, random
 
-# TODO: inspirace viz procvicinik-v1
-
 
 # some terms to use if there is not enough of them in the article context
 TERMS_OF_TYPE = {
@@ -35,7 +33,6 @@ def generate_similar_terms(term, knowledge_graph, number=3):
     Term arse selected fromterms in knowledge graph, but if there is not enough
     of them made-up terms are used (see TERMS_OF_TYPE dictionary).
     """
-    # TODO: special treatment for numbers
     all_terms = set(knowledge_graph.all_terms)
     all_terms.discard(term)
     similarity = {t: knowledge_graph.similarity(term, t) for t in all_terms}
@@ -92,28 +89,6 @@ def selection_probability(terms, similarities, i, k=1):
     selection_probability = 0.5 + 0.5 * relative_similarity_difference
     return selection_probability
 
-#def _select_similar_terms(terms_similarity, number_max):
-#    """
-#    Selects :number_max: terms, using some randomness: goes from the most
-#    similar term to the least similar and selects each term with the
-#    probability based on the similarity and the number of terms needed to
-#    select.
-
-#    If there is not enough similar terms, it may return less then :number: terms
-
-#    Args:
-#        terms_similarity: dictinary mapping terms to the similarity value
-#        number_max: how many terms to select (at most)
-#    """
-#    sorted_terms = sorted(terms_similarity, key=terms_similarity.get, reverse=True)
-#    selected = []
-#    for term in sorted_terms:
-#        # TODO: take (number_max - len(selected)) into account
-#        selection_probability = terms_similarity[term]
-#        if random() < selection_probability
-#            selected.append(current_term)
-#   return selected
-
 
 def create_choice_list(choices, knowledge_graph):
     """
@@ -127,5 +102,4 @@ def create_choice_list(choices, knowledge_graph):
     """
     choices = [knowledge_graph.label(c) for c in choices]
     shuffle(choices)
-    # TODO: special treatment for numbers
     return choices

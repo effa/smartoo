@@ -75,12 +75,8 @@ def start_session(request):
         # if article not in DB, try to find it
         topic = article_search(search_string=topic_name)
 
-        print topic
-
         # create session and select components
         session = Session.objects.create_with_components(topic=topic)
-
-        print 'b'
 
         # remember the session id
         request.session['session_id'] = session.id
@@ -89,7 +85,6 @@ def start_session(request):
             pk=session.pk, topic=topic_name))
         return JsonResponse({"success": True, "topic": topic_name})
     except ValueError:
-        # TODO: specialni zpracovani napr. DisambiguationError
         # topic doesn't exist, don't create a session
         return JsonResponse({"success": False, "message": "No such topic."},
             status=BAD_REQUEST)
@@ -121,8 +116,6 @@ def create_exercises(request):
     except SessionError as exc:
         logger.warning('SessionError: ' + exc.message)
         return JsonResponse({"success": False}, status=BAD_REQUEST)
-    #except Exception:
-    #    print traceback.format_exc()
 
 
 def next_exercise(request):
@@ -211,11 +204,6 @@ def feedback_message(request):
 # ----------------------------------------------------------------------------
 #  Helper functions
 # ----------------------------------------------------------------------------
-
-#def render_exercise(request, exercise):
-#    """Renders exercise according to exercise type (multichoice etc.)
-#    """
-#    return render(request, 'practice/multichoice-question.html', exercise)
 
 
 def retrieve_current_session(request):

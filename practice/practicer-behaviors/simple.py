@@ -11,11 +11,6 @@ class Simple(PracticerBehavior):
     Simple practicer behavior
     -----------------------
 
-    TODO: description (see comments below)
-    NOTE: this model does not take into account the order of questions
-    but since during one session the questions are relatively unique, we
-    do not need to model learning, just the prior knowledge, so it is OK
-
     Parameters:
         'target-success': ideal overall ratio of correct answers
         'relevance-weight': relative weight of relevance vs. correctness
