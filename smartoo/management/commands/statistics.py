@@ -38,7 +38,7 @@ class Command(BaseCommand):
         if len(args) > 0:
             data_file_name = args[0]
         else:
-            data_file_name = 'data/data.csv'
+            data_file_name = 'data/sessions.csv'
 
         with open(data_file_name, 'r') as f:
             csvreader = csv.reader(f, delimiter=';')
@@ -108,11 +108,11 @@ class Command(BaseCommand):
         # calculate global statisctics
         sessions = counter['session']
         correct, wrong, unanswered = counter['correct'], counter['wrong'], counter['unanswered']
-        invlaid, irrelevant = counter['invalid'], counter['irrelevant']
+        invalid, irrelevant = counter['invalid'], counter['irrelevant']
         questions = correct + wrong + unanswered
         ok_questions = questions - invalid - irrelevant
         average_success = float(correct) / (correct + wrong)
-        average_performance = counter['performance'] / sessions
+        #average_performance = counter['performance'] / sessions
 
         # print the statistics
         report_format = '''
@@ -122,7 +122,6 @@ correct/wrong/unanswered: {correct}/{wrong}/{unanswered}
 average success: {average_success}
 ok/invalid/irrelevant: {ok}/{invalid}/{irrelevant}
 final-good/so-so/bad: {final_good}/{final_soso}/{final_bad}
-average performance: {average_performance} (RELATIVE performnace!)
 kb performance 2/3: {kb2performance}/{kb3performance}
 pr performance 1/../6: {pr1}/{pr2}/{pr3}/{pr4}/{pr5}/{pr6}
 '''
@@ -139,7 +138,6 @@ pr performance 1/../6: {pr1}/{pr2}/{pr3}/{pr4}/{pr5}/{pr6}
             final_good=counter['final_rating_good'],
             final_soso=counter['final_rating_soso'],
             final_bad=counter['final_rating_bad'],
-            average_performance=average_performance,
             kb2performance=kb_performances[2],
             kb3performance=kb_performances[3],
             pr1=pr_performances[1],
